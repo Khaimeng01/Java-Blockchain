@@ -20,14 +20,15 @@ public class TranxCollection implements Serializable {
     
     public String merkelRoot = "default";
     
-    public List<String> tranxlist; //can use other collection API for transaction collection
+    public List<Patient> tranxlist;
+    //public List<String> tranxlist; //can use other collection API for transaction collection
     
     public TranxCollection(){
         tranxlist = new ArrayList<>(SIZE);
     }
     
     //add transaction
-    public void add(String transaction){
+    public void add(Patient transaction){
         tranxlist.add(transaction);
     }
 

@@ -29,8 +29,8 @@ public class Main {
 //       Block newBlock = new Block(genesis.getHeader().getCurrHash());
 //       newBlock.setTranxs(tranx);
 //       System.out.println(newBlock);
-        //test1();
-        test2();
+        test1();
+        //test2();
     }
     
     static final String MASTER_DIR = "master";
@@ -38,21 +38,28 @@ public class Main {
     
     static void test1(){
         Blockchain bc = Blockchain.getInstance(MASTER_BINARY);
-        String tranx1 = "bob|alice|debit|50";
-        String tranx2 = "pete|bob|credit|200";
+        //String tranx1 = "bob|alice|debit|50";
+        Patient p1 = new Patient("1", "Bob", "Sam", "0031231301", "012334556788", true );
+        Patient p2 = new Patient("2", "Alex", "John", "0031231301", "012334556788", true );
+       
+        //String tranx2 = "pete|bob|credit|200";
         if ( !( new File(MASTER_DIR).exists() ) ) {
             /* make a dir if not found */            
             new File( MASTER_DIR ).mkdir();
             bc.genesis();
         } else {
             TranxCollection tranxs = new TranxCollection();
-            tranxs.add(tranx1);
-            tranxs.add(tranx2);
+            tranxs.add(p1);
+            tranxs.add(p2);
             String prevHash = bc.get().getLast().getHeader().getCurrHash();
             Block newBlock = new Block( prevHash );
             newBlock.setTranxs(tranxs);
             bc.nextBlock(newBlock);
         }
+        MerkleTree mt = MerkleTree.getInstance( Arrays.asList(arr) ) ;
+        mt.build();
+        String root = mt . getRoot();
+        System.out.println( "Merkle Root: " + root); 
     }
     
     static void test2(){
