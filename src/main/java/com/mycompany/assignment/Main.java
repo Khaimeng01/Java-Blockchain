@@ -12,8 +12,6 @@ package com.mycompany.assignment;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("My name is Khai Meng");
+        System.out.println("My name is Arvind");
     }
 }
-
-hello world
