@@ -1,0 +1,9 @@
+UserID||Username||Password
+U001||admin||default
+U002||bobby_sin12||12345678
+U003||Kyle||password
+U004||Atif_94||pass93AT
+U005||Param_69||Nantha9623
+U006||khoirul66||azhan01
+U007||test||test
+U008||bobby_sin123||test

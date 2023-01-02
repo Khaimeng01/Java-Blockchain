@@ -7,7 +7,7 @@ package com.mycompany.core;
 
 import java.io.File;
 import java.util.Arrays;
-import ui.AddPatientView;
+import ui.LoginView;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) {
         
-        new AddPatientView().setVisible(true);
+        new LoginView().setVisible(true);
 //       //Genesis Block (Starter Block)
 //       Block genesis = new Block("0");
 //       System.out.println(genesis+"1");

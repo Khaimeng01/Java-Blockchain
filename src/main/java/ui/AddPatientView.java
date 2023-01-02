@@ -192,7 +192,7 @@ public class AddPatientView extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
-        //new ManageProductView().setVisible(true);
+        new MenuView().setVisible(true);
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
