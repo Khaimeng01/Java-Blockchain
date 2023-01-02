@@ -7,6 +7,7 @@ package com.mycompany.core;
 
 import java.io.File;
 import java.util.Arrays;
+import ui.AddPatientView;
 
 /**
  *
@@ -15,6 +16,8 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
+        
+        new AddPatientView().setVisible(true);
 //       //Genesis Block (Starter Block)
 //       Block genesis = new Block("0");
 //       System.out.println(genesis+"1");
@@ -29,35 +32,35 @@ public class Main {
 //       Block newBlock = new Block(genesis.getHeader().getCurrHash());
 //       newBlock.setTranxs(tranx);
 //       System.out.println(newBlock);
-        test1();
+//        test1();
         //test2();
     }
     
-    static final String MASTER_DIR = "master";
-    static final String MASTER_BINARY = MASTER_DIR+"/mychain";
-    
-    static void test1(){
-        Blockchain bc = Blockchain.getInstance(MASTER_BINARY);
-        //String tranx1 = "bob|alice|debit|50";
-        Patient p1 = new Patient("1", "Bob", "Sam", "0031231301", "012334556788", true );
-        Patient p2 = new Patient("2", "Alex", "John", "0031231301", "012334556788", true );
-       
-        //String tranx2 = "pete|bob|credit|200";
-        if ( !( new File(MASTER_DIR).exists() ) ) {
-            /* make a dir if not found */            
-            new File( MASTER_DIR ).mkdir();
-            bc.genesis();
-        } else {
-            TranxCollection tranxs = new TranxCollection();
-            tranxs.add(p1);
-            tranxs.add(p2);
-            String prevHash = bc.get().getLast().getHeader().getCurrHash();
-            Block newBlock = new Block( prevHash );
-            newBlock.setTranxs(tranxs);
-            bc.nextBlock(newBlock);
-        }
+//    static final String MASTER_DIR = "master";
+//    static final String MASTER_BINARY = MASTER_DIR+"/mychain";
+//    
+//    static void test1(){
+//        Blockchain bc = Blockchain.getInstance(MASTER_BINARY);
+//        //String tranx1 = "bob|alice|debit|50";
+//        Patient p1 = new Patient("1", "Bob", "Sam", "0031231301", "012334556788", true );
+//        Patient p2 = new Patient("2", "Alex", "John", "0031231301", "012334556788", true );
+//       
+//        //String tranx2 = "pete|bob|credit|200";
+//        if ( !( new File(MASTER_DIR).exists() ) ) {
+//            /* make a dir if not found */            
+//            new File( MASTER_DIR ).mkdir();
+//            bc.genesis();
+//        } else {
+//            TranxCollection tranxs = new TranxCollection();
+//            tranxs.add(p1);
+//            tranxs.add(p2);
+//            String prevHash = bc.get().getLast().getHeader().getCurrHash();
+//            Block newBlock = new Block( prevHash );
+//            newBlock.setTranxs(tranxs);
+//            bc.nextBlock(newBlock);
+//        }
 
-    }
+//    }
     
 //    static void test2(){
 //         //generate merkle tree sample
@@ -75,5 +78,6 @@ public class Main {
 //        String root = mt . getRoot();
 //        System.out.println( "Merkle Root: " + root); 
 //    }
+
 
 }

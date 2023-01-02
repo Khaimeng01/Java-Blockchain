@@ -34,6 +34,11 @@ public class Block implements Serializable {
     public void setTranxs(TranxCollection tranxs) {
         this.tranxs = tranxs;
     }
+
+    public Block() {
+    }
+    
+    
     
     //composition relationship
     public Header header;

@@ -35,9 +35,9 @@ public class Blockchain {
     }
     /* Singleton pattern */    
     /**     * genesis()     */    
-    public void genesis()
+    public void genesis(Block genesis)
     {
-        Block genesis = new Block("0");
+//        Block genesis = new Block("0");
         db.add(genesis);
         /* persist to the binary file */        
         persist();

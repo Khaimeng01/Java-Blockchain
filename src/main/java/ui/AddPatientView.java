@@ -1,12 +1,18 @@
 package ui;
 
+import com.mycompany.core.Block;
+import com.mycompany.core.Blockchain;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import javax.swing.JOptionPane;
 import com.mycompany.core.Patient;
+import com.mycompany.core.TranxCollection;
+import java.io.File;
 
 public class AddPatientView extends javax.swing.JFrame {
 
+            static final String MASTER_DIR = "master";
+        static final String MASTER_BINARY = MASTER_DIR+"/mychain";
     /**
      * Creates new form AddProduct
      */
@@ -202,28 +208,38 @@ public class AddPatientView extends javax.swing.JFrame {
         String IC = txtIC.getText();
         String phoneNumber = txtPhoneNumber.getText();
         String gender = txtGender.getSelectedItem().toString();
-//        try{
-//            price = Double.parseDouble(txtFName.getText());
-//            quantity = Integer.parseInt(txtQuantity.getText());
-//            if(price < 0 || quantity< 0){
-//                JOptionPane.showMessageDialog(this, "Please make sure price and quantity fields are more than 0!");
-//                return;
-//            }
-//        }catch(NumberFormatException e){
-//            JOptionPane.showMessageDialog(this, "Please make sure price and quantity fields are numbers!");
-//            return; 
-//        }
+        try{
+            if(Integer.parseInt(phoneNumber) < 0 || Integer.parseInt(IC)< 0){
+                JOptionPane.showMessageDialog(this, "Please make sure PhoneNumber and IC fields are more than 0!");
+                return;
+            }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Please make sure price and quantity fields are numbers!");
+            return; 
+        }
         
         Patient p;
         p = new Patient(ID,Fname,Lname,IC,phoneNumber,gender);
-        
-        try {
-        } catch (Exception e) {
-            //System.exit(0);
-            e.printStackTrace();
+        Blockchain bc = Blockchain.getInstance(MASTER_BINARY);
+        if ( !( new File(MASTER_DIR).exists() ) ) {
+            /* make a dir if not found */            
+            new File( MASTER_DIR ).mkdir();
+            TranxCollection tranxs = new TranxCollection();
+            tranxs.add(p);
+            Block genesisBlock = new Block("0");
+            genesisBlock.setTranxs(tranxs);
+            bc.genesis(genesisBlock);
         }
-        //new ProductInventoryManager().addProduct(new Inventory(p, quantity));
-        JOptionPane.showMessageDialog(this, "New Product Added.");
+        else {
+            TranxCollection tranxs = new TranxCollection();
+            tranxs.add(p);
+            String prevHash = bc.get().getLast().getHeader().getCurrHash();
+            Block newBlock = new Block( prevHash );
+            newBlock.setTranxs(tranxs);
+            bc.nextBlock(newBlock);
+        }
+        
+        JOptionPane.showMessageDialog(this, "New Pattient Added.");
     }//GEN-LAST:event_btnAddProductActionPerformed
 
     private void txtGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGenderActionPerformed
