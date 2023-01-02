@@ -16,12 +16,12 @@ public class Patient implements Serializable{
     String Lname;
     String IC;
     String phoneNumber;
-    boolean gender;
+    String gender;
 
     public Patient() {
     }
 
-    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, boolean gender) {
+    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender) {
         this.ID = ID;
         this.Fname = Fname;
         this.Lname = Lname;
@@ -70,11 +70,11 @@ public class Patient implements Serializable{
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isGender() {
+    public String isGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
