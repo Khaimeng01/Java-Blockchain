@@ -56,27 +56,24 @@ public class Main {
             newBlock.setTranxs(tranxs);
             bc.nextBlock(newBlock);
         }
-        MerkleTree mt = MerkleTree.getInstance( Arrays.asList(arr) ) ;
-        mt.build();
-        String root = mt . getRoot();
-        System.out.println( "Merkle Root: " + root); 
+
     }
     
-    static void test2(){
-         //generate merkle tree sample
-        
-        //dummy transaciton
-        String[] arr = {
-            "alice|bob|credit|rm10",
-            "alice|bob|debit|rm2@",
-            "a1ice|bob|credit|rm30",
-            "alice|bob|debit|rm40"
-        };
-        
-        MerkleTree mt = MerkleTree.getInstance( Arrays.asList(arr) ) ;
-        mt.build();
-        String root = mt . getRoot();
-        System.out.println( "Merkle Root: " + root); 
-    }
+//    static void test2(){
+//         //generate merkle tree sample
+//        
+//        //dummy transaciton
+//        String[] arr = {
+//            "alice|bob|credit|rm10",
+//            "alice|bob|debit|rm2@",
+//            "a1ice|bob|credit|rm30",
+//            "alice|bob|debit|rm40"
+//        };
+//        
+//        MerkleTree mt = MerkleTree.getInstance( Arrays.asList(arr) ) ;
+//        mt.build();
+//        String root = mt . getRoot();
+//        System.out.println( "Merkle Root: " + root); 
+//    }
 
 }

@@ -1,0 +1,39 @@
+[
+  {
+    "header": {
+      "index": 0,
+      "currHash": "5b9b0aabc9af28b823d4403d764c430ff30205a2b7024b616e2927876e4fabc8",
+      "prevHash": "0",
+      "timestamp": 1672652298300
+    }
+  },
+  {
+    "tranxs": {
+      "merkelRoot": "ed3321e8d4fcf90937cb719ed0368100bc1c7f1deb2b3ed97150f7d9eec853e1",
+      "tranxlist": [
+        {
+          "ID": "1",
+          "Fname": "Bob",
+          "Lname": "Sam",
+          "IC": "0031231301",
+          "phoneNumber": "012334556788",
+          "gender": true
+        },
+        {
+          "ID": "2",
+          "Fname": "Alex",
+          "Lname": "John",
+          "IC": "0031231301",
+          "phoneNumber": "012334556788",
+          "gender": true
+        }
+      ]
+    },
+    "header": {
+      "index": 1,
+      "currHash": "55fbac17a5554e397c513d117a345d9fc9b7f94c083a63476cb26c7e67c627b3",
+      "prevHash": "5b9b0aabc9af28b823d4403d764c430ff30205a2b7024b616e2927876e4fabc8",
+      "timestamp": 1672652308832
+    }
+  }
+]

@@ -78,9 +78,6 @@ public class Patient implements Serializable{
         this.gender = gender;
     }
 
-    @Override
-    public String toString() {
-        return "Patient{" + "ID=" + ID + ", Fname=" + Fname + ", Lname=" + Lname + ", IC=" + IC + ", phoneNumber=" + phoneNumber + ", gender=" + gender + '}';
-    }
+
     
 }

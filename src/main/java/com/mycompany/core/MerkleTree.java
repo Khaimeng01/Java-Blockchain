@@ -13,7 +13,7 @@ import com.mycompany.hashing.Hasher;
  * @author Arvind
  */
 public class MerkleTree {
-    private List<String> tranxLst;
+    private List<Patient> tranxLst;
     private String root = "0";
     private Hasher hasher = new Hasher();
     public String getRoot() {
@@ -24,7 +24,7 @@ public class MerkleTree {
      * Set the transaction list to the MerkleTree object.     
      *      
      * @param tranxLst     */    
-    private MerkleTree(List<String> tranxLst) {
+    private MerkleTree(List<Patient> tranxLst) {
         super();
         this.tranxLst = tranxLst;
     }
@@ -32,7 +32,7 @@ public class MerkleTree {
      * Design pattern: Singleton     
      */    
     private static MerkleTree instance;
-    public static MerkleTree getInstance( List<String> tranxLst ) {
+    public static MerkleTree getInstance( List<Patient> tranxLst ) {
         if( instance == null ) {
             return new MerkleTree(tranxLst);
         }
@@ -47,8 +47,8 @@ public class MerkleTree {
      */    
     public void build() {
         List<String> tempLst = new ArrayList<>();
-        for (String tranx : this.tranxLst) {
-            tempLst.add(tranx);
+        for (Patient tranx : this.tranxLst) {
+            tempLst.add(tranx.toString());
         }
         List<String> hashes = genTranxHashLst( tempLst );
         while(  hashes.size() != 1 ) {

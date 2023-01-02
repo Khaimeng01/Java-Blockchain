@@ -2,6 +2,7 @@ package com.mycompany.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -18,7 +19,7 @@ public class TranxCollection implements Serializable {
     
     public static final int SIZE = 10;
     
-    public String merkelRoot = "default";
+    public String merkelRoot ;
     
     public List<Patient> tranxlist;
     //public List<String> tranxlist; //can use other collection API for transaction collection
@@ -30,12 +31,16 @@ public class TranxCollection implements Serializable {
     //add transaction
     public void add(Patient transaction){
         tranxlist.add(transaction);
+        MerkleTree mt = MerkleTree.getInstance( tranxlist ) ;
+        mt.build();
+        merkelRoot = mt.getRoot();
     }
 
     @Override
     public String toString() {
         return "TranxCollection{" + "merkelRoot=" + merkelRoot + ", tranxlist=" + tranxlist + '}';
     }
+    
     
     
     
