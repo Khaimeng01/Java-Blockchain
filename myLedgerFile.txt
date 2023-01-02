@@ -1,0 +1,40 @@
+[
+  {
+    "header": {
+      "index": 0,
+      "currHash": "521f1c5b4d722ca712686ae2c4fbfa5631bfae53270b4ddf6d816280b0ccc00b",
+      "prevHash": "0",
+      "timestamp": 1672646638538
+    }
+  },
+  {
+    "tranxs": {
+      "merkelRoot": "default",
+      "tranxlist": [
+        "bob|alice|debit|50",
+        "pete|bob|credit|200"
+      ]
+    },
+    "header": {
+      "index": 1,
+      "currHash": "7456c6ef6e8f44a5e9b8605b1d7433c2de2e98405fd221f7ebc76470d4f7c578",
+      "prevHash": "521f1c5b4d722ca712686ae2c4fbfa5631bfae53270b4ddf6d816280b0ccc00b",
+      "timestamp": 1672646648202
+    }
+  },
+  {
+    "tranxs": {
+      "merkelRoot": "default",
+      "tranxlist": [
+        "bob|alice|debit|50",
+        "pete|bob|credit|200"
+      ]
+    },
+    "header": {
+      "index": 2,
+      "currHash": "d5e77efbf099a6e02ff703118bd0d01a63fb8f729d41a282040d80824db8d81f",
+      "prevHash": "7456c6ef6e8f44a5e9b8605b1d7433c2de2e98405fd221f7ebc76470d4f7c578",
+      "timestamp": 1672646815589
+    }
+  }
+]
