@@ -50,9 +50,9 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="btnManageCustomer1" alignment="1" min="-2" pref="680" max="-2" attributes="0"/>
+                          <Component id="btnManageAppointments" alignment="1" min="-2" pref="680" max="-2" attributes="0"/>
                           <Component id="GenerateReports" min="-2" pref="680" max="-2" attributes="0"/>
-                          <Component id="btnManageCustomer" alignment="1" min="-2" pref="680" max="-2" attributes="0"/>
+                          <Component id="btnManagePatients" alignment="1" min="-2" pref="680" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
                   </Group>
@@ -66,9 +66,9 @@
               <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-              <Component id="btnManageCustomer" min="-2" max="-2" attributes="0"/>
+              <Component id="btnManagePatients" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-              <Component id="btnManageCustomer1" min="-2" max="-2" attributes="0"/>
+              <Component id="btnManageAppointments" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="53" max="32767" attributes="0"/>
               <Component id="GenerateReports" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
@@ -101,7 +101,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLogoutActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnManageCustomer">
+    <Component class="javax.swing.JButton" name="btnManagePatients">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Unispace" size="36" style="1"/>
@@ -109,7 +109,7 @@
         <Property name="text" type="java.lang.String" value="Manage Patients"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnManageCustomerActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnManagePatientsActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
@@ -120,15 +120,15 @@
         <Property name="text" type="java.lang.String" value="Main Menu"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnManageCustomer1">
+    <Component class="javax.swing.JButton" name="btnManageAppointments">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Unispace" size="36" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Manage Product Inventory"/>
+        <Property name="text" type="java.lang.String" value="Manage Appointments"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnManageCustomer1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnManageAppointmentsActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

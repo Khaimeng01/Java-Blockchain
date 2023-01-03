@@ -21,9 +21,9 @@ public class MenuView extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         GenerateReports = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
-        btnManageCustomer = new javax.swing.JButton();
+        btnManagePatients = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btnManageCustomer1 = new javax.swing.JButton();
+        btnManageAppointments = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -48,22 +48,22 @@ public class MenuView extends javax.swing.JFrame {
             }
         });
 
-        btnManageCustomer.setFont(new java.awt.Font("Unispace", 1, 36)); // NOI18N
-        btnManageCustomer.setText("Manage Patients");
-        btnManageCustomer.addActionListener(new java.awt.event.ActionListener() {
+        btnManagePatients.setFont(new java.awt.Font("Unispace", 1, 36)); // NOI18N
+        btnManagePatients.setText("Manage Patients");
+        btnManagePatients.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnManageCustomerActionPerformed(evt);
+                btnManagePatientsActionPerformed(evt);
             }
         });
 
         jLabel1.setFont(new java.awt.Font("Old English Text MT", 1, 48)); // NOI18N
         jLabel1.setText("Main Menu");
 
-        btnManageCustomer1.setFont(new java.awt.Font("Unispace", 1, 36)); // NOI18N
-        btnManageCustomer1.setText("Manage Product Inventory");
-        btnManageCustomer1.addActionListener(new java.awt.event.ActionListener() {
+        btnManageAppointments.setFont(new java.awt.Font("Unispace", 1, 36)); // NOI18N
+        btnManageAppointments.setText("Manage Appointments");
+        btnManageAppointments.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnManageCustomer1ActionPerformed(evt);
+                btnManageAppointmentsActionPerformed(evt);
             }
         });
 
@@ -82,9 +82,9 @@ public class MenuView extends javax.swing.JFrame {
                         .addGap(286, 286, 286))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnManageCustomer1, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnManageAppointments, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(GenerateReports, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnManageCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnManagePatients, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(80, 80, 80))))
         );
         layout.setVerticalGroup(
@@ -93,9 +93,9 @@ public class MenuView extends javax.swing.JFrame {
                 .addGap(43, 43, 43)
                 .addComponent(jLabel1)
                 .addGap(51, 51, 51)
-                .addComponent(btnManageCustomer)
+                .addComponent(btnManagePatients)
                 .addGap(51, 51, 51)
-                .addComponent(btnManageCustomer1)
+                .addComponent(btnManageAppointments)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addComponent(GenerateReports)
                 .addGap(50, 50, 50)
@@ -111,19 +111,19 @@ public class MenuView extends javax.swing.JFrame {
         new LoginView().setVisible(true);
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void btnManageCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageCustomerActionPerformed
+    private void btnManagePatientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagePatientsActionPerformed
         this.dispose();
         new AddPatientView().setVisible(true);
-    }//GEN-LAST:event_btnManageCustomerActionPerformed
+    }//GEN-LAST:event_btnManagePatientsActionPerformed
 
     private void GenerateReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateReportsActionPerformed
         System.out.println("Does nothing yet. Supposed to go to Generate Report Screen.");
     }//GEN-LAST:event_GenerateReportsActionPerformed
 
-    private void btnManageCustomer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageCustomer1ActionPerformed
+    private void btnManageAppointmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageAppointmentsActionPerformed
         this.dispose();
-        //new ManageProductView().setVisible(true);
-    }//GEN-LAST:event_btnManageCustomer1ActionPerformed
+        new AddAppointmentView().setVisible(true);
+    }//GEN-LAST:event_btnManageAppointmentsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,8 +170,8 @@ public class MenuView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton GenerateReports;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnManageCustomer;
-    private javax.swing.JButton btnManageCustomer1;
+    private javax.swing.JButton btnManageAppointments;
+    private javax.swing.JButton btnManagePatients;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

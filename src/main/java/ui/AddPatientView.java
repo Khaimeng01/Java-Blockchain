@@ -53,7 +53,7 @@ public class AddPatientView extends javax.swing.JFrame {
         txtMedicationPlan = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        txtCurrentDisease = new javax.swing.JTextField();
+        txtCurrentDIsease = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(550, 150));
@@ -75,7 +75,7 @@ public class AddPatientView extends javax.swing.JFrame {
         txtFName.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
 
         btnAddProduct.setFont(new java.awt.Font("Unispace", 0, 18)); // NOI18N
-        btnAddProduct.setText("Add Product");
+        btnAddProduct.setText("Add Patient");
         btnAddProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddProductActionPerformed(evt);
@@ -157,10 +157,10 @@ public class AddPatientView extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
         jLabel12.setText("Current Disease");
 
-        txtCurrentDisease.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
-        txtCurrentDisease.addActionListener(new java.awt.event.ActionListener() {
+        txtCurrentDIsease.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
+        txtCurrentDIsease.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCurrentDiseaseActionPerformed(evt);
+                txtCurrentDIseaseActionPerformed(evt);
             }
         });
 
@@ -203,7 +203,7 @@ public class AddPatientView extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(jLabel12)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtCurrentDisease, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtCurrentDIsease, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel10)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -227,12 +227,13 @@ public class AddPatientView extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(jLabel4)
                 .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtBloodType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5)))
+                        .addComponent(jLabel5))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -246,19 +247,21 @@ public class AddPatientView extends javax.swing.JFrame {
                     .addComponent(txtPreExisting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(txtIC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtCurrentDisease, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel12)))
+                        .addComponent(txtCurrentDIsease, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel12))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(txtIC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel11)
-                        .addComponent(txtMedicationPlan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtMedicationPlan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel6)
+                        .addComponent(txtPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -282,7 +285,7 @@ public class AddPatientView extends javax.swing.JFrame {
         if(txtID.getText().equals("")||txtFName.getText().equals("")
                 ||txtLName.getText().equals("")||txtIC.getText().equals("")||txtPhoneNumber.getText().equals("")
                 ||txtBloodType.getText().equals("")||txtDisability.getText().equals("")||txtPreExisting.getText().equals("")
-                ||txtCurrentDisease.getText().equals("")||txtMedicationPlan.getText().equals("")){
+                ||txtCurrentDIsease.getText().equals("")||txtMedicationPlan.getText().equals("")){
             JOptionPane.showMessageDialog(this, "Please fill up all fields!");
             return; 
         }
@@ -296,17 +299,17 @@ public class AddPatientView extends javax.swing.JFrame {
         String bloodType = txtBloodType.getText();;
         String disability = txtDisability.getText();;
         String preExistingCondition = txtPreExisting.getText();;
-        String currentDisease = txtCurrentDisease.getText();;
+        String currentDisease = txtCurrentDIsease.getText();;
         String currentMedicationPlan = txtMedicationPlan.getText();;
-        try{
-            if(Integer.parseInt(phoneNumber) < 0 || Integer.parseInt(IC)< 0){
-                JOptionPane.showMessageDialog(this, "Please make sure PhoneNumber and IC fields are more than 0!");
-                return;
-            }
-        }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this, "Please make sure price and quantity fields are numbers!");
-            return; 
-        }
+//        try{
+//            if(Integer.parseInt(phoneNumber) < 0 || Integer.parseInt(IC)< 0){
+//                JOptionPane.showMessageDialog(this, "Please make sure PhoneNumber and IC fields are more than 0!");
+//                return;
+//            }
+//        }catch(NumberFormatException e){
+//            JOptionPane.showMessageDialog(this, "Please make sure price and quantity fields are numbers!");
+//            return; 
+//        }
         
         Patient p;
         p = new Patient(ID,Fname,Lname,IC,phoneNumber,gender, bloodType, disability,preExistingCondition,currentDisease, currentMedicationPlan);
@@ -329,7 +332,7 @@ public class AddPatientView extends javax.swing.JFrame {
             bc.nextBlock(newBlock);
         }
         
-        JOptionPane.showMessageDialog(this, "New Pattient Added.");
+        JOptionPane.showMessageDialog(this, "New Patient Added.");
     }//GEN-LAST:event_btnAddProductActionPerformed
 
     private void txtGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGenderActionPerformed
@@ -352,9 +355,9 @@ public class AddPatientView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMedicationPlanActionPerformed
 
-    private void txtCurrentDiseaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCurrentDiseaseActionPerformed
+    private void txtCurrentDIseaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCurrentDIseaseActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCurrentDiseaseActionPerformed
+    }//GEN-LAST:event_txtCurrentDIseaseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -410,7 +413,7 @@ public class AddPatientView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField txtBloodType;
-    private javax.swing.JTextField txtCurrentDisease;
+    private javax.swing.JTextField txtCurrentDIsease;
     private javax.swing.JTextField txtDisability;
     private javax.swing.JTextField txtFName;
     private javax.swing.JComboBox<String> txtGender;
