@@ -26,6 +26,7 @@ public class Patient implements Serializable{
     String bloodType;
     String disability;
     String preExistingCondition;
+    String currentDisease;
     String currentMedicationPlan;
     
     
@@ -34,7 +35,7 @@ public class Patient implements Serializable{
     public Patient() {
     }
 
-    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender, String bloodType, String disability, String preExistingCondition, String currentMedicationPlan) {
+    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender, String bloodType, String disability, String preExistingCondition, String currentDisease, String currentMedicationPlan) {
         this.ID = ID;
         this.Fname = Fname;
         this.Lname = Lname;
@@ -44,8 +45,11 @@ public class Patient implements Serializable{
         this.bloodType = bloodType;
         this.disability = disability;
         this.preExistingCondition = preExistingCondition;
+        this.currentDisease = currentDisease;
         this.currentMedicationPlan = currentMedicationPlan;
     }
+
+    
 //
 //    
 //    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender) {
@@ -56,7 +60,7 @@ public class Patient implements Serializable{
 //        this.phoneNumber = phoneNumber;
 //        this.gender = gender;
 //    }
-    
+
     public String getID() {
         return ID;
     }
@@ -97,7 +101,7 @@ public class Patient implements Serializable{
         this.phoneNumber = phoneNumber;
     }
 
-    public String isGender() {
+    public String getGender() {
         return gender;
     }
 
@@ -105,6 +109,45 @@ public class Patient implements Serializable{
         this.gender = gender;
     }
 
+    public String getBloodType() {
+        return bloodType;
+    }
 
+    public void setBloodType(String bloodType) {
+        this.bloodType = bloodType;
+    }
+
+    public String getDisability() {
+        return disability;
+    }
+
+    public void setDisability(String disability) {
+        this.disability = disability;
+    }
+
+    public String getPreExistingCondition() {
+        return preExistingCondition;
+    }
+
+    public void setPreExistingCondition(String preExistingCondition) {
+        this.preExistingCondition = preExistingCondition;
+    }
+
+    public String getCurrentDisease() {
+        return currentDisease;
+    }
+
+    public void setCurrentDisease(String currentDisease) {
+        this.currentDisease = currentDisease;
+    }
+
+    public String getCurrentMedicationPlan() {
+        return currentMedicationPlan;
+    }
+
+    public void setCurrentMedicationPlan(String currentMedicationPlan) {
+        this.currentMedicationPlan = currentMedicationPlan;
+    }
+    
     
 }
