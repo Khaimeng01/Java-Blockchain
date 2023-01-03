@@ -206,7 +206,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
-        new MenuView().setVisible(true);
+        new ManageAppointmentView().setVisible(true);
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAppointmentActionPerformed

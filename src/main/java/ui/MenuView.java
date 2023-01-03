@@ -122,7 +122,7 @@ public class MenuView extends javax.swing.JFrame {
 
     private void btnManageAppointmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageAppointmentsActionPerformed
         this.dispose();
-        new AddAppointmentView().setVisible(true);
+        new ManageAppointmentView().setVisible(true);
     }//GEN-LAST:event_btnManageAppointmentsActionPerformed
 
     /**
