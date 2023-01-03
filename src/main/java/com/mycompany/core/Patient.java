@@ -12,15 +12,42 @@ import java.io.Serializable;
  */
 public class Patient implements Serializable{
     String ID;
+    
+    //Encrypt
     String Fname;
+    //Encrypt
     String Lname;
+    //Encrypt
     String IC;
+    //Encrypt
     String phoneNumber;
+    
     String gender;
-
+    String bloodType;
+    String disability;
+    String preExistingCondition;
+    String currentMedicationPlan;
+    
+    
+    
+    
     public Patient() {
     }
 
+    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender, String bloodType, String disability, String preExistingCondition, String currentMedicationPlan) {
+        this.ID = ID;
+        this.Fname = Fname;
+        this.Lname = Lname;
+        this.IC = IC;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.bloodType = bloodType;
+        this.disability = disability;
+        this.preExistingCondition = preExistingCondition;
+        this.currentMedicationPlan = currentMedicationPlan;
+    }
+
+    
     public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender) {
         this.ID = ID;
         this.Fname = Fname;
