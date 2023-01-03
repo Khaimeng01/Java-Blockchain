@@ -32,14 +32,14 @@ public class ManagePatientView extends javax.swing.JFrame {
         model.addColumn("IC/Passport Number");
         model.addColumn("Phone Number");
         
-        ArrayList<SalesExec> exec = new UserProfileLoader().loadSalesExec();
+        ArrayList<Patient> patientList = new UserProfileLoader().loadSalesExec();
         
-        for(int i = 0; i < exec.size(); i++){
-            String execId = exec.get(i).getExecID();
-            String execfirstname = exec.get(i).getExecFirstName();
-            String execlastname = exec.get(i).getExecLastName();
-            String execnric = exec.get(i).getExecNRIC();
-            String phone = exec.get(i).getExecPhone();
+        for(int i = 0; i < patientList.size(); i++){
+            String execId = patientList.get(i).getExecID();
+            String execfirstname = patientList.get(i).getExecFirstName();
+            String execlastname = patientList.get(i).getExecLastName();
+            String execnric = patientList.get(i).getExecNRIC();
+            String phone = patientList.get(i).getExecPhone();
             Object[] data = {execId, execfirstname, execlastname, execnric, phone};
             model.addRow(data);
         }
@@ -225,18 +225,6 @@ public class ManagePatientView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEditSalesExecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditSalesExecActionPerformed
-
-        if(tblSalesExec.getSelectedRow() == -1){
-            JOptionPane.showMessageDialog(this, "Please select a sales executive to edit!");
-            return;                
-        }
-        this.dispose();
-        int rowSelect = tblSalesExec.getSelectedRow();
-        String customerId = (String)model.getValueAt(rowSelect, 0);
-        new EditSalesExecView(new UserProfileLoader().createSalesExec(customerId)).setVisible(true);
-    }//GEN-LAST:event_btnEditSalesExecActionPerformed
-
     private void btnViewAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAllActionPerformed
 
         loadTable();
@@ -274,7 +262,7 @@ public class ManagePatientView extends javax.swing.JFrame {
     private void btnAddSalesExecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddSalesExecActionPerformed
 
         this.dispose();
-        new AddSalesExecView().setVisible(true);
+        new AddPatientView().setVisible(true);
     }//GEN-LAST:event_btnAddSalesExecActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -288,6 +276,18 @@ public class ManagePatientView extends javax.swing.JFrame {
         this.dispose();
         new AdminMenuView().setVisible(true);
     }//GEN-LAST:event_btnMainMenuActionPerformed
+
+    private void btnEditSalesExecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditSalesExecActionPerformed
+
+        if(tblSalesExec.getSelectedRow() == -1){
+            JOptionPane.showMessageDialog(this, "Please select a sales executive to edit!");
+            return;
+        }
+        this.dispose();
+        int rowSelect = tblSalesExec.getSelectedRow();
+        String customerId = (String)model.getValueAt(rowSelect, 0);
+        new EditSalesExecView(new UserProfileLoader().createSalesExec(customerId)).setVisible(true);
+    }//GEN-LAST:event_btnEditSalesExecActionPerformed
 
     /**
      * @param args the command line arguments

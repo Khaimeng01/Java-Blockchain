@@ -46,16 +46,16 @@ public class Patient implements Serializable{
         this.preExistingCondition = preExistingCondition;
         this.currentMedicationPlan = currentMedicationPlan;
     }
-
-    
-    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender) {
-        this.ID = ID;
-        this.Fname = Fname;
-        this.Lname = Lname;
-        this.IC = IC;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-    }
+//
+//    
+//    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender) {
+//        this.ID = ID;
+//        this.Fname = Fname;
+//        this.Lname = Lname;
+//        this.IC = IC;
+//        this.phoneNumber = phoneNumber;
+//        this.gender = gender;
+//    }
     
     public String getID() {
         return ID;
