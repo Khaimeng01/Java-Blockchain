@@ -139,9 +139,9 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-//        SalesExecRegisterScreen crs = new SalesExecRegisterScreen();
-//        crs.setVisible(true);
-//        this.dispose();
+        RegisterScreen crs = new RegisterScreen();
+        crs.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_registerButtonActionPerformed
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed

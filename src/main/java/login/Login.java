@@ -23,14 +23,13 @@ public class Login {
     }
 
     public boolean verify() {
-        String row, txtUserId, txtUsername, txtPassword;
+        String row, txtUsername, txtPassword;
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
             br.readLine();
             while ((row = br.readLine()) != null) {
                 String[] field = row.split("\\|\\|");
-                txtUserId = field[0];
-                txtUsername = field[1];
-                txtPassword = field[2];
+                txtUsername = field[0];
+                txtPassword = field[1];
 
                 if (username.equals(txtUsername) && password.equals(txtPassword)) {
 //                    if (txtPosition.equals("E")) {
