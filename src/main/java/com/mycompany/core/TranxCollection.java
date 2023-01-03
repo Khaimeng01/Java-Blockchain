@@ -25,15 +25,21 @@ public class TranxCollection implements Serializable {
     //public List<String> tranxlist; //can use other collection API for transaction collection
     
     public TranxCollection(){
+        System.out.println("RMA_1");
         tranxlist = new ArrayList<>(SIZE);
     }
     
     //add transaction
     public void add(Patient transaction){
+        System.out.println("RMA_2");
         tranxlist.add(transaction);
+        System.out.println("RMA_3");
         MerkleTree mt = MerkleTree.getInstance( tranxlist ) ;
+        System.out.println("RMA_4");
         mt.build();
+        System.out.println("RMA_5");
         merkelRoot = mt.getRoot();
+        System.out.println("RMA_6");
     }
 
     @Override

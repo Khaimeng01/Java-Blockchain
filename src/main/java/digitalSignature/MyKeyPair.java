@@ -57,7 +57,6 @@ public class MyKeyPair {
 		MyKeyPair myKeyMaker = new MyKeyPair();
 		keyPair = myKeyMaker.keygen.generateKeyPair();
                 PublicKey publicKey = keyPair.getPublic();
-                System.out.print(publicKey);
                 PrivateKey privateKey = keyPair.getPrivate();
                 FileWriter write = new FileWriter("DigitalSignature.txt");
                 dSPut(publicKey.getEncoded());

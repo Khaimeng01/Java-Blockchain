@@ -1,5 +1,7 @@
 package ui;
 
+import asymmetricKey.AsymmetricCrypto;
+import asymmetricKey.keyMaker;
 import com.mycompany.core.Block;
 import com.mycompany.core.Blockchain;
 import java.rmi.registry.LocateRegistry;
@@ -8,11 +10,14 @@ import javax.swing.JOptionPane;
 import com.mycompany.core.Patient;
 import com.mycompany.core.TranxCollection;
 import java.io.File;
+import java.security.PublicKey;
 
 public class AddPatientView extends javax.swing.JFrame {
 
             static final String MASTER_DIR = "master";
         static final String MASTER_BINARY = MASTER_DIR+"/mychain";
+        
+        
     /**
      * Creates new form AddProduct
      */
@@ -282,6 +287,12 @@ public class AddPatientView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
+        String data = "";
+        PublicKey publicKey = null;
+        
+        keyMaker ky = new keyMaker();
+        AsymmetricCrypto as = new AsymmetricCrypto();
+        
         if(txtID.getText().equals("")||txtFName.getText().equals("")
                 ||txtLName.getText().equals("")||txtIC.getText().equals("")||txtPhoneNumber.getText().equals("")
                 ||txtBloodType.getText().equals("")||txtDisability.getText().equals("")||txtPreExisting.getText().equals("")
@@ -301,6 +312,7 @@ public class AddPatientView extends javax.swing.JFrame {
         String preExistingCondition = txtPreExisting.getText();;
         String currentDisease = txtCurrentDIsease.getText();;
         String currentMedicationPlan = txtMedicationPlan.getText();;
+        
 //        try{
 //            if(Integer.parseInt(phoneNumber) < 0 || Integer.parseInt(IC)< 0){
 //                JOptionPane.showMessageDialog(this, "Please make sure PhoneNumber and IC fields are more than 0!");
@@ -311,8 +323,29 @@ public class AddPatientView extends javax.swing.JFrame {
 //            return; 
 //        }
         
+        
+        try{
+            File file = new File(MASTER_DIR);
+            if (file.exists() && file.isFile()) {
+                Fname = as.encrypt(Fname, publicKey);
+                Lname = as.encrypt(Lname, publicKey);
+                IC = as.encrypt(IC, publicKey);
+                phoneNumber = as.encrypt(phoneNumber, publicKey);
+            } else {
+                publicKey = ky.aSCreate();
+                Fname = as.encrypt(Fname, publicKey);
+                Lname = as.encrypt(Lname, publicKey);
+                IC = as.encrypt(IC, publicKey);
+                phoneNumber = as.encrypt(phoneNumber, publicKey);
+            }
+        } catch (Exception e) {
+            System.out.print(e);
+        }
+        
         Patient p;
         p = new Patient(ID,Fname,Lname,IC,phoneNumber,gender, bloodType, disability,preExistingCondition,currentDisease, currentMedicationPlan);
+        System.out.println(p);
+        
         Blockchain bc = Blockchain.getInstance(MASTER_BINARY);
         if ( !( new File(MASTER_DIR).exists() ) ) {
             /* make a dir if not found */            

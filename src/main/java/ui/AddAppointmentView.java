@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +31,29 @@ public class AddAppointmentView extends javax.swing.JFrame {
      */
     public AddAppointmentView() {
         initComponents();
+        txtID.setEnabled(false);
     }
+    
+   public int autoIdCounter(){
+       int count = 0;
+       try{  
+           File file = new File(FILENAME);
+           if (file.exists()){
+                Scanner sc = new Scanner(FILENAME);
+                while(sc.hasNextLine()) {
+                    sc.nextLine();
+                    count++;
+                }
+                count +=1;
+            }else{
+               count = 1;
+           }
+       }catch(Exception e ){
+           e.getStackTrace();
+       }
+       
+       return count;
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -189,13 +212,16 @@ public class AddAppointmentView extends javax.swing.JFrame {
     private void btnAddAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAppointmentActionPerformed
         String data = "";
         PrivateKey privateKey = null;
-        if(txtID.getText().equals("")||txtDate.getText().equals("")
+        if(txtDate.getText().equals("")
                 ||txtLPatientID.getText().equals("")||txtDoctorName.getText().equals("")||txtDeptName.getText().equals("")){
             JOptionPane.showMessageDialog(this, "Please fill up all fields!");
             return; 
         }
         
-        String ID = txtID.getText();
+        String ID = "AP"+ Integer.toString(autoIdCounter());
+                txtID.getText();
+        //Double Check here
+//        txtID.setText("POKEMON");
         String date = txtDate.getText();
         String patientID = txtLPatientID.getText();
         String doctorName = txtDoctorName.getText();
@@ -228,7 +254,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
         
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME, true))) {
             bw.write(ID + "||" + date + "||" 
-                    + patientID + "||" +doctorName + "||" + departmentName + "||" + data);
+                    + patientID + "||" +doctorName + "||" + departmentName + "||" + data+"\n");
 
         } catch (IOException e) {
             e.printStackTrace();

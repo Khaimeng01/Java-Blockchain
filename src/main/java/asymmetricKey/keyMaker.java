@@ -4,7 +4,12 @@
  */
 package asymmetricKey;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -41,31 +46,58 @@ public class keyMaker {
 	/**
 	 * create
 	 */
-	public static void create()
+	public  PublicKey aSCreate() throws IOException
 	{
 		keyMaker myKeyMaker = new keyMaker();
-		//generate keyPair
-		myKeyMaker.keyPair = myKeyMaker.keygen.generateKeyPair();
-		//get public key
-		publicKey = myKeyMaker.keyPair.getPublic();
-		//get private key
-		privateKey  = myKeyMaker.keyPair.getPrivate();
-		
+                System.out.println("A_2");
+		keyPair = myKeyMaker.keygen.generateKeyPair();
+                System.out.println("A_3");
+		PublicKey publicKey = keyPair.getPublic();
+                System.out.println("A_4");
+                PrivateKey privateKey = keyPair.getPrivate();
+                System.out.println("A_5");
+                FileWriter write = new FileWriter("AS.txt");
+                System.out.println("A_6");
+                aSPut(publicKey.getEncoded());
+                aSPut(privateKey.getEncoded());
+                
+                return publicKey;
 	}
 	
+        public static void aSPut( byte[] keyBytes )
+	{
+            BufferedReader br;
+            try {
+               File file = new File("DigitalSignature.txt");             
+               BufferedWriter bw = new BufferedWriter(new FileWriter("AS.txt",true));
+               bw.write(String.valueOf(keyBytes)+"\n");
+               bw.close();
+               
+           } catch (FileNotFoundException ex) {
+
+           } catch (IOException e) {
+               System.out.println(e);
+           }
+           System.out.println("A_8");
+
+	}
+        
+        public void tester22(){
+            System.out.println("POTATOSA");
+        }
 	/**
 	 * put the key in a specified file path
 	 */
-	public static void put(String path, byte[] key)
-	{
-		File file = new File(path );
-		file.getParentFile().mkdirs();
-		try {
-			Files.write(Paths.get(path), key, StandardOpenOption.CREATE);
-			System.out.println( "Complete" );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void put(String path, byte[] key)
+//	{
+//		File file = new File(path );
+//		file.getParentFile().mkdirs();
+//		try {
+//			Files.write(Paths.get(path), key, StandardOpenOption.CREATE);
+//			System.out.println( "Complete" );
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 }
