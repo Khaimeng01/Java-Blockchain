@@ -20,8 +20,9 @@ public class KeyPairAccess {
     /**
 	 * getPublicKey
 	 */
-	public static PublicKey getPublicKey(String path) throws Exception
+	public static PublicKey getPublicKey() throws Exception
 	{
+                String path = "DigitalSignature.txt";
 		byte[] keyBytes = Files.readAllBytes(Paths.get(path));
 		X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
 		return KeyFactory.getInstance("RSA").generatePublic(spec);
@@ -30,8 +31,9 @@ public class KeyPairAccess {
 	/**
 	 * getPrivateKey
 	 */
-	public static PrivateKey getPrivateKey(String path) throws Exception
+	public static PrivateKey getPrivateKey() throws Exception
 	{
+                String path = "DigitalSignature.txt";
 		byte[] keyBytes = Files.readAllBytes(Paths.get(path));
 		PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
 		return KeyFactory.getInstance("RSA").generatePrivate(spec);

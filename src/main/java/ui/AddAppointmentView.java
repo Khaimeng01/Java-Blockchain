@@ -6,17 +6,25 @@ import com.mycompany.core.Blockchain;
 import javax.swing.JOptionPane;
 import com.mycompany.core.Patient;
 import com.mycompany.core.TranxCollection;
+import digitalSignature.KeyPairAccess;
+import static digitalSignature.MyKeyPair.dSCreate;
+import digitalSignature.MySignature;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AddAppointmentView extends javax.swing.JFrame {
 
     static final String FILENAME = "appointment.txt";
     static final String MASTER_DIR = "master";
     static final String MASTER_BINARY = MASTER_DIR+"/mychain";
+    MySignature sig = new MySignature();
     /**
      * Creates new form AddProduct
      */
@@ -179,6 +187,8 @@ public class AddAppointmentView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAppointmentActionPerformed
+        String data = "";
+        PrivateKey privateKey = null;
         if(txtID.getText().equals("")||txtDate.getText().equals("")
                 ||txtLPatientID.getText().equals("")||txtDoctorName.getText().equals("")||txtDeptName.getText().equals("")){
             JOptionPane.showMessageDialog(this, "Please fill up all fields!");
@@ -199,37 +209,31 @@ public class AddAppointmentView extends javax.swing.JFrame {
 //            JOptionPane.showMessageDialog(this, "Please make sure price and quantity fields are numbers!");
 //            return; 
 //        }
-        
+
         Appointment a;
         a = new Appointment(ID,date, patientID, doctorName, departmentName);
+        try{
+            File file = new File(FILENAME);
+            if (file.exists() && file.isFile()) {
+                data = sig.sign(String.valueOf(a), privateKey);
+            } else {
+                privateKey = dSCreate();
+                data = sig.sign(String.valueOf(a), privateKey);
+            }
+        } catch (Exception e) {
+            System.out.print(e);
+        }
 
+         a = new Appointment(ID,date, patientID, doctorName, departmentName,data);
+        
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME, true))) {
             bw.write(ID + "||" + date + "||" 
-                    + patientID + "||" +doctorName + "||" + departmentName);
+                    + patientID + "||" +doctorName + "||" + departmentName + "||" + data);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         
-        
-//        Blockchain bc = Blockchain.getInstance(MASTER_BINARY);
-//        if ( !( new File(MASTER_DIR).exists() ) ) {
-//            /* make a dir if not found */            
-//            new File( MASTER_DIR ).mkdir();
-//            TranxCollection tranxs = new TranxCollection();
-//            tranxs.add(a);
-//            Block genesisBlock = new Block("0");
-//            genesisBlock.setTranxs(tranxs);
-//            bc.genesis(genesisBlock);
-//        }
-//        else {
-//            TranxCollection tranxs = new TranxCollection();
-//            tranxs.add(a);
-//            String prevHash = bc.get().getLast().getHeader().getCurrHash();
-//            Block newBlock = new Block( prevHash );
-//            newBlock.setTranxs(tranxs);
-//            bc.nextBlock(newBlock);
-//        }
         
         JOptionPane.showMessageDialog(this, "New Appointment Added.");
     }//GEN-LAST:event_btnAddAppointmentActionPerformed

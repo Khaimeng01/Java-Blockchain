@@ -25,6 +25,7 @@ import java.security.PublicKey;
  */
 public class MyKeyPair {
     private static final String algorithm = "RSA";
+
 	
 	private KeyPairGenerator keygen;
 	private static KeyPair keyPair;
@@ -51,17 +52,17 @@ public class MyKeyPair {
 	/**
 	 * create
 	 */
-	public static PrivateKey create() throws IOException
+	public static PrivateKey dSCreate() throws IOException
 	{
 		MyKeyPair myKeyMaker = new MyKeyPair();
-		//generate keyPair
 		keyPair = myKeyMaker.keygen.generateKeyPair();
                 PublicKey publicKey = keyPair.getPublic();
                 System.out.print(publicKey);
                 PrivateKey privateKey = keyPair.getPrivate();
                 FileWriter write = new FileWriter("DigitalSignature.txt");
-                put(publicKey.getEncoded());
-                put(privateKey.getEncoded());
+                dSPut(publicKey.getEncoded());
+                dSPut(privateKey.getEncoded());
+                
                 return privateKey;
 		
 	}
@@ -69,16 +70,12 @@ public class MyKeyPair {
 	/**
 	 * put the key in a specified file path
 	 */
-	public static void put( byte[] keyBytes )
+	public static void dSPut( byte[] keyBytes )
 	{
-            System.out.println("Test_1");
             BufferedReader br;
             try {
                
-               File file = new File("DigitalSignature.txt");
-//               br = new BufferedReader(new FileReader("DigitalSignature.txt"));
-//               br.readLine();
-             
+               File file = new File("DigitalSignature.txt");             
                BufferedWriter bw = new BufferedWriter(new FileWriter("DigitalSignature.txt",true));
                bw.write(String.valueOf(keyBytes)+"\n");
                bw.close();
@@ -92,15 +89,23 @@ public class MyKeyPair {
 
 	}
         
-
-}
-
-
+//        public static void put2( byte[] keyBytes )
+//	{
+//                System.out.print("B_1");
+//                String path = "DigitalSignature.txt";
+//                System.out.print("B_2");
 //		File f = new File(path );
+//                System.out.print("B_3");
 //		f.getParentFile().mkdirs();
 //		try {
-//			Files.(Paths.get(path), keyBytes, StandardOpenOption.CREATE);
+//                        System.out.print("B_4");
+//			Files.write(Paths.get(path), keyBytes, StandardOpenOption.CREATE);
 //			System.out.println( "Keypair exported to '"+ path + "'" );
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
+//	}
+        
+
+}
+

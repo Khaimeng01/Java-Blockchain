@@ -14,6 +14,7 @@ public class Appointment {
     String patientID;
     String doctorName;
     String departmentName;
+    String digitalSignature;
 
     public Appointment(String ID, String date, String patientID, String doctorName, String departmentName) {
         this.ID = ID;
@@ -22,6 +23,17 @@ public class Appointment {
         this.doctorName = doctorName;
         this.departmentName = departmentName;
     }
+
+    public Appointment(String ID, String date, String patientID, String doctorName, String departmentName, String digitalSignature) {
+        this.ID = ID;
+        this.date = date;
+        this.patientID = patientID;
+        this.doctorName = doctorName;
+        this.departmentName = departmentName;
+        this.digitalSignature = digitalSignature;
+    }
+    
+    
 
     public String getID() {
         return ID;
