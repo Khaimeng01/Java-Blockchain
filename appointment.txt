@@ -1,0 +1,2 @@
+ID||Date||PatientID||DoctorName||DepartmentName||DigitalSignature
+AP1||2321||001||asdas||asda||

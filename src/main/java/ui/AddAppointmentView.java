@@ -1,24 +1,15 @@
 package ui;
 
 import com.mycompany.core.Appointment;
-import com.mycompany.core.Block;
-import com.mycompany.core.Blockchain;
 import javax.swing.JOptionPane;
-import com.mycompany.core.Patient;
-import com.mycompany.core.TranxCollection;
-import digitalSignature.KeyPairAccess;
 import static digitalSignature.MyKeyPair.dSCreate;
 import digitalSignature.MySignature;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class AddAppointmentView extends javax.swing.JFrame {
 
@@ -44,7 +35,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
                     sc.nextLine();
                     count++;
                 }
-                count +=1;
+                //count +=1;
             }else{
                count = 1;
            }
@@ -250,6 +241,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
             System.out.print(e);
         }
 
+        System.out.println("Digital Signature: "+ data);
          a = new Appointment(ID,date, patientID, doctorName, departmentName,data);
         
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME, true))) {

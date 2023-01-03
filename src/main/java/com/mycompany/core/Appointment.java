@@ -24,6 +24,14 @@ public class Appointment {
     
     private static final String APPFILENAME = "appointment.txt";
 
+    public Appointment(String ID, String date, String patientID, String doctorName, String departmentName) {
+        this.ID = ID;
+        this.date = date;
+        this.patientID = patientID;
+        this.doctorName = doctorName;
+        this.departmentName = departmentName;
+    }
+    
     public Appointment(String ID, String date, String patientID, String doctorName, String departmentName, String digitalSignature) {
         this.ID = ID;
         this.date = date;
@@ -74,6 +82,14 @@ public class Appointment {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+    
+    public String getDigitalSignature() {
+        return digitalSignature;
+    }
+
+    public void setDigitalSignature(String digitalSignature) {
+        this.digitalSignature = digitalSignature;
     }
     
 //    public ArrayList<Appointment> loadAppointment(){
@@ -127,4 +143,6 @@ public class Appointment {
 //        }
 //        return null;
 //    }
+
+
 }

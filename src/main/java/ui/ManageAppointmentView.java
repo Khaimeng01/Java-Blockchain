@@ -17,7 +17,7 @@ public class ManageAppointmentView extends javax.swing.JFrame {
     String APPFILENAME = "appointment.txt";
     DefaultTableModel model;
     Appointment currentApp;
-    private static final String FILEHEADER = "ID||Date||PatientID||DoctorName||DepartmentName" + System.lineSeparator();
+    private static final String FILEHEADER = "ID||Date||PatientID||DoctorName||DepartmentName||DigitalSignature" + System.lineSeparator();
     /**
      * Creates new form ManagerCustomerView
      */
@@ -38,40 +38,38 @@ public class ManageAppointmentView extends javax.swing.JFrame {
         model.addColumn("Patient ID");
         model.addColumn("Doctor's Name");
         model.addColumn("Department");
+        model.addColumn("Signature");
+        model.addColumn("Validity");
         
         //ArrayList<Appointment> appList = new Appointment().loadAppointment();
         ArrayList<Appointment> appList = new ArrayList<>();
-        System.out.println("This is 1");
         try (BufferedReader br = new BufferedReader(new FileReader(APPFILENAME))) {
             br.readLine();
             String row;
-            System.out.println("This is 2");
             while((row = br.readLine())!= null){
                 String[] data = row.split("\\|\\|");    
-                System.out.println("This is 2.1");
                 String ID = data[0];
                 String date = data[1];
-                System.out.println("This is 2.2");
                 String patientID = data[2];
                 String doctorName = data[3];
                 String departmentName = data[4];
-                System.out.println("This is 2.3");
-                appList.add(new Appointment(ID,date,patientID,doctorName,departmentName));  
-                System.out.println("This is applist: " + appList);
+                String digitalSignature = data[5];
+                appList.add(new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature));  
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("This is 3");
+        //Khai Meng here
         for(int i = 0; i < appList.size(); i++){
             String ID = appList.get(i).getID();
             String appDate = appList.get(i).getDate();
             String patientID = appList.get(i).getPatientID();
             String doctorName = appList.get(i).getDoctorName();
             String department = appList.get(i).getDepartmentName();
-            Object[] data = {ID, appDate, patientID, doctorName, department};
+            String digitalSignature = appList.get(i).getDigitalSignature();
+            Object[] data = {ID, appDate, patientID, doctorName, department,digitalSignature};
             model.addRow(data);
         }
         tblAppointment.setModel(model);
@@ -89,6 +87,8 @@ public class ManageAppointmentView extends javax.swing.JFrame {
         model.addColumn("Patient ID");
         model.addColumn("Doctor's Name");
         model.addColumn("Department");
+        model.addColumn("Signature");
+        model.addColumn("Validity");
         
 //        ArrayList<Appointment> appList = new Appointment().loadAppointment(search);
         ArrayList<Appointment> appList = new ArrayList<>();
@@ -103,7 +103,8 @@ public class ManageAppointmentView extends javax.swing.JFrame {
                 String patientID = data[2];
                 String doctorName = data[3];
                 String departmentName = data[4];
-                Appointment c = new Appointment(ID,date,patientID,doctorName,departmentName);   
+                String digitalSignature = data[5];
+                Appointment c = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);   
                 if((c.getID().matches(search+".*"))|| (c.getDate().matches(search+".*")) || (c.getPatientID().matches(search+".*"))
                         || (c.getDoctorName().matches(search+".*")) || (c.getDepartmentName().matches(search+".*"))){
                     appList.add(c);
@@ -120,7 +121,8 @@ public class ManageAppointmentView extends javax.swing.JFrame {
             String patientID = appList.get(i).getPatientID();
             String doctorName = appList.get(i).getDoctorName();
             String department = appList.get(i).getDepartmentName();
-            Object[] data = {ID, appDate, patientID, doctorName, department};
+            String digitalSignature = appList.get(i).getDigitalSignature();
+            Object[] data = {ID, appDate, patientID, doctorName, department,digitalSignature};
             model.addRow(data);
         }
         tblAppointment.setModel(model);
@@ -300,9 +302,9 @@ public class ManageAppointmentView extends javax.swing.JFrame {
                 String patientID = str[3];
                 String doctorName = str[3];
                 String departmentName = str[4];
-                
+                String digitalSignature = str[5];
                 if(appID.equals(ID)){
-                   currentApp = new Appointment(ID,date,patientID,doctorName,departmentName);
+                   currentApp = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);
                 }
             }
 
@@ -373,9 +375,10 @@ public class ManageAppointmentView extends javax.swing.JFrame {
                 String patientID = str[3];
                 String doctorName = str[3];
                 String departmentName = str[4];
+                String digitalSignature = str[5];
                 
                 if(appID.equals(ID)){
-                   currentApp = new Appointment(ID,date,patientID,doctorName,departmentName);
+                   currentApp = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);
                 }
             }
 
