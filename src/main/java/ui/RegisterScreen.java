@@ -183,7 +183,7 @@ public class RegisterScreen extends javax.swing.JFrame {
         }
         
         try (BufferedWriter bwUser = new BufferedWriter(new FileWriter(USERFILENAME2, true))) {
-            bwUser.write(Base64.getEncoder().encodeToString(key.getEncoded())+ "\n");
+            bwUser.write(user.getUsername()+ "||"+ Base64.getEncoder().encodeToString(key.getEncoded())+ "\n");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
