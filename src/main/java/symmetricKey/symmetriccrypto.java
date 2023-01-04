@@ -55,26 +55,38 @@ public String encrypt(String data, Key key) throws Exception {
 }
 
 public String decrypt(String cipherText, Key key) throws Exception {
-        System.out.println("1234");
-	// init
-	cipher.init(Cipher.DECRYPT_MODE, key);
-        System.out.println("JOEL");
-	// convert to byte[]
-	byte[] cipherBytes = Base64.getDecoder().decode(cipherText);
-        System.out.println("James");
-	// decrypt
-	byte[] dataBytes = cipher.doFinal(cipherBytes);
-        System.out.println("Tom");
-	return new String(dataBytes);
+        // init
+        System.out.println("B_1");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        // convert to byte[]
+        System.out.println("B_2");
+        byte[] cipherBytes = Base64.getDecoder().decode(cipherText);
+        // decrypt
+        System.out.println("B_3");
+        byte[] dataBytes = cipher.doFinal(cipherBytes);
+        System.out.println("B_4");
+//        String a =Base64.getEncoder().encodeToString(dataBytes);
+//        System.out.println("String A : "+a);
+        return new String(dataBytes);
+//        System.out.println("B_1");
+//	// init
+//	cipher.init(Cipher.DECRYPT_MODE, key);
+//        System.out.println("B_2");
+//	// convert to byte[]
+////        cipher.update(ciphetText.)
+////	byte[] cipherBytes = Base64.getDecoder().decode(cipherText);
+//        cipher.update(cipherText.getBytes());
+////        System.out.println("B_3");
+////        System.out.println("CipherBytes "+Arrays.toString(cipherBytes));
+//	// decrypt
+//	byte[] dataBytes = cipher.doFinal();
+//        System.out.println("dataBytes "+Arrays.toString(dataBytes));
+//        System.out.println("B_4");
+//	return new String("Tester");
     }
 
-    public String encrypt(char[] password, Key key) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
-    public String decrypt(String passwordstr) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+
         
 }
 

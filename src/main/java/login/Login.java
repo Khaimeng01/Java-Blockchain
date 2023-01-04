@@ -4,10 +4,21 @@
  */
 package login;
 
+import com.mycompany.core.Appointment;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
+import java.util.Base64;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import symmetricKey.randomsecretkey;
+import symmetricKey.symmetriccrypto;
 
 /**
  *
@@ -23,29 +34,43 @@ public class Login {
     }
 
     public boolean verify() {
-        String row, txtUsername, txtPassword;
+        String row, txtUsername, txtPassword,row1;
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
             br.readLine();
             while ((row = br.readLine()) != null) {
                 String[] field = row.split("\\|\\|");
                 txtUsername = field[0];
                 txtPassword = field[1];
-
-                if (username.equals(txtUsername) && password.equals(txtPassword)) {
-//                    if (txtPosition.equals("E")) {
-//                        System.out.println("This is a Sales Executive!");
-//                        return new SalesExec(txtUserId, txtUsername, txtPositionId);
-//                    } else if (txtPosition.equals("A")) {
-//                        System.out.println("This is an Admin!");
-//                        return new Admin(txtUserId, txtUsername, txtPositionId);
-//                    }
-                    return true;
+                symmetriccrypto symm = new symmetriccrypto();
+               if (username.equals(txtUsername)) {
+                    try{
+                        BufferedReader brTest = new BufferedReader(new FileReader("randomkey.txt"));
+                        while ((row1 = brTest.readLine()) != null) {
+                            String[] field1 = row1.split("\\|\\|");
+                            String encryptedUsername = field1[0];
+                            String encryptedTxtKey = field1[1];
+                            if(encryptedUsername.equals(username)){
+                                byte[] encodedKey = Base64.getDecoder().decode(encryptedTxtKey);
+//                                System.out.println("BYTE "+Arrays.toString(encodedKey));
+                                System.out.println("A8");
+//                                SecretKeySpec key = new SecretKeySpec(encryptedTxtKey.getBytes("UTF-8"), "AES");
+//                                SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES"); 
+                                System.out.println("EncodedKey Length "+encodedKey.length);
+                                Key key = new SecretKeySpec(encodedKey,0,encodedKey.length, "AES");
+                                System.out.println("A9");
+                                System.out.println("Encrypted Key "+ key.toString()+"\t"+key.getAlgorithm()+"\t"+key.getFormat());
+                                String returnPass  = symm.decrypt(txtPassword, key);
+                                System.out.println("Return Pass : "+returnPass);
+                                if(returnPass.equals(password)){
+                                    System.out.println("RETURN HERE");
+                                    return true;
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-//                else {
-//                    System.out.println("No position assigned!");
-//                    return new Admin("A000", "Username Not Found", "A000");
-//                } 
-
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

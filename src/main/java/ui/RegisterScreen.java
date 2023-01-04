@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -170,6 +171,7 @@ public class RegisterScreen extends javax.swing.JFrame {
         
         symmetriccrypto symm = new symmetriccrypto();
         Key key = randomsecretkey.create();
+        System.out.println("Real KEY : "+key.toString()+"\t"+key.getAlgorithm()+"\t"+key.getFormat());
         System.out.println("key: "+ Base64.getEncoder().encodeToString(key.getEncoded()));
         String passwordstr = String.valueOf(password);
         System.out.println("Data: " + passwordstr);
@@ -178,12 +180,19 @@ public class RegisterScreen extends javax.swing.JFrame {
         try {
             encrypted = symm.encrypt(passwordstr, key);
             System.out.println("Encrypted:  " + encrypted);  
+            String decrypt = symm.decrypt(encrypted, key);
+            System.out.println("The Decrypted Text : "+decrypt);
         }catch (Exception e) {
             e.printStackTrace();
         }
         
+        byte[] keyBytes = key.getEncoded();
+        String a = Base64.getEncoder().encodeToString(keyBytes);
+        System.out.println("FIRST KEY "+a);
+        System.out.println("BYTE "+Arrays.toString(key.getEncoded()));
+        
         try (BufferedWriter bwUser = new BufferedWriter(new FileWriter(USERFILENAME2, true))) {
-            bwUser.write(user.getUsername()+ "||"+ Base64.getEncoder().encodeToString(key.getEncoded())+ "\n");
+            bwUser.write(user.getUsername()+ "||"+ a + "\n");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
