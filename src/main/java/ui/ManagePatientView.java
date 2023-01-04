@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -110,30 +111,32 @@ public class ManagePatientView extends javax.swing.JFrame {
 //        Block block = gson.fromJson(bufferedReader, Block.class); 
 //        System.out.println("Block: "+ block.toString());
 
+        JSONParser parser = new JSONParser();
         
         try {
-            JSONParser parser = new JSONParser();
-            JSONArray a;
-            a = (JSONArray) parser.parse(new FileReader("myLedgerFile.json"));
+           JSONArray a = (JSONArray) parser.parse(new FileReader("myLedgerFile.json"));
+            
             for (Object o : a)
             {
             JSONObject block = (JSONObject) o;
+            //JSONArray b = (JSONArray) block.get("tranxs");
+            String city = (String) block.get("tranxs").toString();
+            System.out.println(city);
 
-            Header name = (Header) block.get("header");
-            System.out.println(name);
-//
-//            String city = (String) block.get("header");
-//            System.out.println(city);
-//
-//            String job = (String) block.get("job");
+//            String job = (String) block.get("tranxlist").toString();
 //            System.out.println(job);
             System.out.println("TEST1");
-//            JSONArray cars = (JSONArray) block.get("tranxlist");
-//            System.out.println("TEST2");
-//            for (Object c : cars)
-//            {
-//              System.out.println(c+"");
-//            }
+            
+            JSONArray cars = (JSONArray) block.get("tranxs");
+            System.out.println("TEST2");
+            for (Object c : cars)
+            {
+//              JSONArray content = (JSONArray) block.get("tranxlist");
+//              for (Object d : content){
+//                  System.out.println(d+"");
+//              }
+              System.out.println(c+"");
+            }
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
