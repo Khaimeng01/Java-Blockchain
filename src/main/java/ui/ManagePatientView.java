@@ -3,27 +3,15 @@ package ui;
 import com.mycompany.core.Appointment;
 import digitalSignature.MySignature;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
 import java.security.PublicKey;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Scanner;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import com.google.gson.*;
-import com.mycompany.core.Block;
-import com.mycompany.core.Block.Header;
+import com.mycompany.core.Patient;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,8 +20,9 @@ import org.json.simple.parser.ParseException;
 public class ManagePatientView extends javax.swing.JFrame {
     String LEDGERFILENAME = "myLedgerFile.txt";
     DefaultTableModel model;
-    Appointment currentApp;
-    private static final String FILEHEADER = "ID||Date||PatientID||DoctorName||DepartmentName||DigitalSignature" + System.lineSeparator();
+    //Appointment currentApp;
+    String[] patientDataArray;
+    //private static final String FILEHEADER = "ID||Date||PatientID||DoctorName||DepartmentName||DigitalSignature" + System.lineSeparator();
     MySignature sig = new MySignature();
     PublicKey publicKey ;
     boolean validity;
@@ -64,88 +53,70 @@ public class ManagePatientView extends javax.swing.JFrame {
         model.addColumn("Pre-Existing Condition");
         model.addColumn("Current Disease");
         model.addColumn("Current Medication Plan");
-        
-//         try {
-//            BufferedReader brTest = new BufferedReader(new FileReader("DigitalSignature.txt"));
-//            String data = brTest .readLine();
-//            System.out.println("DATA"+data);
-//            byte[] b = Base64.getDecoder().decode(data);
-////            byte[] b = data.getBytes("UTF-16");
-//            System.out.println("BYTE"+Arrays.toString(b));
-//            System.out.println("TEST_1");
-//            X509EncodedKeySpec spec = new X509EncodedKeySpec(b);
-//            System.out.println("TEST_2");
-//            publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
-//            System.out.println("TEST_3");
-//            System.out.println("Publickey"+publicKey);
-//        } catch (Exception e) {
-//            System.out.println("FAILURE");
-//         }
-        
-        //ArrayList<Appointment> appList = new Appointment().loadAppointment();
-        ArrayList<Appointment> appList = new ArrayList<>();
-        
-//        BufferedReader reader = new BufferedReader(new FileReader(LEDGERFILENAME));
-//        String json = "";
-//        try {
-//            StringBuilder sb = new StringBuilder();
-//            String line = reader.readLine();
-//
-//            while (line != null) {
-//                sb.append(line);
-//                sb.append("\n");
-//                line = reader.readLine();
-//            }
-//            json = sb.toString();
-//        } finally {
-//            reader.close();
-//        }
-//        JSONObject object = new JSONObject(json); // this will get you the entire JSON node
-//        JSONArray array = object.getJSONArray("Node"); // put in whatever your JSON data name here, this will get you an array of all the nodes
-        
-//        GsonBuilder builder = new GsonBuilder(); 
-//        Gson gson = builder.create(); 
-//        BufferedReader bufferedReader = new BufferedReader(
-//           new FileReader(LEDGERFILENAME));   
-//
-//        Block block = gson.fromJson(bufferedReader, Block.class); 
-//        System.out.println("Block: "+ block.toString());
+
+        ArrayList<Patient> appList = new ArrayList<>();
+
 
         JSONParser parser = new JSONParser();
         
         try {
-           JSONArray a = (JSONArray) parser.parse(new FileReader("myLedgerFile.json"));
+           JSONArray array = (JSONArray) parser.parse(new FileReader("myLedgerFile.json"));
             
-            for (Object o : a)
+            for (Object o : array)
             {
             JSONObject block = (JSONObject) o;
             //JSONArray b = (JSONArray) block.get("tranxs");
-            JSONObject block1 = (JSONObject) block.get("tranxs");
-            String city = (String) block1.get("merkelRoot").toString();
+            JSONObject innerBlock = (JSONObject) block.get("tranxs");
+            String city = (String) innerBlock.get("merkelRoot").toString();
             System.out.println(city);
-            JSONArray cars = (JSONArray) block1.get("tranxlist");
-            for (Object c : cars)
+            JSONArray dataList = (JSONArray) innerBlock.get("tranxlist");
+            for (Object c : dataList)
             {
-//              JSONArray content = (JSONArray) block.get("tranxlist");
-//              for (Object d : content){
-//                  System.out.println(d+"");
-//              }
+                String dataArray = c.toString();
+                dataArray = dataArray.replaceAll("[{}]", "");
+                dataArray = dataArray.replaceAll("\"", "");
+                System.out.println("DATA ARRAY: "+dataArray);
+                patientDataArray = dataArray.split(",");
+                String preExistingConditionToSplit = patientDataArray[0];
+                String[] preExistingConditionSplit = preExistingConditionToSplit.split(":");
+                String preExistingCondition = preExistingConditionSplit[1];
+                String phoneNumberToSplit = patientDataArray[1];
+                String[] phoneNumberSplit = phoneNumberToSplit.split(":");
+                String phoneNumber = phoneNumberSplit[1];
+                String genderToSplit = patientDataArray[2];
+                String[] genderSplit = genderToSplit.split(":");
+                String gender = genderSplit[1];
+                String LnameToSplit = patientDataArray[3];
+                String[] LnameSplit = LnameToSplit.split(":");
+                String Lname = LnameSplit[1];
+                String currentMedPlanToSplit = patientDataArray[4];
+                String[] currentMedPlanSplit = currentMedPlanToSplit.split(":");
+                String currentMedicationPlan = currentMedPlanSplit[1];
+                String disabilityToSplit = patientDataArray[5];
+                String[] disabilitySplit = disabilityToSplit.split(":");
+                String disability = disabilitySplit[1];
+                String ICToSplit = patientDataArray[6];
+                String[] ICSplit = ICToSplit.split(":");
+                String IC = ICSplit[1];
+                String IDToSplit = patientDataArray[7];
+                String[] IDSplit = IDToSplit.split(":");
+                String ID = IDSplit[1];
+                String FnameToSplit = patientDataArray[8];
+                String[] FnameSplit = FnameToSplit.split(":");
+                String Fname = FnameSplit[1];
+                String bloodTypeToSplit = patientDataArray[9];
+                String[] bloodTypeSplit = bloodTypeToSplit.split(":");
+                String bloodType = bloodTypeSplit[1];
+                String currentDiseaseToSplit = patientDataArray[10];
+                String[] currentDiseaseSplit = currentDiseaseToSplit.split(":");
+                String currentDisease = currentDiseaseSplit[1];
+                
+//                System.out.println("PATIENT ID: "+preExistingCondition);
+                appList.add(new Patient(ID,Fname,Lname,IC,phoneNumber,gender,bloodType,disability,preExistingCondition, 
+                        currentDisease,currentMedicationPlan));  
+
               System.out.println(c+"");
             }
-//            String job = (String) block.get("tranxlist").toString();
-//            System.out.println(job);
-//            System.out.println("TEST1");
-//            
-//            JSONArray cars = (JSONArray) block.get("tranxs");
-//            System.out.println("TEST2");
-//            for (Object c : cars)
-//            {
-////              JSONArray content = (JSONArray) block.get("tranxlist");
-////              for (Object d : content){
-////                  System.out.println(d+"");
-////              }
-//              System.out.println(c+"");
-//            }
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
@@ -155,50 +126,20 @@ public class ManagePatientView extends javax.swing.JFrame {
             Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-          
 
-        
-        
-//        try (BufferedReader br = new BufferedReader(new FileReader(LEDGERFILENAME))) {
-//            br.readLine();
-//            String row;
-//            while((row = br.readLine())!= null){
-//                String[] data = row.split("\\|\\|");    
-//                String ID = data[0];
-//                String date = data[1];
-//                String patientID = data[2];
-//                String doctorName = data[3];
-//                String departmentName = data[4];
-//                String digitalSignature = data[5];
-//                appList.add(new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature));  
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         for(int i = 0; i < appList.size(); i++){
             String ID = appList.get(i).getID();
-            String appDate = appList.get(i).getDate();
-            String patientID = appList.get(i).getPatientID();
-            String doctorName = appList.get(i).getDoctorName();
-            String department = appList.get(i).getDepartmentName();
-            String digitalSignature = appList.get(i).getDigitalSignature();
-            
-//             a = new Appointment(ID,date, patientID, doctorName, departmentName);
-            
-            Appointment newAppointment = new Appointment(ID,appDate,patientID,doctorName,department);
-//            System.out.println("Appoitment : "+ID+","+appDate+","+patientID+","+doctorName+","+department+","+digitalSignature);
-            System.out.println("POWER "+newAppointment.toString());
-           
-            try {
-                 validity = sig.verify(String.valueOf(newAppointment), digitalSignature, publicKey);
-                 System.out.println("Boolean "+ validity);
-            } catch (Exception ex) {
-                Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-           
-            Object[] data = {ID, appDate, patientID, doctorName, department,digitalSignature,validity};
+            String Fname = appList.get(i).getFname();
+            String Lname = appList.get(i).getLname();
+            String IC = appList.get(i).getIC();
+            String phoneNumber = appList.get(i).getPhoneNumber();
+            String gender = appList.get(i).getGender();
+            String bloodType = appList.get(i).getBloodType();
+            String disability = appList.get(i).getDisability();
+            String preExistingCondition = appList.get(i).getPreExistingCondition();
+            String currentDisease = appList.get(i).getCurrentDisease();
+            String currentMedicationPlan = appList.get(i).getCurrentMedicationPlan();
+            Object[] data = {ID, Fname,Lname, IC, phoneNumber, gender, bloodType, disability, preExistingCondition, currentDisease, currentMedicationPlan};
             model.addRow(data);
         }
         tblAppointment.setModel(model);
@@ -212,46 +153,58 @@ public class ManagePatientView extends javax.swing.JFrame {
             }
         };
         model.addColumn("ID");
-        model.addColumn("Appointment Date");
-        model.addColumn("Patient ID");
-        model.addColumn("Doctor's Name");
-        model.addColumn("Department");
-        model.addColumn("Signature");
-        model.addColumn("Validity");
+        model.addColumn("First Name");
+        model.addColumn("Last Name");
+        model.addColumn("IC Number");
+        model.addColumn("Phone Number");
+        model.addColumn("Gender");
+        model.addColumn("Blood Type");
+        model.addColumn("Disability");
+        model.addColumn("Pre-Existing Condition");
+        model.addColumn("Current Disease");
+        model.addColumn("Current Medication Plan");
         
 //        ArrayList<Appointment> appList = new Appointment().loadAppointment(search);
-        ArrayList<Appointment> appList = new ArrayList<>();
+        ArrayList<Patient> appList = new ArrayList<>();
+
+
+        JSONParser parser = new JSONParser();
         
-        try (BufferedReader br = new BufferedReader(new FileReader(LEDGERFILENAME))) {
-            br.readLine();
-            String row;
-            while((row = br.readLine())!= null){
-                String[] data = row.split("\\|\\|");            
-                String ID = data[0];
-                String date = data[1];
-                String patientID = data[2];
-                String doctorName = data[3];
-                String departmentName = data[4];
-                String digitalSignature = data[5];
-                Appointment c = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);   
-                if((c.getID().matches(search+".*"))|| (c.getDate().matches(search+".*")) || (c.getPatientID().matches(search+".*"))
-                        || (c.getDoctorName().matches(search+".*")) || (c.getDepartmentName().matches(search+".*"))){
-                    appList.add(c);
-                }             
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try (BufferedReader br = new BufferedReader(new FileReader(LEDGERFILENAME))) {
+//            br.readLine();
+//            String row;
+//            while((row = br.readLine())!= null){
+//                String[] data = row.split("\\|\\|");            
+//                String ID = data[0];
+//                String date = data[1];
+//                String patientID = data[2];
+//                String doctorName = data[3];
+//                String departmentName = data[4];
+//                String digitalSignature = data[5];
+//                Appointment c = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);   
+//                if((c.getID().matches(search+".*"))|| (c.getDate().matches(search+".*")) || (c.getPatientID().matches(search+".*"))
+//                        || (c.getDoctorName().matches(search+".*")) || (c.getDepartmentName().matches(search+".*"))){
+//                    appList.add(c);
+//                }             
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         for(int i = 0; i < appList.size(); i++){
             String ID = appList.get(i).getID();
-            String appDate = appList.get(i).getDate();
-            String patientID = appList.get(i).getPatientID();
-            String doctorName = appList.get(i).getDoctorName();
-            String department = appList.get(i).getDepartmentName();
-            String digitalSignature = appList.get(i).getDigitalSignature();
-            Object[] data = {ID, appDate, patientID, doctorName, department,digitalSignature};
+            String Fname = appList.get(i).getFname();
+            String Lname = appList.get(i).getLname();
+            String IC = appList.get(i).getIC();
+            String phoneNumber = appList.get(i).getPhoneNumber();
+            String gender = appList.get(i).getGender();
+            String bloodType = appList.get(i).getBloodType();
+            String disability = appList.get(i).getDisability();
+            String preExistingCondition = appList.get(i).getPreExistingCondition();
+            String currentDisease = appList.get(i).getCurrentDisease();
+            String currentMedicationPlan = appList.get(i).getCurrentMedicationPlan();
+            Object[] data = {ID, Fname,Lname, IC, phoneNumber, gender, bloodType, disability, preExistingCondition, currentDisease, currentMedicationPlan};
             model.addRow(data);
         }
         tblAppointment.setModel(model);
@@ -337,8 +290,10 @@ public class ManagePatientView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 818, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 23, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(65, 65, 65)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,37 +301,40 @@ public class ManagePatientView extends javax.swing.JFrame {
                             .addComponent(btnViewAll, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnMainMenu)
-                        .addGap(64, 64, 64))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(73, 73, 73)
-                        .addComponent(btnSearch)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                        .addGap(112, 112, 112))))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSearch)
+                .addGap(76, 76, 76))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(275, 275, 275))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addComponent(btnMainMenu)
-                        .addGap(53, 53, 53))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSearch))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addComponent(btnViewAll)
                         .addGap(18, 18, 18)
                         .addComponent(btnAddApp)
-                        .addGap(27, 27, 27))))
+                        .addGap(27, 27, 27))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnMainMenu)
+                        .addGap(50, 50, 50))))
         );
 
         pack();

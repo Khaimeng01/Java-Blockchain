@@ -10,7 +10,10 @@ import javax.swing.JOptionPane;
 import com.mycompany.core.Patient;
 import com.mycompany.core.TranxCollection;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.security.PublicKey;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AddPatientView extends javax.swing.JFrame {
 
@@ -283,7 +286,11 @@ public class AddPatientView extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
-        new MenuView().setVisible(true);
+        try {
+            new ManagePatientView().setVisible(true);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AddPatientView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
