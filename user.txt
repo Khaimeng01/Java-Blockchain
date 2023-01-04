@@ -1,2 +1,12 @@
 Username||Password
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 admin||rlW6i1Az7+yqjYp3wDRYxw==
+=======
+jamie||JlyqnHeNvJnDHbg2BqHrIQ==
+joshua||/0qg1CYz4rJaHXMEkC2V6Q==
+>>>>>>> Stashed changes
+=======
+jamie||JlyqnHeNvJnDHbg2BqHrIQ==
+joshua||/0qg1CYz4rJaHXMEkC2V6Q==
+>>>>>>> Stashed changes

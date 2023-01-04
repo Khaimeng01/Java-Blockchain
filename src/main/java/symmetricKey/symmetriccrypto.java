@@ -55,16 +55,24 @@ public String encrypt(String data, Key key) throws Exception {
 }
 
 public String decrypt(String cipherText, Key key) throws Exception {
+        System.out.println("1234");
 	// init
 	cipher.init(Cipher.DECRYPT_MODE, key);
+        System.out.println("JOEL");
 	// convert to byte[]
 	byte[] cipherBytes = Base64.getDecoder().decode(cipherText);
+        System.out.println("James");
 	// decrypt
 	byte[] dataBytes = cipher.doFinal(cipherBytes);
+        System.out.println("Tom");
 	return new String(dataBytes);
     }
 
     public String encrypt(char[] password, Key key) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public String decrypt(String passwordstr) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
         

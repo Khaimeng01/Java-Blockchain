@@ -19,6 +19,7 @@ public class RegisterScreen extends javax.swing.JFrame {
 
     private static final String USERFILENAME = "user.txt";
     private static final String USERFILEHEADER = "Username||Password" + "\n";
+    private static final String USERFILENAME2 = "randomkey.txt";
     
     /**
      * Creates new form AddCustomerView
@@ -175,16 +176,23 @@ public class RegisterScreen extends javax.swing.JFrame {
         
         String encrypted = "";
         try {
-            
             encrypted = symm.encrypt(passwordstr, key);
             System.out.println("Encrypted:  " + encrypted);  
         }catch (Exception e) {
             e.printStackTrace();
         }
         
+        try (BufferedWriter bwUser = new BufferedWriter(new FileWriter(USERFILENAME2, true))) {
+            bwUser.write(Base64.getEncoder().encodeToString(key.getEncoded())+ "\n");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         
         try (BufferedWriter bwUser = new BufferedWriter(new FileWriter(USERFILENAME, true))) {
-            bwUser.write(user.getUsername() + "||" + encrypted + System.lineSeparator());
+            bwUser.write(user.getUsername() + "||" + encrypted +  "\n");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
