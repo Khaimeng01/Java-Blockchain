@@ -42,7 +42,9 @@ public class MySignature {
 	public boolean verify(String data, String signature, PublicKey key) throws Exception
 	{
 		sig.initVerify( key );
+//                byte[] afterBytes = Base64.getDecoder().decode(data);
 		sig.update(data.getBytes());
+                System.out.println("Signature "+signature);
 		return sig.verify( Base64.getDecoder().decode(signature));
 	}
 }

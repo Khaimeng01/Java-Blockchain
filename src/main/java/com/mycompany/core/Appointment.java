@@ -92,6 +92,8 @@ public class Appointment {
         this.digitalSignature = digitalSignature;
     }
     
+    
+    
 //    public ArrayList<Appointment> loadAppointment(){
 //        ArrayList<Appointment> appList = new ArrayList<>();
 //        
@@ -143,6 +145,11 @@ public class Appointment {
 //        }
 //        return null;
 //    }
+
+    @Override
+    public String toString() {
+        return "Appointment{" + "ID=" + ID + ", date=" + date + ", patientID=" + patientID + ", doctorName=" + doctorName + ", departmentName=" + departmentName  + '}';
+    }
 
 
 }

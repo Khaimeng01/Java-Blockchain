@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.security.PrivateKey;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AddAppointmentView extends javax.swing.JFrame {
 
@@ -17,6 +19,8 @@ public class AddAppointmentView extends javax.swing.JFrame {
     static final String MASTER_DIR = "master";
     static final String MASTER_BINARY = MASTER_DIR+"/mychain";
     MySignature sig = new MySignature();
+    boolean status = false;
+    PrivateKey privateKey;
     /**
      * Creates new form AddProduct
      */
@@ -202,7 +206,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
 
     private void btnAddAppointmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAppointmentActionPerformed
         String data = "";
-        PrivateKey privateKey = null;
+        
         if(txtDate.getText().equals("")
                 ||txtLPatientID.getText().equals("")||txtDoctorName.getText().equals("")||txtDeptName.getText().equals("")){
             JOptionPane.showMessageDialog(this, "Please fill up all fields!");
@@ -210,39 +214,36 @@ public class AddAppointmentView extends javax.swing.JFrame {
         }
         
         String ID = "AP"+ Integer.toString(autoIdCounter());
-                txtID.getText();
-        //Double Check here
-//        txtID.setText("POKEMON");
+        txtID.getText();
         String date = txtDate.getText();
         String patientID = txtLPatientID.getText();
         String doctorName = txtDoctorName.getText();
         String departmentName = txtDeptName.getText();
-//        try{
-//            if(Integer.parseInt(phoneNumber) < 0 || Integer.parseInt(IC)< 0){
-//                JOptionPane.showMessageDialog(this, "Please make sure PhoneNumber and IC fields are more than 0!");
-//                return;
-//            }
-//        }catch(NumberFormatException e){
-//            JOptionPane.showMessageDialog(this, "Please make sure price and quantity fields are numbers!");
-//            return; 
-//        }
 
         Appointment a;
         a = new Appointment(ID,date, patientID, doctorName, departmentName);
-        try{
-            File file = new File(FILENAME);
-            if (file.exists() && file.isFile()) {
-                data = sig.sign(String.valueOf(a), privateKey);
-            } else {
+        if(status ==false){
+            System.out.println("FALSE");
+            try {
                 privateKey = dSCreate();
+                System.out.println(privateKey);
                 data = sig.sign(String.valueOf(a), privateKey);
+            } catch (IOException ex) {
+                Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (Exception e) {
-            System.out.print(e);
+            status = true;
+        }else{
+            System.out.println("TRUE");
+            try {
+                data = sig.sign(String.valueOf(a), privateKey);
+            } catch (Exception ex) {
+                Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
-        System.out.println("Digital Signature: "+ data);
-         a = new Appointment(ID,date, patientID, doctorName, departmentName,data);
+//         a = new Appointment(ID,date, patientID, doctorName, departmentName,data);
         
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME, true))) {
             bw.write(ID + "||" + date + "||" 

@@ -1,13 +1,21 @@
 package ui;
 
 import com.mycompany.core.Appointment;
+import digitalSignature.MySignature;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,6 +26,9 @@ public class ManageAppointmentView extends javax.swing.JFrame {
     DefaultTableModel model;
     Appointment currentApp;
     private static final String FILEHEADER = "ID||Date||PatientID||DoctorName||DepartmentName||DigitalSignature" + System.lineSeparator();
+    MySignature sig = new MySignature();
+    PublicKey publicKey ;
+    boolean validity;
     /**
      * Creates new form ManagerCustomerView
      */
@@ -27,6 +38,7 @@ public class ManageAppointmentView extends javax.swing.JFrame {
     }
     
     private void loadTable(){
+
         model = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column){
@@ -40,6 +52,23 @@ public class ManageAppointmentView extends javax.swing.JFrame {
         model.addColumn("Department");
         model.addColumn("Signature");
         model.addColumn("Validity");
+        
+         try {
+            BufferedReader brTest = new BufferedReader(new FileReader("DigitalSignature.txt"));
+            String data = brTest .readLine();
+            System.out.println("DATA"+data);
+            byte[] b = Base64.getDecoder().decode(data);
+//            byte[] b = data.getBytes("UTF-16");
+            System.out.println("BYTE"+Arrays.toString(b));
+            System.out.println("TEST_1");
+            X509EncodedKeySpec spec = new X509EncodedKeySpec(b);
+            System.out.println("TEST_2");
+            publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
+            System.out.println("TEST_3");
+            System.out.println("Publickey"+publicKey);
+        } catch (Exception e) {
+            System.out.println("FAILURE");
+         }
         
         //ArrayList<Appointment> appList = new Appointment().loadAppointment();
         ArrayList<Appointment> appList = new ArrayList<>();
@@ -69,7 +98,21 @@ public class ManageAppointmentView extends javax.swing.JFrame {
             String doctorName = appList.get(i).getDoctorName();
             String department = appList.get(i).getDepartmentName();
             String digitalSignature = appList.get(i).getDigitalSignature();
-            Object[] data = {ID, appDate, patientID, doctorName, department,digitalSignature};
+            
+//             a = new Appointment(ID,date, patientID, doctorName, departmentName);
+            
+            Appointment newAppointment = new Appointment(ID,appDate,patientID,doctorName,department);
+//            System.out.println("Appoitment : "+ID+","+appDate+","+patientID+","+doctorName+","+department+","+digitalSignature);
+            System.out.println("POWER "+newAppointment.toString());
+           
+            try {
+                 validity = sig.verify(String.valueOf(newAppointment), digitalSignature, publicKey);
+                 System.out.println("Boolean "+ validity);
+            } catch (Exception ex) {
+                Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+            Object[] data = {ID, appDate, patientID, doctorName, department,digitalSignature,validity};
             model.addRow(data);
         }
         tblAppointment.setModel(model);

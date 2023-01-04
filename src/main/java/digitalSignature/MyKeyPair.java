@@ -18,6 +18,9 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Arrays;
+import java.util.Base64;
+
 
 /**
  *
@@ -60,8 +63,6 @@ public class MyKeyPair {
                 PrivateKey privateKey = keyPair.getPrivate();
                 FileWriter write = new FileWriter("DigitalSignature.txt");
                 dSPut(publicKey.getEncoded());
-                dSPut(privateKey.getEncoded());
-                
                 return privateKey;
 		
 	}
@@ -76,7 +77,11 @@ public class MyKeyPair {
                
                File file = new File("DigitalSignature.txt");             
                BufferedWriter bw = new BufferedWriter(new FileWriter("DigitalSignature.txt",true));
-               bw.write(String.valueOf(keyBytes)+"\n");
+               System.out.println("INSIDE DATA"+Arrays.toString(keyBytes));
+               
+               String a = Base64.getEncoder().encodeToString(keyBytes);
+               System.out.println("String data"+a);
+               bw.write(a);
                bw.close();
                System.out.println("New Admin successfully registered!");
 
