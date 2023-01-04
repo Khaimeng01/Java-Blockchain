@@ -6,10 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.Key;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import login.User;
+import symmetricKey.randomsecretkey;
+import symmetricKey.symmetriccrypto;
 
 public class RegisterScreen extends javax.swing.JFrame {
 
@@ -162,8 +166,25 @@ public class RegisterScreen extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(RegisterScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        symmetriccrypto symm = new symmetriccrypto();
+        Key key = randomsecretkey.create();
+        System.out.println("key: "+ Base64.getEncoder().encodeToString(key.getEncoded()));
+        String passwordstr = String.valueOf(password);
+        System.out.println("Data: " + passwordstr);
+        
+        String encrypted = "";
+        try {
+            
+            encrypted = symm.encrypt(passwordstr, key);
+            System.out.println("Encrypted:  " + encrypted);  
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
         try (BufferedWriter bwUser = new BufferedWriter(new FileWriter(USERFILENAME, true))) {
-            bwUser.write(user.getUsername() + "||" + new String(password) + System.lineSeparator());
+            bwUser.write(user.getUsername() + "||" + encrypted + System.lineSeparator());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

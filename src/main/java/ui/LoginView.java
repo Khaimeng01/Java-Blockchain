@@ -1,7 +1,12 @@
 package ui;
 
+import java.security.Key;
+import java.util.Base64;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import login.Login;
+import symmetricKey.randomsecretkey;
+import symmetricKey.symmetriccrypto;
 
 public class LoginView extends javax.swing.JFrame {
 
@@ -136,8 +141,9 @@ public class LoginView extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(this, "Wrong Username or Password.");
         }
+         
     }//GEN-LAST:event_btnLoginActionPerformed
-
+ 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         RegisterScreen crs = new RegisterScreen();
         crs.setVisible(true);
