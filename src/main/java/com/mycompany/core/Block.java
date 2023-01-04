@@ -37,9 +37,7 @@ public class Block implements Serializable {
 
     public Block() {
     }
-    
-    
-    
+
     //composition relationship
     public Header header;
 

@@ -137,6 +137,7 @@ public class LoginView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Welcome to the system!");
             this.dispose();
             MenuView m = new MenuView();
+//            AddPatientView m = new AddPatientView();
             m.setVisible(true);    
         }else{
             JOptionPane.showMessageDialog(this, "Wrong Username or Password.");

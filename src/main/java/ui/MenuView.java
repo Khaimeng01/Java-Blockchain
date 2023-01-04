@@ -1,5 +1,9 @@
 package ui;
 
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class MenuView extends javax.swing.JFrame {
 
     /**
@@ -113,7 +117,11 @@ public class MenuView extends javax.swing.JFrame {
 
     private void btnManagePatientsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManagePatientsActionPerformed
         this.dispose();
-        new AddPatientView().setVisible(true);
+        try {
+            new ManagePatientView().setVisible(true);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MenuView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnManagePatientsActionPerformed
 
     private void GenerateReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateReportsActionPerformed

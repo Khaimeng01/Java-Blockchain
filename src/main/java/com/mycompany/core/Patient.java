@@ -29,9 +29,7 @@ public class Patient implements Serializable{
     String currentDisease;
     String currentMedicationPlan;
     
-    
-    
-    
+
     public Patient() {
     }
 

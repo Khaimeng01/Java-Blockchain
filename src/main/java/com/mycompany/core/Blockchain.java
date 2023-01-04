@@ -5,10 +5,14 @@
 package com.mycompany.core;
 
 import com.google.gson.GsonBuilder;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -31,7 +35,7 @@ public class Blockchain {
     private Blockchain( String chainFile )
     {   super(); //invoke superclass's constructor        
         this.chainFile = chainFile+".bin";
-        this.ledgerFile = "myLedgerFile.txt";
+        this.ledgerFile = "myLedgerFile.json";
     }
     /* Singleton pattern */    
     /**     * genesis()     */    
@@ -86,10 +90,33 @@ public class Blockchain {
     public void distribute()
     {
         /* convert the chain to String using gson api */        
+//        try {
+//            System.out.println("DISTRIBUTE ENTER LOOP");
+//            System.out.println("DB SIZE: "+db.size());
+//            for (int i=0; i< db.size();i++){
+//                System.out.println("DISTRIBUTE ENTER LOOP IN "+i + " FOR STEP 1");
+//                String chain = new GsonBuilder().setPrettyPrinting().create().toJson(db.get(i));
+//                FileWriter fw = new FileWriter("myLedgerFile.txt",true);
+//                BufferedWriter bw = new BufferedWriter(fw);
+//                PrintWriter out = new PrintWriter(bw);
+//                System.out.println("DISTRIBUTE ENTER LOOP IN "+i + " FOR STEP 2");
+//                System.out.println( chain );
+//                System.out.println("DISTRIBUTE ENTER LOOP IN "+i + " FOR STEP 3");
+//                /* write to ledger file in text */    
+//                //BufferedWriter bw = new BufferedWriter(new FileWriter("myLedgerFile.txt", false));
+//                System.out.println("DISTRIBUTE ENTER LOOP IN "+i + " FOR STEP 4");
+//                out.write(chain);
+//                System.out.println("DISTRIBUTE ENTER LOOP IN "+i + " FOR STEP 5");
+////                Files.write( Paths.get(this.ledgerFile) ,  chain.getBytes() , StandardOpenOption.CREATE);
+//            }
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         try {
             String chain = new GsonBuilder().setPrettyPrinting().create().toJson(db);
             System.out.println( chain );
-            /* write to ledger file in text */            
+            /* write to ledger file in text */
             Files.write( Paths.get(this.ledgerFile) ,  chain.getBytes() , StandardOpenOption.CREATE);
         } catch (Exception e) {
             e.printStackTrace();
