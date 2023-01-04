@@ -120,15 +120,10 @@ public class ManagePatientView extends javax.swing.JFrame {
             {
             JSONObject block = (JSONObject) o;
             //JSONArray b = (JSONArray) block.get("tranxs");
-            String city = (String) block.get("tranxs").toString();
+            JSONObject block1 = (JSONObject) block.get("tranxs");
+            String city = (String) block1.get("merkelRoot").toString();
             System.out.println(city);
-
-//            String job = (String) block.get("tranxlist").toString();
-//            System.out.println(job);
-            System.out.println("TEST1");
-            
-            JSONArray cars = (JSONArray) block.get("tranxs");
-            System.out.println("TEST2");
+            JSONArray cars = (JSONArray) block1.get("tranxlist");
             for (Object c : cars)
             {
 //              JSONArray content = (JSONArray) block.get("tranxlist");
@@ -137,6 +132,20 @@ public class ManagePatientView extends javax.swing.JFrame {
 //              }
               System.out.println(c+"");
             }
+//            String job = (String) block.get("tranxlist").toString();
+//            System.out.println(job);
+//            System.out.println("TEST1");
+//            
+//            JSONArray cars = (JSONArray) block.get("tranxs");
+//            System.out.println("TEST2");
+//            for (Object c : cars)
+//            {
+////              JSONArray content = (JSONArray) block.get("tranxlist");
+////              for (Object d : content){
+////                  System.out.println(d+"");
+////              }
+//              System.out.println(c+"");
+//            }
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
