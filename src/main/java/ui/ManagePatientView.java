@@ -2,6 +2,7 @@ package ui;
 
 import asymmetricKey.AsymmetricCrypto;
 import com.mycompany.core.Appointment;
+import com.mycompany.core.Header;
 import digitalSignature.MySignature;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -21,11 +22,14 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.LinkedList;
+import javax.swing.JOptionPane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import symmetricKey.symmetriccrypto;
+import org.json.simple.JSONObject;
 
 public class ManagePatientView extends javax.swing.JFrame {
     String LEDGERFILENAME = "myLedgerFile.txt";
@@ -40,6 +44,7 @@ public class ManagePatientView extends javax.swing.JFrame {
     symmetriccrypto symm = new symmetriccrypto();
     
     Key key;
+    boolean ledgerSecure = true;
     /**
      * Creates new form ManagerCustomerView
      */
@@ -102,6 +107,7 @@ public class ManagePatientView extends javax.swing.JFrame {
         
         
         ArrayList<Patient> appList = new ArrayList<>();
+        LinkedList<Header> headerList = new LinkedList<>();
 
 
         JSONParser parser = new JSONParser();
@@ -111,17 +117,84 @@ public class ManagePatientView extends javax.swing.JFrame {
             
             for (Object o : array)
             {
+                JSONObject block = (JSONObject) o;
+                JSONObject innerBlock = (JSONObject) block.get("header");
+                String indexString = (String) innerBlock.get("index").toString();
+                System.out.println("THIS IS HEADER INDEX: "+indexString);
+                int index = Integer.parseInt(indexString);
+                String currHash = (String) innerBlock.get("currHash").toString();
+                System.out.println("THIS IS HEADER CURRENT HASH: "+currHash);
+                String prevHash = (String) innerBlock.get("prevHash").toString();
+                System.out.println("THIS IS HEADER PREV HASH: "+prevHash);
+                String timestampString = (String) innerBlock.get("timestamp").toString();
+                System.out.println("THIS IS HEADER TIMESTAMP: "+timestampString);
+                long timestamp = Long.parseLong(timestampString);
+                headerList.add(new Header(index, currHash, prevHash, timestamp));  
+                
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+        for (int i=0; i < (headerList.size() -1);i++){
+            int j = i+1;
+            int beforeIndex = headerList.get(i).getIndex();
+            System.out.println("BEFORE INDEX: "+beforeIndex);
+            int nowIndex = headerList.get(j).getIndex();
+            System.out.println("NOW INDEX: "+nowIndex);
+            
+            //String beforePreviousHash = headerList.get(i).getPreviousHash();
+            String nowPreviousHash = headerList.get(j).getPreviousHash();
+            System.out.println("PREVIOUS HASH: "+nowPreviousHash);
+            
+            String beforeCurrentHash = headerList.get(i).getCurrentHash();
+            System.out.println("CURRENT HASH: "+beforeCurrentHash);
+            //String nowCurrentHash = headerList.get(j).getCurrentHash();
+            
+            long beforeTimestamp = headerList.get(i).getTimestamp();
+            System.out.println("BEFORE TIME: "+beforeTimestamp);
+            long nowTimestamp = headerList.get(j).getTimestamp();
+            System.out.println("NOW TIME: "+nowTimestamp);
+            
+            if (((nowIndex - beforeIndex) != 1)  || (!(nowTimestamp > beforeTimestamp)) ||(!(nowPreviousHash.equals(beforeCurrentHash)))){
+                System.out.println("I have found error!\n\n");
+                ledgerSecure = false;
+                break;
+            }else{
+                System.out.println("So far all okay.\n\n");
+            }
+        }
+        
+        if (ledgerSecure == false){
+            System.out.println("Blocks in ledger are faulty. Ledger may have been tampered or corrupted.");
+            JOptionPane.showMessageDialog(this, "Blocks in ledger are faulty. Ledger may have been tampered or corrupted.");
+        }else{
+            System.out.println("Blocks in ledger have been checked and is currently secure.");
+            JOptionPane.showMessageDialog(this, "Blocks in ledger have been checked and is currently secure.");
+        }
+        
+        try {
+           JSONArray array = (JSONArray) parser.parse(new FileReader("myLedgerFile.json"));
+            
+            for (Object o : array)
+            {
             JSONObject block = (JSONObject) o;
             //JSONArray b = (JSONArray) block.get("tranxs");
             JSONObject innerBlock = (JSONObject) block.get("tranxs");
-            String city = (String) innerBlock.get("merkelRoot").toString();
-            System.out.println(city);
+//            String currHash = (String) innerBlock.get("merkelRoot").toString();
+//            System.out.println(currHash);
+//            String test = innerBlock.toJSONString();
             JSONArray dataList = (JSONArray) innerBlock.get("tranxlist");
             for (Object c : dataList)
             {
                 System.out.println("TEST_4");
                 String dataArray = c.toString();
                 System.out.println("DataARRAY : "+ dataArray);
+                System.out.println(c+"");
                 dataArray = dataArray.replaceAll("[{}]", "");
                 dataArray = dataArray.replaceAll("\"", "");
                 System.out.println("DATA ARRAY: "+dataArray);
@@ -141,8 +214,7 @@ public class ManagePatientView extends javax.swing.JFrame {
                 String pNReturn  = symm.decrypt(phoneNumber, key);
                 phoneNumber = pNReturn;
 
-                
-                
+                System.out.println("Phone Number: "+phoneNumber);
                 String genderToSplit = patientDataArray[2];
                 String[] genderSplit = genderToSplit.split(":");
                 String gender = genderSplit[1];
@@ -183,7 +255,7 @@ public class ManagePatientView extends javax.swing.JFrame {
                 String FnReturn  = symm.decrypt(Fname, key);
                 Fname = FnReturn;
 
-                
+                System.out.println("First Name: "+Fname);
                 String bloodTypeToSplit = patientDataArray[9];
                 String[] bloodTypeSplit = bloodTypeToSplit.split(":");
                 String bloodType = bloodTypeSplit[1];
@@ -195,7 +267,7 @@ public class ManagePatientView extends javax.swing.JFrame {
                 appList.add(new Patient(ID,Fname,Lname,IC,phoneNumber,gender,bloodType,disability,preExistingCondition, 
                         currentDisease,currentMedicationPlan));  
 
-              System.out.println(c+"");
+              
             }
             }
         } catch (FileNotFoundException ex) {
@@ -261,10 +333,10 @@ public class ManagePatientView extends javax.swing.JFrame {
 //                String doctorName = data[3];
 //                String departmentName = data[4];
 //                String digitalSignature = data[5];
-//                Appointment c = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);   
-//                if((c.getID().matches(search+".*"))|| (c.getDate().matches(search+".*")) || (c.getPatientID().matches(search+".*"))
-//                        || (c.getDoctorName().matches(search+".*")) || (c.getDepartmentName().matches(search+".*"))){
-//                    appList.add(c);
+//                Appointment headerContent = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);   
+//                if((headerContent.getID().matches(search+".*"))|| (headerContent.getDate().matches(search+".*")) || (headerContent.getPatientID().matches(search+".*"))
+//                        || (headerContent.getDoctorName().matches(search+".*")) || (headerContent.getDepartmentName().matches(search+".*"))){
+//                    appList.add(headerContent);
 //                }             
 //            }
 //        } catch (FileNotFoundException e) {
