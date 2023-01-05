@@ -101,20 +101,28 @@ public class ManagePatientView extends javax.swing.JFrame {
         model.addColumn("Current Disease");
         model.addColumn("Current Medication Plan");
 
-        try {
-            BufferedReader brTest = new BufferedReader(new FileReader("test1.txt"));
-            String data = brTest .readLine();
-            System.out.println("DATA"+data);
-            byte[] b = Base64.getDecoder().decode(data);
-//            System.out.println("BYTE"+Arrays.toString(b));
-//            System.out.println("TEST_1");
-//            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(b);
-//            System.out.println("TEST_2");
-//            privateKey = KeyFactory.getInstance("RSA").generatePrivate(spec);
-            key = new SecretKeySpec(b,0,b.length, "AES");
-        } catch (Exception e) {
-            e.printStackTrace();
-         }
+        
+        //Delete Later
+            File file = new File("test1.txt");
+            if (file.exists()) {
+                try {
+                    BufferedReader brTest = new BufferedReader(new FileReader("test1.txt"));
+                    String data = brTest .readLine();
+                    System.out.println("DATA"+data);
+                    byte[] b = Base64.getDecoder().decode(data);
+        //            System.out.println("BYTE"+Arrays.toString(b));
+        //            System.out.println("TEST_1");
+        //            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(b);
+        //            System.out.println("TEST_2");
+        //            privateKey = KeyFactory.getInstance("RSA").generatePrivate(spec);
+                    key = new SecretKeySpec(b,0,b.length, "AES");
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            
+
+       
         
         
         
@@ -124,6 +132,8 @@ public class ManagePatientView extends javax.swing.JFrame {
 
         JSONParser parser = new JSONParser();
         
+
+
         //Verify Faulty Block
         try {
            JSONArray array = (JSONArray) parser.parse(new FileReader("myLedgerFile.json"));
@@ -191,193 +201,101 @@ public class ManagePatientView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Blocks in ledger have been checked and is currently secure.");
         }
         
-        try {
-            JsonElement json = new JsonParser().parse(new FileReader("myLedgerFile.json"));
-            Gson gson = new Gson();
-            List<Map<String, Object>> list = gson.fromJson(json, List.class);
-//            Map data = gson.fromJson(reader, Map.class);
-//            System.out.println("DATA 5/1/2023 "+list);
-            //For Loop
-            for (int i=0; i<list.size();i++){
-                String jsonString = String.valueOf(list.get(i));
-                int startIndex = jsonString.indexOf("tranxlist=[");
-                int endIndex = jsonString.lastIndexOf("]");
-                String tranxlistString = jsonString.substring(startIndex, endIndex + 1);
-                tranxlistString = tranxlistString.replaceAll("[{}]", "");
-                tranxlistString = tranxlistString.replaceAll("\\[", "").replaceAll("\\]", "");
-                tranxlistString = tranxlistString.replace("tranxlist=", "");
-                System.out.println("Final tranxlistString: "+tranxlistString);
-                patientDataArray = tranxlistString.split(",");
-                System.out.println("patientdatarray: "+patientDataArray);
+        File file2 = new File("master\\mychain.bin");
+            if (file2.exists()) {
+            try {
+                JsonElement json = new JsonParser().parse(new FileReader("myLedgerFile.json"));
+                Gson gson = new Gson();
+                List<Map<String, Object>> list = gson.fromJson(json, List.class);
+                //For Loop
+                for (int i=0; i<list.size();i++){
+                    String jsonString = String.valueOf(list.get(i));
+                    int startIndex = jsonString.indexOf("tranxlist=[");
+                    int endIndex = jsonString.lastIndexOf("]");
+                    String tranxlistString = jsonString.substring(startIndex, endIndex + 1);
+                    tranxlistString = tranxlistString.replaceAll("[{}]", "");
+                    tranxlistString = tranxlistString.replaceAll("\\[", "").replaceAll("\\]", "");
+                    tranxlistString = tranxlistString.replace("tranxlist=", "");
+                    System.out.println("Final tranxlistString: "+tranxlistString);
+                    patientDataArray = tranxlistString.split(",");
+                    System.out.println("patientdatarray: "+patientDataArray);
+
+                    String IDToSplit = patientDataArray[0];
+                    System.out.println("IDToSplit: "+IDToSplit);
+                    String[] IDSplit = IDToSplit.split("=");
+                    System.out.println("IDToSplit: "+IDSplit[1]);
+                    String ID = IDSplit[1];
+                    System.out.println("ID: "+ID);
+
+                    String FnameToSplit = patientDataArray[1];
+                    String Fname =  FnameToSplit.replace("Fname=", "");
+                    Fname =  Fname.replaceAll("\\s", "");
+                    System.out.println("Fname: "+Fname);
+                    String FnReturn  = symm.decrypt(Fname, key);
+                    Fname = FnReturn;
+
+                    String LnameToSplit = patientDataArray[2];
+                    String Lname =  LnameToSplit.replace("Lname=", "");
+                    Lname =  Lname.replaceAll("\\s", "");
+                    System.out.println("Lname: "+Lname);
+                    String LnReturn  = symm.decrypt(Lname, key);
+                    Lname = LnReturn;
+
+                    String ICToSplit = patientDataArray[3];
+                    String IC =  ICToSplit.replace("IC=", "");
+                    IC =  IC.replaceAll("\\s", "");
+                    System.out.println("IC: "+IC);
+                    String ICReturn  = symm.decrypt(IC, key);
+                    IC = ICReturn;
+
+                    String phoneNumberToSplit = patientDataArray[4];
+                    String phoneNumber =  phoneNumberToSplit.replace("phoneNumber=", "");
+                    phoneNumber =  phoneNumber.replaceAll("\\s", "");
+                    System.out.println("phoneNumber: "+phoneNumber);
+                    String phoneNumberReturn  = symm.decrypt(phoneNumber, key);
+                    phoneNumber = phoneNumberReturn;
+
+                    String genderToSplit = patientDataArray[5];
+                    String gender =  genderToSplit.replace("gender=", "");
+                    gender =  gender.replaceAll("\\s", "");
+                    System.out.println("gender: "+gender);
+
+                    String bloodTypeToSplit = patientDataArray[6];
+                    String bloodType =  bloodTypeToSplit.replace("bloodType=", "");
+                    bloodType =  bloodType.replaceAll("\\s", "");
+                    System.out.println("bloodType: "+bloodType);
+
+                    String disabilityToSplit = patientDataArray[7];
+                    String disability =  disabilityToSplit.replace("disability=", "");
+                    disability =  disability.replaceAll("\\s", "");
+                    System.out.println("disability: "+disability);
+
+                    String preExistingConditionToSplit = patientDataArray[8];
+                    String preExistingCondition =  preExistingConditionToSplit.replace("preExistingCondition=", "");
+                    preExistingCondition =  preExistingCondition.replaceAll("\\s", "");
+                    System.out.println("preExistingCondition: "+preExistingCondition);
+
+                    String currentDiseaseToSplit = patientDataArray[9];
+                    String currentDisease =  currentDiseaseToSplit.replace("currentDisease=", "");
+                    currentDisease =  currentDisease.replaceAll("\\s", "");
+                    System.out.println("currentDisease: "+currentDisease);
+
+                    String currentMedPlanToSplit = patientDataArray[10];
+                    String currentMedPlan =  currentMedPlanToSplit.replace("currentMedicationPlan=", "");
+                    currentMedPlan =  currentMedPlan.replaceAll("\\s", "");
+                    System.out.println("currentMedPlan: "+currentMedPlan);
+                    appList.add(new Patient(ID,Fname,Lname,IC,phoneNumber,gender,bloodType,disability,preExistingCondition, 
+                    currentDisease,currentMedPlan));
+                }           
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+            }else{
                 
-                String IDToSplit = patientDataArray[0];
-                System.out.println("IDToSplit: "+IDToSplit);
-                String[] IDSplit = IDToSplit.split("=");
-                System.out.println("IDToSplit: "+IDSplit[1]);
-                String ID = IDSplit[1];
-                System.out.println("ID: "+ID);
-                
-                String FnameToSplit = patientDataArray[1];
-                String Fname =  FnameToSplit.replace("Fname=", "");
-                Fname =  Fname.replaceAll("\\s", "");
-                System.out.println("Fname: "+Fname);
-                String FnReturn  = symm.decrypt(Fname, key);
-                Fname = FnReturn;
-                
-                String LnameToSplit = patientDataArray[2];
-                String Lname =  LnameToSplit.replace("Lname=", "");
-                Lname =  Lname.replaceAll("\\s", "");
-                System.out.println("Lname: "+Lname);
-                String LnReturn  = symm.decrypt(Lname, key);
-                Lname = LnReturn;
-                
-                String ICToSplit = patientDataArray[3];
-                String IC =  ICToSplit.replace("IC=", "");
-                IC =  IC.replaceAll("\\s", "");
-                System.out.println("IC: "+IC);
-                String ICReturn  = symm.decrypt(IC, key);
-                IC = ICReturn;
-                
-                String phoneNumberToSplit = patientDataArray[4];
-                String phoneNumber =  phoneNumberToSplit.replace("phoneNumber=", "");
-                phoneNumber =  phoneNumber.replaceAll("\\s", "");
-                System.out.println("phoneNumber: "+phoneNumber);
-                String phoneNumberReturn  = symm.decrypt(phoneNumber, key);
-                phoneNumber = phoneNumberReturn;
-                
-                String genderToSplit = patientDataArray[5];
-                String gender =  genderToSplit.replace("gender=", "");
-                gender =  gender.replaceAll("\\s", "");
-                System.out.println("gender: "+gender);
-                
-                String bloodTypeToSplit = patientDataArray[6];
-                String bloodType =  bloodTypeToSplit.replace("bloodType=", "");
-                bloodType =  bloodType.replaceAll("\\s", "");
-                System.out.println("bloodType: "+bloodType);
-                
-                String disabilityToSplit = patientDataArray[7];
-                String disability =  disabilityToSplit.replace("disability=", "");
-                disability =  disability.replaceAll("\\s", "");
-                System.out.println("disability: "+disability);
-                
-                String preExistingConditionToSplit = patientDataArray[8];
-                String preExistingCondition =  preExistingConditionToSplit.replace("preExistingCondition=", "");
-                preExistingCondition =  preExistingCondition.replaceAll("\\s", "");
-                System.out.println("preExistingCondition: "+preExistingCondition);
-                
-                String currentDiseaseToSplit = patientDataArray[9];
-                String currentDisease =  currentDiseaseToSplit.replace("currentDisease=", "");
-                currentDisease =  currentDisease.replaceAll("\\s", "");
-                System.out.println("currentDisease: "+currentDisease);
-                
-                String currentMedPlanToSplit = patientDataArray[10];
-                String currentMedPlan =  currentMedPlanToSplit.replace("currentMedicationPlan=", "");
-                currentMedPlan =  currentMedPlan.replaceAll("\\s", "");
-                System.out.println("currentMedPlan: "+currentMedPlan);
-                appList.add(new Patient(ID,Fname,Lname,IC,phoneNumber,gender,bloodType,disability,preExistingCondition, 
-                currentDisease,currentMedPlan));
             }
 
-//           JSONArray array = (JSONArray) parser.parse(new FileReader("myLedgerFile.json"));
-//            
-//            for (Object o : array)
-//            {
-//            JSONObject block = (JSONObject) o;
-//            //JSONArray b = (JSONArray) block.get("tranxs");
-//            JSONObject innerBlock = (JSONObject) block.get("tranxs");
-////            String currHash = (String) innerBlock.get("merkelRoot").toString();
-////            System.out.println(currHash);
-////            String test = innerBlock.toJSONString();
-//            JSONArray dataList = (JSONArray) innerBlock.get("tranxlist");
-//            for (Object c : dataList)
-//            {
-//                System.out.println("TEST_4");
-//                String dataArray = c.toString();
-//                System.out.println("DataARRAY : "+ dataArray);
-//                System.out.println(c+"");
-//                dataArray = dataArray.replaceAll("[{}]", "");
-//                dataArray = dataArray.replaceAll("\"", "");
-//                System.out.println("DATA ARRAY: "+dataArray);
-//                patientDataArray = dataArray.split(",");
-//                
-//                System.out.println("TEST_5");
-//                String preExistingConditionToSplit = patientDataArray[0];
-//                String[] preExistingConditionSplit = preExistingConditionToSplit.split(":");
-//                String preExistingCondition = preExistingConditionSplit[1];
-//                
-//               
-//                String phoneNumberToSplit = patientDataArray[1];
-//                String[] phoneNumberSplit = phoneNumberToSplit.split(":");
-//                System.out.println("Phone Number "+phoneNumberSplit[1]);
-//                String phoneNumber = phoneNumberSplit[1];
-//                System.out.println("Phone Number "+phoneNumber);
-//                String pNReturn  = symm.decrypt(phoneNumber, key);
-//                phoneNumber = pNReturn;
-//
-//                System.out.println("Phone Number: "+phoneNumber);
-//                String genderToSplit = patientDataArray[2];
-//                String[] genderSplit = genderToSplit.split(":");
-//                String gender = genderSplit[1];
-//                
-//                String LnameToSplit = patientDataArray[3];
-//                String[] LnameSplit = LnameToSplit.split(":");
-//                String Lname = LnameSplit[1];
-//                String LnReturn  = symm.decrypt(Lname, key);
-//                Lname = LnReturn;
-//                
-//                String currentMedPlanToSplit = patientDataArray[4];
-//                String[] currentMedPlanSplit = currentMedPlanToSplit.split(":");
-//                String currentMedicationPlan = currentMedPlanSplit[1];
-//                String disabilityToSplit = patientDataArray[5];
-//                String[] disabilitySplit = disabilityToSplit.split(":");
-//                String disability = disabilitySplit[1];
-//                
-//                String ICToSplit = patientDataArray[6];
-//                String[] ICSplit = ICToSplit.split(":");
-//                String IC = ICSplit[1];
-//                System.out.println("IC : "+IC);
-//                String IdReturn  = symm.decrypt(IC, key);
-//                IC = IdReturn;
-//                
-//                
-//                
-//                String IDToSplit = patientDataArray[7];
-//                String[] IDSplit = IDToSplit.split(":");
-//                String ID = IDSplit[1];
-//
-//                
-//                System.out.println("TEST_6");
-//                String FnameToSplit = patientDataArray[8];
-//                String[] FnameSplit = FnameToSplit.split(":");
-//                String Fname = FnameSplit[1];
-//                System.out.println("TEST_8");
-//                System.out.println("FNAME : "+Fname);
-//                String FnReturn  = symm.decrypt(Fname, key);
-//                Fname = FnReturn;
-//
-//                System.out.println("First Name: "+Fname);
-//                String bloodTypeToSplit = patientDataArray[9];
-//                String[] bloodTypeSplit = bloodTypeToSplit.split(":");
-//                String bloodType = bloodTypeSplit[1];
-//                String currentDiseaseToSplit = patientDataArray[10];
-//                String[] currentDiseaseSplit = currentDiseaseToSplit.split(":");
-//                String currentDisease = currentDiseaseSplit[1];
-//                
-////                System.out.println("PATIENT ID: "+preExistingCondition);
-//                appList.add(new Patient(ID,Fname,Lname,IC,phoneNumber,gender,bloodType,disability,preExistingCondition, 
-//                        currentDisease,currentMedicationPlan));  
-
-              
-//            }
-           
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-//        catch (ParseException ex) {
-//            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
-//        }
 
 
         //Verify data in blocks

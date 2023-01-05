@@ -10,9 +10,11 @@ import java.rmi.registry.Registry;
 import javax.swing.JOptionPane;
 import com.mycompany.core.Patient;
 import com.mycompany.core.TranxCollection;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.Key;
@@ -20,6 +22,7 @@ import java.security.PublicKey;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.spec.SecretKeySpec;
 import symmetricKey.randomsecretkey;
 import symmetricKey.symmetriccrypto;
 
@@ -27,6 +30,7 @@ public class AddPatientView extends javax.swing.JFrame {
 
         static final String MASTER_DIR = "master";
         static final String MASTER_BINARY = MASTER_DIR+"/mychain";
+        Key key = null;
         
         
     /**
@@ -46,6 +50,23 @@ public class AddPatientView extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public  void retriveKey(){
+            try {
+                BufferedReader brTest = new BufferedReader(new FileReader("test1.txt"));
+                String data = brTest .readLine();
+                System.out.println("DATA"+data);
+                byte[] b = Base64.getDecoder().decode(data);
+    //            System.out.println("BYTE"+Arrays.toString(b));
+    //            System.out.println("TEST_1");
+    //            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(b);
+    //            System.out.println("TEST_2");
+    //            privateKey = KeyFactory.getInstance("RSA").generatePrivate(spec);
+                key = new SecretKeySpec(b,0,b.length, "AES");
+            }catch (Exception e) {
+            e.printStackTrace();
+            }
     }
 
     /**
@@ -326,7 +347,7 @@ public class AddPatientView extends javax.swing.JFrame {
         
         
         //New
-        Key key = null;
+        
         PredefinedCharsSecretKey predefinedcharsecretKey = new PredefinedCharsSecretKey();
         symmetriccrypto symm = new symmetriccrypto();
         
@@ -380,16 +401,19 @@ public class AddPatientView extends javax.swing.JFrame {
 //            System.out.print(e);
 //        }
         
+
         try{
-            File file = new File(MASTER_DIR);
-            if (file.exists() && file.isFile()) {
+            File file = new File("test1.txt");
+            if (file.exists()) {
+                System.out.println("\nINISDE\n");
+                retriveKey();
                 Fname = symm.encrypt(Fname, key);
                 Lname = symm.encrypt(Lname, key);
                 IC = symm.encrypt(IC, key);
                 phoneNumber = symm.encrypt(phoneNumber, key);
             } else {
+                System.out.println("\nOUTSIDE\n");
                 key = randomsecretkey.create();
-//                key = predefinedcharsecretKey.create();
                 Fname = symm.encrypt(Fname, key);
                 Lname = symm.encrypt(Lname, key);
                 IC = symm.encrypt(IC, key);
