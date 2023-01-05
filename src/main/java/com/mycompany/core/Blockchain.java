@@ -24,6 +24,7 @@ import java.util.LinkedList;
  */
 public class Blockchain {
     private static LinkedList<Block> db = new LinkedList<>();
+    private static LinkedList<Block> check = new LinkedList<>();
     /* Singleton pattern */    private static Blockchain _instance;
     public static Blockchain getInstance( String chainFile )
     {
@@ -48,6 +49,31 @@ public class Blockchain {
         /* show ledger */        
         distribute();
     }
+    
+    public void genesisChecker(Block genesis)
+    {
+//        Block genesis = new Block("0");
+        check.add(genesis);
+        try(
+            FileOutputStream fos = new FileOutputStream( "tempChainFile.bin" );
+            ObjectOutputStream out = new ObjectOutputStream( fos );
+            ) {
+            out.writeObject(db);
+            System.out.println( ">> Temp Master binary file is updated!" );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            String chain = new GsonBuilder().setPrettyPrinting().create().toJson(check);
+            System.out.println( chain );
+            /* write to ledger file in text */
+            Files.write( Paths.get("tempLedgerFile.json") ,  chain.getBytes() , StandardOpenOption.CREATE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    
     /**     * nextBlock()     */    
     public void nextBlock( Block newBlock )
     {
@@ -60,11 +86,47 @@ public class Blockchain {
         /* show ledger */        
         distribute();
     }
+    public void nextBlockChecker( Block newBlock )
+    {
+        /* obtain existing blockchain binary */        
+        check = getCheck();
+        newBlock.getHeader().setIndex( check.getLast().getHeader().getIndex() + 1 );
+        check.add(newBlock);
+        try(
+            FileOutputStream fos = new FileOutputStream( "tempChainFile.bin" );
+            ObjectOutputStream out = new ObjectOutputStream( fos );
+            ) {
+            out.writeObject(db);
+            System.out.println( ">> Temp Master binary file is updated!" );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            String chain = new GsonBuilder().setPrettyPrinting().create().toJson(check);
+            System.out.println( chain );
+            /* write to ledger file in text */
+            Files.write( Paths.get("tempLedgerFile.json") ,  chain.getBytes() , StandardOpenOption.CREATE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**     * get()     */    
     public LinkedList<Block> get()
     {
         try(
             FileInputStream fis = new FileInputStream( this.chainFile );
+            ObjectInputStream in = new ObjectInputStream( fis );
+            ) {
+            return (LinkedList<Block>)in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public LinkedList<Block> getCheck()
+    {
+        try(
+            FileInputStream fis = new FileInputStream( "tempChainFile.bin" );
             ObjectInputStream in = new ObjectInputStream( fis );
             ) {
             return (LinkedList<Block>)in.readObject();
