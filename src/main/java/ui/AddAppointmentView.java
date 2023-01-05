@@ -292,7 +292,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
         if(status ==false){
             System.out.println("FALSE");
             try {
-                privateKey = dSCreate();
+                privateKey = dSCreate(ID);
                 System.out.println(privateKey);
                 data = sig.sign(String.valueOf(a), privateKey);
             } catch (IOException ex) {
@@ -310,7 +310,6 @@ public class AddAppointmentView extends javax.swing.JFrame {
             }
         }
 
-//         a = new Appointment(ID,date, patientID, doctorName, departmentName,data);
         
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME, true))) {
             bw.write(ID + "||" + date + "||" 

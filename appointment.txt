@@ -1,0 +1,2 @@
+ID||Date||PatientID||DoctorName||DepartmentName||DigitalSignature
+AP002||adwdwa||002||awd||adw||Gq7HLCEH1dhwnUhYZcPI8p+bfCSI6efIbpW5eRg9UN9Sf4XSYg/51dmNphccWfimCwJMlGPFE8akz+tRKRzHHeIDSqlfl+X16sLeaM04CfF44Uut1v8dNFe/8vYQE3Q/W2EfywaX6qDAVCaGMuw61gts9RTxnApQcmZGci/YkB4=

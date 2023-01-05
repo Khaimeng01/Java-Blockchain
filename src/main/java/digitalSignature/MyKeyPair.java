@@ -56,14 +56,13 @@ public class MyKeyPair {
 	/**
 	 * create
 	 */
-	public static PrivateKey dSCreate() throws IOException
+	public static PrivateKey dSCreate(String ID) throws IOException
 	{
 		MyKeyPair myKeyMaker = new MyKeyPair();
 		keyPair = myKeyMaker.keygen.generateKeyPair();
                 PublicKey publicKey = keyPair.getPublic();
                 PrivateKey privateKey = keyPair.getPrivate();
-                FileWriter write = new FileWriter("DigitalSignature.txt");
-                dSPut(publicKey.getEncoded());
+                dSPut(publicKey.getEncoded(),ID);
                 return privateKey;
 		
 	}
@@ -71,18 +70,13 @@ public class MyKeyPair {
 	/**
 	 * put the key in a specified file path
 	 */
-	public static void dSPut( byte[] keyBytes )
+	public static void dSPut( byte[] keyBytes,String ID)
 	{
-            BufferedReader br;
-            try {
-               
-               File file = new File("DigitalSignature.txt");             
-               BufferedWriter bw = new BufferedWriter(new FileWriter("DigitalSignature.txt",true));
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter("DigitalSignature.txt",true))){
                System.out.println("INSIDE DATA"+Arrays.toString(keyBytes));
-               
                String a = Base64.getEncoder().encodeToString(keyBytes);
                System.out.println("String data"+a);
-               bw.write(a);
+               bw.write(ID+ "||"+a+ "\n");
                bw.close();
                System.out.println("New Admin successfully registered!");
 
@@ -93,23 +87,6 @@ public class MyKeyPair {
            }
 
 	}
-        
-//        public static void put2( byte[] keyBytes )
-//	{
-//                System.out.print("B_1");
-//                String path = "DigitalSignature.txt";
-//                System.out.print("B_2");
-//		File f = new File(path );
-//                System.out.print("B_3");
-//		f.getParentFile().mkdirs();
-//		try {
-//                        System.out.print("B_4");
-//			Files.write(Paths.get(path), keyBytes, StandardOpenOption.CREATE);
-//			System.out.println( "Keypair exported to '"+ path + "'" );
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
         
 
 }

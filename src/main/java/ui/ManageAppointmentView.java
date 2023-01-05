@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
@@ -37,6 +38,35 @@ public class ManageAppointmentView extends javax.swing.JFrame {
         loadTable();
     }
     
+    public void keyFinder(String patientId){
+        try {
+            BufferedReader brTest = new BufferedReader(new FileReader("DigitalSignature.txt"));
+            String data;
+            while((data = brTest.readLine())!= null){
+                String[] data1 = data.split("\\|\\|");
+                String patientID = data1[0];
+                String encryptedKey = data1[1];
+                if(patientID.equals(patientId)){
+                    byte[] b = Base64.getDecoder().decode(encryptedKey);
+                    X509EncodedKeySpec spec = new X509EncodedKeySpec(b);
+                    publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
+                }
+            }
+                 
+//            System.out.println("BYTE"+Arrays.toString(b));
+//            System.out.println("TEST_1");
+//            X509EncodedKeySpec spec = new X509EncodedKeySpec(b);
+//            System.out.println("TEST_2");
+//            publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
+//            System.out.println("TEST_3");
+//            System.out.println("Publickey"+publicKey);
+        } catch (Exception e) {
+            System.out.println("FAILURE");
+        }
+    }
+    
+    
+    
     private void loadTable(){
 
         model = new DefaultTableModel(){
@@ -53,22 +83,7 @@ public class ManageAppointmentView extends javax.swing.JFrame {
         model.addColumn("Signature");
         model.addColumn("Validity");
         
-         try {
-            BufferedReader brTest = new BufferedReader(new FileReader("DigitalSignature.txt"));
-            String data = brTest .readLine();
-            System.out.println("DATA"+data);
-            byte[] b = Base64.getDecoder().decode(data);
-//            byte[] b = data.getBytes("UTF-16");
-            System.out.println("BYTE"+Arrays.toString(b));
-            System.out.println("TEST_1");
-            X509EncodedKeySpec spec = new X509EncodedKeySpec(b);
-            System.out.println("TEST_2");
-            publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
-            System.out.println("TEST_3");
-            System.out.println("Publickey"+publicKey);
-        } catch (Exception e) {
-            System.out.println("FAILURE");
-         }
+         
         
         //ArrayList<Appointment> appList = new Appointment().loadAppointment();
         ArrayList<Appointment> appList = new ArrayList<>();
@@ -106,6 +121,7 @@ public class ManageAppointmentView extends javax.swing.JFrame {
             System.out.println("POWER "+newAppointment.toString());
            
             try {
+                keyFinder(ID);
                  validity = sig.verify(String.valueOf(newAppointment), digitalSignature, publicKey);
                  System.out.println("Boolean "+ validity);
             } catch (Exception ex) {
