@@ -66,7 +66,6 @@ public class RegisterScreen extends javax.swing.JFrame {
         jLabel4.setBounds(210, 20, 440, 60);
 
         jLabel6.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 0));
         jLabel6.setText("Username");
         jPanel1.add(jLabel6);
         jLabel6.setBounds(290, 180, 80, 20);
@@ -82,7 +81,6 @@ public class RegisterScreen extends javax.swing.JFrame {
         RegisterButton.setBounds(280, 350, 280, 40);
 
         jLabel7.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 0));
         jLabel7.setText("Password");
         jPanel1.add(jLabel7);
         jLabel7.setBounds(290, 230, 80, 30);
@@ -100,13 +98,11 @@ public class RegisterScreen extends javax.swing.JFrame {
         jSeparator1.setBounds(0, 230, 850, 10);
 
         jLabel8.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 0));
         jLabel8.setText("Confirm Password");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(220, 290, 150, 30);
 
         jLabel9.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 0));
         jLabel9.setText("Login Credentials");
         jPanel1.add(jLabel9);
         jLabel9.setBounds(330, 110, 170, 20);

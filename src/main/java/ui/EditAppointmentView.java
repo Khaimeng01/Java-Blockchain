@@ -71,7 +71,6 @@ public class EditAppointmentView extends javax.swing.JFrame {
         jLabel4.setBounds(160, 20, 550, 49);
 
         jLabel3.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 0));
         jLabel3.setText("Patient ID");
         jPanel2.add(jLabel3);
         jLabel3.setBounds(200, 240, 110, 30);
@@ -81,7 +80,6 @@ public class EditAppointmentView extends javax.swing.JFrame {
         txtPatientID.setBounds(400, 240, 218, 24);
 
         jLabel2.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 0));
         jLabel2.setText("Date");
         jPanel2.add(jLabel2);
         jLabel2.setBounds(200, 180, 80, 20);
@@ -96,7 +94,6 @@ public class EditAppointmentView extends javax.swing.JFrame {
         txtDate.setBounds(400, 180, 218, 24);
 
         jLabel5.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 0));
         jLabel5.setText("Doctor's Name");
         jPanel2.add(jLabel5);
         jLabel5.setBounds(200, 300, 140, 30);
@@ -122,7 +119,6 @@ public class EditAppointmentView extends javax.swing.JFrame {
         btnCancel.setBounds(220, 440, 100, 25);
 
         jLabel9.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 0));
         jLabel9.setText("ID");
         jPanel2.add(jLabel9);
         jLabel9.setBounds(200, 120, 90, 20);
@@ -145,7 +141,6 @@ public class EditAppointmentView extends javax.swing.JFrame {
         txtDeptName.setBounds(400, 360, 218, 24);
 
         jLabel11.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 0));
         jLabel11.setText("Department Name");
         jPanel2.add(jLabel11);
         jLabel11.setBounds(200, 360, 150, 30);
