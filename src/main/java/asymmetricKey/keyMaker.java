@@ -17,9 +17,10 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Base64;
 
 public class keyMaker {
-    private static final String algorithm = "RSA";
+    private static final String algorithm = "AES";
 	
 	private KeyPairGenerator keygen;
 	private KeyPair keyPair;
@@ -58,9 +59,7 @@ public class keyMaker {
                 System.out.println("A_5");
                 FileWriter write = new FileWriter("AS.txt");
                 System.out.println("A_6");
-                aSPut(publicKey.getEncoded());
                 aSPut(privateKey.getEncoded());
-                
                 return publicKey;
 	}
 	
@@ -68,9 +67,10 @@ public class keyMaker {
 	{
             BufferedReader br;
             try {
-               File file = new File("DigitalSignature.txt");             
+//               File file = new File("AS.txt");             
                BufferedWriter bw = new BufferedWriter(new FileWriter("AS.txt",true));
-               bw.write(String.valueOf(keyBytes)+"\n");
+               String a = Base64.getEncoder().encodeToString(keyBytes);
+               bw.write(a);
                bw.close();
                
            } catch (FileNotFoundException ex) {
@@ -82,9 +82,7 @@ public class keyMaker {
 
 	}
         
-        public void tester22(){
-            System.out.println("POTATOSA");
-        }
+
 	/**
 	 * put the key in a specified file path
 	 */

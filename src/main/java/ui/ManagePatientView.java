@@ -1,5 +1,6 @@
 package ui;
 
+import asymmetricKey.AsymmetricCrypto;
 import com.mycompany.core.Appointment;
 import digitalSignature.MySignature;
 import java.io.BufferedReader;
@@ -12,10 +13,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import com.mycompany.core.Patient;
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
+import java.util.Base64;
+import javax.crypto.spec.SecretKeySpec;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import symmetricKey.symmetriccrypto;
 
 public class ManagePatientView extends javax.swing.JFrame {
     String LEDGERFILENAME = "myLedgerFile.txt";
@@ -24,17 +34,37 @@ public class ManagePatientView extends javax.swing.JFrame {
     String[] patientDataArray;
     //private static final String FILEHEADER = "ID||Date||PatientID||DoctorName||DepartmentName||DigitalSignature" + System.lineSeparator();
     MySignature sig = new MySignature();
-    PublicKey publicKey ;
+    PrivateKey privateKey;
     boolean validity;
+    AsymmetricCrypto ASC = new AsymmetricCrypto();
+    symmetriccrypto symm = new symmetriccrypto();
+    
+    Key key;
     /**
      * Creates new form ManagerCustomerView
      */
-    public ManagePatientView() throws FileNotFoundException {
+    public ManagePatientView() throws FileNotFoundException, Exception {
         initComponents();
         loadTable();
     }
     
-    private void loadTable(){
+    public static String removePadding(String s) {
+    // Check for padding characters at the end of the string
+    if (s.charAt(s.length() - 1) == '=') {
+        // Count the number of padding characters
+        int numPadding = 0;
+        for (int i = s.length() - 1; s.charAt(i) == '='; i--) {
+            numPadding++;
+        }
+
+        // Strip the padding characters from the string
+        s = s.substring(0, s.length() - numPadding);
+    }
+
+    return s;
+}
+    
+    private void loadTable() throws Exception{
 
         model = new DefaultTableModel(){
             @Override
@@ -54,6 +84,23 @@ public class ManagePatientView extends javax.swing.JFrame {
         model.addColumn("Current Disease");
         model.addColumn("Current Medication Plan");
 
+        try {
+            BufferedReader brTest = new BufferedReader(new FileReader("test1.txt"));
+            String data = brTest .readLine();
+            System.out.println("DATA"+data);
+            byte[] b = Base64.getDecoder().decode(data);
+//            System.out.println("BYTE"+Arrays.toString(b));
+//            System.out.println("TEST_1");
+//            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(b);
+//            System.out.println("TEST_2");
+//            privateKey = KeyFactory.getInstance("RSA").generatePrivate(spec);
+            key = new SecretKeySpec(b,0,b.length, "AES");
+        } catch (Exception e) {
+            e.printStackTrace();
+         }
+        
+        
+        
         ArrayList<Patient> appList = new ArrayList<>();
 
 
@@ -72,38 +119,71 @@ public class ManagePatientView extends javax.swing.JFrame {
             JSONArray dataList = (JSONArray) innerBlock.get("tranxlist");
             for (Object c : dataList)
             {
+                System.out.println("TEST_4");
                 String dataArray = c.toString();
+                System.out.println("DataARRAY : "+ dataArray);
                 dataArray = dataArray.replaceAll("[{}]", "");
                 dataArray = dataArray.replaceAll("\"", "");
                 System.out.println("DATA ARRAY: "+dataArray);
                 patientDataArray = dataArray.split(",");
+                
+                System.out.println("TEST_5");
                 String preExistingConditionToSplit = patientDataArray[0];
                 String[] preExistingConditionSplit = preExistingConditionToSplit.split(":");
                 String preExistingCondition = preExistingConditionSplit[1];
+                
+               
                 String phoneNumberToSplit = patientDataArray[1];
                 String[] phoneNumberSplit = phoneNumberToSplit.split(":");
+                System.out.println("Phone Number "+phoneNumberSplit[1]);
                 String phoneNumber = phoneNumberSplit[1];
+                System.out.println("Phone Number "+phoneNumber);
+                String pNReturn  = symm.decrypt(phoneNumber, key);
+                phoneNumber = pNReturn;
+
+                
+                
                 String genderToSplit = patientDataArray[2];
                 String[] genderSplit = genderToSplit.split(":");
                 String gender = genderSplit[1];
+                
                 String LnameToSplit = patientDataArray[3];
                 String[] LnameSplit = LnameToSplit.split(":");
                 String Lname = LnameSplit[1];
+                String LnReturn  = symm.decrypt(Lname, key);
+                Lname = LnReturn;
+                
                 String currentMedPlanToSplit = patientDataArray[4];
                 String[] currentMedPlanSplit = currentMedPlanToSplit.split(":");
                 String currentMedicationPlan = currentMedPlanSplit[1];
                 String disabilityToSplit = patientDataArray[5];
                 String[] disabilitySplit = disabilityToSplit.split(":");
                 String disability = disabilitySplit[1];
+                
                 String ICToSplit = patientDataArray[6];
                 String[] ICSplit = ICToSplit.split(":");
                 String IC = ICSplit[1];
+                System.out.println("IC : "+IC);
+                String IdReturn  = symm.decrypt(IC, key);
+                IC = IdReturn;
+                
+                
+                
                 String IDToSplit = patientDataArray[7];
                 String[] IDSplit = IDToSplit.split(":");
                 String ID = IDSplit[1];
+
+                
+                System.out.println("TEST_6");
                 String FnameToSplit = patientDataArray[8];
                 String[] FnameSplit = FnameToSplit.split(":");
                 String Fname = FnameSplit[1];
+                System.out.println("TEST_8");
+                System.out.println("FNAME : "+Fname);
+                String FnReturn  = symm.decrypt(Fname, key);
+                Fname = FnReturn;
+
+                
                 String bloodTypeToSplit = patientDataArray[9];
                 String[] bloodTypeSplit = bloodTypeToSplit.split(":");
                 String bloodType = bloodTypeSplit[1];
@@ -342,7 +422,11 @@ public class ManagePatientView extends javax.swing.JFrame {
 
     private void btnViewAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAllActionPerformed
 
-        loadTable();
+        try {
+            loadTable();
+        } catch (Exception ex) {
+            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnViewAllActionPerformed
 
     private void btnAddAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAppActionPerformed
@@ -463,6 +547,8 @@ public class ManagePatientView extends javax.swing.JFrame {
                 try {
                     new ManagePatientView().setVisible(true);
                 } catch (FileNotFoundException ex) {
+                    Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
                     Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

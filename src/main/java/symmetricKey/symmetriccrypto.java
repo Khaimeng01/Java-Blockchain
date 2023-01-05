@@ -44,29 +44,28 @@ public symmetriccrypto() {
 }
 
 public String encrypt(String data, Key key) throws Exception {
+        System.out.println("B_1");
 	String cipherText = null;
+        System.out.println("B_2");
 	// init
+        System.out.println("B_3");
 	cipher.init(Cipher.ENCRYPT_MODE, key);
 	// encrypt
+        System.out.println("B_4");
 	byte[] cipherBytes = cipher.doFinal(data.getBytes());
 	// convert to string
+        System.out.println("B_5");
 	cipherText = Base64.getEncoder().encodeToString(cipherBytes);
 	return cipherText;
 }
 
 public String decrypt(String cipherText, Key key) throws Exception {
         // init
-        System.out.println("B_1");
         cipher.init(Cipher.DECRYPT_MODE, key);
         // convert to byte[]
-        System.out.println("B_2");
         byte[] cipherBytes = Base64.getDecoder().decode(cipherText);
         // decrypt
-        System.out.println("B_3");
         byte[] dataBytes = cipher.doFinal(cipherBytes);
-        System.out.println("B_4");
-//        String a =Base64.getEncoder().encodeToString(dataBytes);
-//        System.out.println("String A : "+a);
         return new String(dataBytes);
 //        System.out.println("B_1");
 //	// init

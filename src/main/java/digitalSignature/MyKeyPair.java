@@ -27,7 +27,7 @@ import java.util.Base64;
  * @author laikh
  */
 public class MyKeyPair {
-    private static final String algorithm = "RSA";
+    private static final String algorithm = "AES";
 
 	
 	private KeyPairGenerator keygen;

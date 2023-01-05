@@ -170,6 +170,9 @@ public class RegisterScreen extends javax.swing.JFrame {
         }
         
         symmetriccrypto symm = new symmetriccrypto();
+        
+        
+        //HERE
         Key key = randomsecretkey.create();
         System.out.println("Real KEY : "+key.toString()+"\t"+key.getAlgorithm()+"\t"+key.getFormat());
         System.out.println("key: "+ Base64.getEncoder().encodeToString(key.getEncoded()));

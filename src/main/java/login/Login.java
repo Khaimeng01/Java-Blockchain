@@ -34,9 +34,12 @@ public class Login {
     }
 
     public boolean verify() {
+        System.out.println("INSIDE");
         String row, txtUsername, txtPassword,row1;
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
+            System.out.println("A1");
             br.readLine();
+             System.out.println("A2");
             while ((row = br.readLine()) != null) {
                 String[] field = row.split("\\|\\|");
                 txtUsername = field[0];

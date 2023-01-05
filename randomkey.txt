@@ -1,4 +1,2 @@
 Username||Key
-admin||TguQIHGXddZW/CxqkmeajzybVt/sVH4vDyyH7etuNKs=
-wong||DjqMCdc0B1fKuDM3EeB48ZrcoHONNqzEiacSKtIISss=
-lai||VDqZH0lUU6rkfQCfgqISmM3nsVIdOiBoSLxhVa8keCw=
+lai||NzEPqqmIP84iYgp/NyFCgunH9ybB5RoJb9Adu+2Q4pU=

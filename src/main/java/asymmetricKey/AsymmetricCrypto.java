@@ -19,12 +19,12 @@ import javax.crypto.NoSuchPaddingException;
 public class AsymmetricCrypto {
     
     private Cipher cipher;
+    private static final String algo = "AES";
+//    public AsymmetricCrypto(){
+//        this("RSA");
+//    }
 
-    public AsymmetricCrypto(){
-        this("RSA");
-    }
-
-    public AsymmetricCrypto(String algo) {
+    public AsymmetricCrypto() {
        
         try {   
             cipher = Cipher.getInstance(algo);
@@ -43,10 +43,14 @@ public class AsymmetricCrypto {
 
    //decryption
     public String decrypt (String ciphertext, PrivateKey key) throws Exception {
+        System.out.println("B_1");
         String origin = "";
         cipher.init(Cipher.DECRYPT_MODE, key);
+        System.out.println("B_2");
         byte[] cipherBytes = Base64.getDecoder().decode(ciphertext);
-        origin = new String(cipher.doFinal(cipherBytes));
-        return origin;
+        System.out.println("B_3");
+        byte[] dataBytes=(cipher.doFinal(cipherBytes));
+        System.out.println("B_4");
+        return new String(dataBytes);
     }
 } 

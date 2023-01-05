@@ -17,12 +17,12 @@ public class PredefinedCharsSecretKey {
     	/**
 	 * symmetric algorithm
 	 */
-	private static final String ASYMM_ALGORITHM = "RSA";
+	private static final String ASYMM_ALGORITHM = "AES";
 	
 	/**
 	 * predefined chars (secret)
 	 */
-	private static final String SECRET_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	private static final String SECRET_CHARS = "abcdefghijklmnop";
 
 	public static SecretKeySpec create()    
 	{

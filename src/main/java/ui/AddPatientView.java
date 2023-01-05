@@ -1,6 +1,7 @@
 package ui;
 
 import asymmetricKey.AsymmetricCrypto;
+import asymmetricKey.PredefinedCharsSecretKey;
 import asymmetricKey.keyMaker;
 import com.mycompany.core.Block;
 import com.mycompany.core.Blockchain;
@@ -9,15 +10,22 @@ import java.rmi.registry.Registry;
 import javax.swing.JOptionPane;
 import com.mycompany.core.Patient;
 import com.mycompany.core.TranxCollection;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.security.Key;
 import java.security.PublicKey;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import symmetricKey.randomsecretkey;
+import symmetricKey.symmetriccrypto;
 
 public class AddPatientView extends javax.swing.JFrame {
 
-            static final String MASTER_DIR = "master";
+        static final String MASTER_DIR = "master";
         static final String MASTER_BINARY = MASTER_DIR+"/mychain";
         
         
@@ -26,6 +34,18 @@ public class AddPatientView extends javax.swing.JFrame {
      */
     public AddPatientView() {
         initComponents();
+    }
+    
+    public static void addtoFile(byte[] keyBytes){
+        
+        String a = Base64.getEncoder().encodeToString(keyBytes);
+        try (BufferedWriter bwUser = new BufferedWriter(new FileWriter("test1.txt", true))) {
+            bwUser.write( a );
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -290,15 +310,25 @@ public class AddPatientView extends javax.swing.JFrame {
             new ManagePatientView().setVisible(true);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(AddPatientView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }   catch (Exception ex) {
+                Logger.getLogger(AddPatientView.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddProductActionPerformed
         String data = "";
         PublicKey publicKey = null;
         
+        
+        //AS KEYS
         keyMaker ky = new keyMaker();
         AsymmetricCrypto as = new AsymmetricCrypto();
+        
+        
+        //New
+        Key key = null;
+        PredefinedCharsSecretKey predefinedcharsecretKey = new PredefinedCharsSecretKey();
+        symmetriccrypto symm = new symmetriccrypto();
         
         if(txtID.getText().equals("")||txtFName.getText().equals("")
                 ||txtLName.getText().equals("")||txtIC.getText().equals("")||txtPhoneNumber.getText().equals("")
@@ -331,27 +361,51 @@ public class AddPatientView extends javax.swing.JFrame {
 //        }
         
         
+//        try{
+//            File file = new File(MASTER_DIR);
+//            if (file.exists() && file.isFile()) {
+//                Fname = as.encrypt(Fname, publicKey);
+//                Lname = as.encrypt(Lname, publicKey);
+//                IC = as.encrypt(IC, publicKey);
+//                phoneNumber = as.encrypt(phoneNumber, publicKey);
+//            } else {
+//                
+//                publicKey = ky.aSCreate();
+//                Fname = as.encrypt(Fname, publicKey);
+//                Lname = as.encrypt(Lname, publicKey);
+//                IC = as.encrypt(IC, publicKey);
+//                phoneNumber = as.encrypt(phoneNumber, publicKey);
+//            }
+//        } catch (Exception e) {
+//            System.out.print(e);
+//        }
+        
         try{
             File file = new File(MASTER_DIR);
             if (file.exists() && file.isFile()) {
-                Fname = as.encrypt(Fname, publicKey);
-                Lname = as.encrypt(Lname, publicKey);
-                IC = as.encrypt(IC, publicKey);
-                phoneNumber = as.encrypt(phoneNumber, publicKey);
+                Fname = symm.encrypt(Fname, key);
+                Lname = symm.encrypt(Lname, key);
+                IC = symm.encrypt(IC, key);
+                phoneNumber = symm.encrypt(phoneNumber, key);
             } else {
-                publicKey = ky.aSCreate();
-                Fname = as.encrypt(Fname, publicKey);
-                Lname = as.encrypt(Lname, publicKey);
-                IC = as.encrypt(IC, publicKey);
-                phoneNumber = as.encrypt(phoneNumber, publicKey);
+                key = randomsecretkey.create();
+//                key = predefinedcharsecretKey.create();
+                Fname = symm.encrypt(Fname, key);
+                Lname = symm.encrypt(Lname, key);
+                IC = symm.encrypt(IC, key);
+                phoneNumber = symm.encrypt(phoneNumber, key);
+                addtoFile(key.getEncoded());
             }
         } catch (Exception e) {
             System.out.print(e);
         }
         
+        
+        
+        
         Patient p;
         p = new Patient(ID,Fname,Lname,IC,phoneNumber,gender, bloodType, disability,preExistingCondition,currentDisease, currentMedicationPlan);
-        System.out.println(p);
+        System.out.println(p.toString());
         
         Blockchain bc = Blockchain.getInstance(MASTER_BINARY);
         if ( !( new File(MASTER_DIR).exists() ) ) {
