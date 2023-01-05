@@ -192,25 +192,68 @@ public class ManagePatientView extends javax.swing.JFrame {
 //            Map data = gson.fromJson(reader, Map.class);
             System.out.println("DATA 5/1/2023 "+list);
             //For Loop
-            String jsonString = String.valueOf(list.get(0));
-            String jsonString_1 = String.valueOf(list.get(1));
-            int startIndex = jsonString.indexOf("tranxlist");
-            int endIndex = jsonString.lastIndexOf("]");
-            
+            for (int i=0; i<list.size();i++){
+                String jsonString = String.valueOf(list.get(i));
+                int startIndex = jsonString.indexOf("tranxlist=[");
+                int endIndex = jsonString.lastIndexOf("]");
+                String tranxlistString = jsonString.substring(startIndex, endIndex + 1);
+                tranxlistString = tranxlistString.replaceAll("[{}]", "");
+                tranxlistString = tranxlistString.replaceAll("\\[", "").replaceAll("\\]", "");
+                tranxlistString = tranxlistString.replace("tranxlist=", "");
+                System.out.println("Final tranxlistString: "+tranxlistString);
+                patientDataArray = tranxlistString.split(",");
+                System.out.println("patientdatarray: "+patientDataArray);
+                
+                String IDToSplit = patientDataArray[0];
+                System.out.println("IDToSplit: "+IDToSplit);
+                String[] IDSplit = IDToSplit.split("=");
+                System.out.println("IDToSplit: "+IDSplit[1]);
+                String ID = IDSplit[1];
+                System.out.println("ID: "+ID);
+                
+                String FnameToSplit = patientDataArray[1];
+                String Fname =  FnameToSplit.replace("Fname=", "");
+                System.out.println("Fname: "+Fname);
+                
+                String LnameToSplit = patientDataArray[2];
+                String Lname =  LnameToSplit.replace("Lname=", "");
+                System.out.println("Lname: "+Lname);
+                
+                String ICToSplit = patientDataArray[3];
+                String IC =  ICToSplit.replace("IC=", "");
+                System.out.println("IC: "+IC);
+                
+                String phoneNumberToSplit = patientDataArray[4];
+                String phoneNumber =  phoneNumberToSplit.replace("phoneNumber=", "");
+                System.out.println("phoneNumber: "+phoneNumber);
+                
+                String genderToSplit = patientDataArray[5];
+                String gender =  genderToSplit.replace("gender=", "");
+                System.out.println("gender: "+gender);
+                
+                String bloodTypeToSplit = patientDataArray[6];
+                String bloodType =  bloodTypeToSplit.replace("bloodType=", "");
+                System.out.println("bloodType: "+bloodType);
+                
+                String disabilityToSplit = patientDataArray[7];
+                String disability =  disabilityToSplit.replace("disability=", "");
+                System.out.println("disability: "+disability);
+                
+                String preExistingConditionToSplit = patientDataArray[8];
+                String preExistingCondition =  preExistingConditionToSplit.replace("preExistingCondition=", "");
+                System.out.println("preExistingCondition: "+preExistingCondition);
+                
+                String currentDiseaseToSplit = patientDataArray[9];
+                String currentDisease =  currentDiseaseToSplit.replace("currentDisease=", "");
+                System.out.println("currentDisease: "+currentDisease);
+                
+                String currentMedPlanToSplit = patientDataArray[10];
+                String currentMedPlan =  currentMedPlanToSplit.replace("currentMedicationPlan=", "");
+                System.out.println("currentMedPlan: "+currentMedPlan);
+                appList.add(new Patient(ID,Fname,Lname,IC,phoneNumber,gender,bloodType,disability,preExistingCondition, 
+                currentDisease,currentMedPlan));
+            }
 
-           String tranxlistString = jsonString.substring(startIndex, endIndex + 1);
-           System.out.println("tranxlistString : "+tranxlistString);
-           System.out.println("tranxlistString_Second Power : "+jsonString_1);
-           
-           tranxlistString = tranxlistString.replaceAll("[{}]", "");
-           System.out.println("tranxlistString_2"+tranxlistString);
-           tranxlistString = tranxlistString.replaceAll("\\[", "").replaceAll("\\]", "");
-           System.out.println("tranxlistString_3"+tranxlistString);
-           tranxlistString = tranxlistString.replace("tranxlist=", "");
-           testArray = tranxlistString.split(",");
-           System.out.println("TestArray"+Arrays.toString(testArray));
-           String a = testArray[0];
-           System.out.println("String A "+a);
 //           JSONArray array = (JSONArray) parser.parse(new FileReader("myLedgerFile.json"));
 //            
 //            for (Object o : array)
@@ -475,50 +518,47 @@ public class ManagePatientView extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(82, 82, 82)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 935, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 23, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnAddApp, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnViewAll, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnMainMenu)
-                        .addGap(112, 112, 112))))
+                    .addComponent(btnAddApp, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnViewAll, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnMainMenu)
+                .addGap(112, 112, 112))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSearch)
                 .addGap(76, 76, 76))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(381, 381, 381)
                 .addComponent(jLabel1)
-                .addGap(275, 275, 275))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(15, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearch))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnViewAll)
                         .addGap(18, 18, 18)
                         .addComponent(btnAddApp)
                         .addGap(27, 27, 27))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnMainMenu)
                         .addGap(50, 50, 50))))
         );

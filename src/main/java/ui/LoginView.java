@@ -85,13 +85,13 @@ public class LoginView extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(153, 153, 153));
         jLabel2.setText("Username");
         Wallpaper.add(jLabel2);
-        jLabel2.setBounds(150, 210, 90, 24);
+        jLabel2.setBounds(150, 210, 90, 23);
 
         jLabel3.setFont(new java.awt.Font("Unispace", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(153, 153, 153));
         jLabel3.setText("Password");
         Wallpaper.add(jLabel3);
-        jLabel3.setBounds(470, 210, 90, 24);
+        jLabel3.setBounds(470, 210, 90, 23);
 
         txtUsername.setFont(new java.awt.Font("Unispace", 0, 18)); // NOI18N
         Wallpaper.add(txtUsername);
