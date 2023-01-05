@@ -27,15 +27,29 @@ public class ManageAppointmentView extends javax.swing.JFrame {
     DefaultTableModel model;
     Appointment currentApp;
     private static final String FILEHEADER = "ID||Date||PatientID||DoctorName||DepartmentName||DigitalSignature" + System.lineSeparator();
+    private static final String FILEHEADER_2 = "patientID||DigitalSignature" + System.lineSeparator();
     MySignature sig = new MySignature();
     PublicKey publicKey ;
     boolean validity;
+    digitalSignature ds;
     /**
      * Creates new form ManagerCustomerView
      */
     public ManageAppointmentView() {
         initComponents();
         loadTable();
+    }
+    
+    public class digitalSignature{
+        String patientId;
+        String digitalSignature;
+
+        public digitalSignature(String patientId, String digitalSignature) {
+            this.patientId = patientId;
+            this.digitalSignature = digitalSignature;
+        }
+        
+        
     }
     
     public void keyFinder(String patientId){
@@ -366,7 +380,6 @@ public class ManageAppointmentView extends javax.swing.JFrame {
                    currentApp = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);
                 }
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -389,6 +402,41 @@ public class ManageAppointmentView extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        try (BufferedReader br = new BufferedReader(new FileReader("DigitalSignature.txt"))) {
+            while((row = br.readLine())!= null){
+                String[] str = row.split("\\|\\|");
+                String patientID = str[0];
+                String crypted = str[1];
+                if(appID.equals(str)){
+                    ds = new digitalSignature(patientID,crypted);
+//                   currentApp = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        try (BufferedReader br = new BufferedReader(new FileReader("DigitalSignature.txt"))) {
+            String fileData = "";
+            br.readLine();
+            while ((row = br.readLine()) != null) {
+                String[] data = row.split("\\|\\|");
+                String txtId = data[0];
+                if (!(appID.equals(txtId))) {
+                    fileData += row + System.lineSeparator();
+                }
+            }
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter("DigitalSignature.txt"))){
+                bw.write(FILEHEADER_2);
+                bw.write(fileData);
+            }          
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         //new UserProfileManager().deleteUser(new UserProfileLoader().createSalesExec(customerId));
         
         loadTable();
