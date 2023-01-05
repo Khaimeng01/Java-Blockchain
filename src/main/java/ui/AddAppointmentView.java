@@ -4,11 +4,19 @@ import com.mycompany.core.Appointment;
 import javax.swing.JOptionPane;
 import static digitalSignature.MyKeyPair.dSCreate;
 import digitalSignature.MySignature;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.PrivateKey;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,26 +37,84 @@ public class AddAppointmentView extends javax.swing.JFrame {
         txtID.setEnabled(false);
     }
     
-   public int autoIdCounter(){
-       int count = 0;
-       try{  
-           File file = new File(FILENAME);
-           if (file.exists()){
-                Scanner sc = new Scanner(FILENAME);
-                while(sc.hasNextLine()) {
-                    sc.nextLine();
-                    count++;
+    public static String generateId(String start) {
+        String prevId = null;
+        String currentId;
+        int id;
+        try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
+            String row;
+            br.readLine();
+            while ((row = br.readLine()) != null) {
+                    String[] data = row.split("\\|\\|");
+                    prevId = data[0];
                 }
-                //count +=1;
-            }else{
-               count = 1;
-           }
-       }catch(Exception e ){
-           e.getStackTrace();
-       }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if ((prevId != null)&&!(prevId.equals(""))) {
+            prevId = prevId.replaceFirst(start, "");
+            prevId = prevId.replaceFirst("0+(?!$)", "");
+            prevId = prevId.replaceFirst("AP", "");
+            id = Integer.parseInt(prevId);
+            id += 1;
+            currentId = start + String.format("%03d", id);
+            return currentId;
+        }else {
+            return start + "001";
+        }
+    }
+    
+    
+   //public int autoIdCounter(){
+       //int count = 0;
+       //try{  
+           //File rootFolder = new File(FILENAME);
+           //int countNumber = getDataFromAppointmentIDTxt();
+           //count = countNumber-1;
+           //String counterNumber = String.format("%04d",countNumber); //Adding leading zeros
+           //System.out.println("%03d::" + counterNumber);
+           
+           //Scanner scanner = new Scanner(System.in);
+           
+           //for (File file : rootFolder.listFiles()) {
+                //Path path = Paths.get(file.getAbsolutePath());
+                //List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+                //if(file.getAbsolutePath().contains("ID")) {
+                    //lines.add(count, counterNumber);
+            //}        
+            //Files.write(path, lines, StandardCharsets.UTF_8);
+        //} 
+           
+       //} catch(IOException e ){
+           //e.getStackTrace();
+       //}
        
-       return count;
-   }
+       //return count;
+   //}
+   
+   //public static Integer getDataFromAppointmentIDTxt() throws IOException {
+        //String text = ""; 
+        //try { 
+            //text = new String(Files.readAllBytes(Paths.get(FILENAME)));
+            //if(!text.isEmpty()) {
+                //String[] arr = text.split("[\\r\\n]+"); //To get all countnumbers in Array           
+                //Integer lastId = Integer.valueOf(arr[arr.length-1]);
+                //return ++lastId;
+            //}
+            //else{
+                //return 1;
+            //}           
+        //} 
+        //catch (IOException e) { 
+            //e.printStackTrace();
+            //throw e;
+        //}
+    //}
+   
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -213,7 +279,8 @@ public class AddAppointmentView extends javax.swing.JFrame {
             return; 
         }
         
-        String ID = "AP"+ Integer.toString(autoIdCounter());
+        String id = "";
+        String ID = "AP"+ (generateId(id));
         txtID.getText();
         String date = txtDate.getText();
         String patientID = txtLPatientID.getText();

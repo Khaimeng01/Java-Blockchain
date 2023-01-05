@@ -20,6 +20,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.Base64;
+import javax.crypto.KeyGenerator;
 
 
 /**
@@ -27,7 +28,7 @@ import java.util.Base64;
  * @author laikh
  */
 public class MyKeyPair {
-    private static final String algorithm = "AES";
+    private static final String algorithm = "RSA";
 
 	
 	private KeyPairGenerator keygen;
@@ -45,7 +46,7 @@ public class MyKeyPair {
 
 	public MyKeyPair() {
 		try {
-			keygen = KeyPairGenerator.getInstance(algorithm);
+			keygen = KeyPairGenerator.getInstance("RSA");
 			keygen.initialize(1024);
 		} catch (Exception e) {
 			e.printStackTrace();
