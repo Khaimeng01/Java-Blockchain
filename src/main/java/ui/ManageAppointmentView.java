@@ -8,15 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -66,21 +62,11 @@ public class ManageAppointmentView extends javax.swing.JFrame {
                     publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
                 }
             }
-                 
-//            System.out.println("BYTE"+Arrays.toString(b));
-//            System.out.println("TEST_1");
-//            X509EncodedKeySpec spec = new X509EncodedKeySpec(b);
-//            System.out.println("TEST_2");
-//            publicKey = KeyFactory.getInstance("RSA").generatePublic(spec);
-//            System.out.println("TEST_3");
-//            System.out.println("Publickey"+publicKey);
         } catch (Exception e) {
             System.out.println("FAILURE");
         }
     }
-    
-    
-    
+
     private void loadTable(){
 
         model = new DefaultTableModel(){
@@ -128,10 +114,7 @@ public class ManageAppointmentView extends javax.swing.JFrame {
             String department = appList.get(i).getDepartmentName();
             String digitalSignature = appList.get(i).getDigitalSignature();
             
-//             a = new Appointment(ID,date, patientID, doctorName, departmentName);
-            
             Appointment newAppointment = new Appointment(ID,appDate,patientID,doctorName,department);
-//            System.out.println("Appoitment : "+ID+","+appDate+","+patientID+","+doctorName+","+department+","+digitalSignature);
             System.out.println("POWER "+newAppointment.toString());
            
             try {
@@ -210,34 +193,14 @@ public class ManageAppointmentView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnViewAll = new javax.swing.JButton();
-        btnEditApp = new javax.swing.JButton();
         btnDeleteApp = new javax.swing.JButton();
         btnMainMenu = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAppointment = new javax.swing.JTable();
         btnAddApp = new javax.swing.JButton();
-        txtSearch = new javax.swing.JTextField();
-        btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btnViewAll.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
-        btnViewAll.setText("View All Appointments");
-        btnViewAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewAllActionPerformed(evt);
-            }
-        });
-
-        btnEditApp.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
-        btnEditApp.setText("Edit Selected Appointment");
-        btnEditApp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditAppActionPerformed(evt);
-            }
-        });
 
         btnDeleteApp.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
         btnDeleteApp.setText("Delete Selected Appointment");
@@ -285,14 +248,6 @@ public class ManageAppointmentView extends javax.swing.JFrame {
             }
         });
 
-        btnSearch.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
-        btnSearch.setText("Search");
-        btnSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -301,23 +256,15 @@ public class ManageAppointmentView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(17, 17, 17)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 818, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(73, 73, 73)
-                                .addComponent(btnSearch))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 818, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(btnDeleteApp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnViewAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnAddApp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(btnMainMenu)
-                                        .addGap(62, 62, 62))
-                                    .addComponent(btnEditApp, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                                .addComponent(btnMainMenu)
+                                .addGap(61, 61, 61))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(190, 190, 190)
                         .addComponent(jLabel1)))
@@ -325,37 +272,26 @@ public class ManageAppointmentView extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnViewAll)
-                    .addComponent(btnEditApp))
-                .addGap(22, 22, 22)
-                .addComponent(btnAddApp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDeleteApp)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(459, Short.MAX_VALUE)
-                .addComponent(btnMainMenu)
-                .addGap(27, 27, 27))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAddApp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDeleteApp)
+                        .addGap(27, 27, 27))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnMainMenu)
+                        .addGap(49, 49, 49))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnViewAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAllActionPerformed
-
-        loadTable();
-    }//GEN-LAST:event_btnViewAllActionPerformed
 
     private void btnDeleteAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteAppActionPerformed
 
@@ -448,80 +384,11 @@ public class ManageAppointmentView extends javax.swing.JFrame {
         new AddAppointmentView().setVisible(true);
     }//GEN-LAST:event_btnAddAppActionPerformed
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-
-        String search = txtSearch.getText();
-        try {
-            loadTable(search);
-        } catch (IOException ex) {
-            Logger.getLogger(ManageAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnSearchActionPerformed
-
     private void btnMainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMainMenuActionPerformed
 
         this.dispose();
         new MenuView().setVisible(true);
     }//GEN-LAST:event_btnMainMenuActionPerformed
-
-    private void btnEditAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditAppActionPerformed
-
-        if(tblAppointment.getSelectedRow() == -1){
-            JOptionPane.showMessageDialog(this, "Please select an appointment to edit!");
-            return;
-        }
-        this.dispose();
-        int rowSelect = tblAppointment.getSelectedRow();
-        String appID = (String)model.getValueAt(rowSelect, 0);
-        String row;      
-        try (BufferedReader br = new BufferedReader(new FileReader(APPFILENAME))) {
-            while((row = br.readLine())!= null){
-                String[] str = row.split("\\|\\|");
-                String ID = str[0];
-                String date = str[1];
-                String patientID = str[3];
-                String doctorName = str[3];
-                String departmentName = str[4];
-                String digitalSignature = str[5];
-                
-                if(appID.equals(ID)){
-                   currentApp = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);
-                }
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        new EditAppointmentView(currentApp).setVisible(true);
-//        try (BufferedReader br = new BufferedReader(new FileReader(APPFILENAME))) {
-//            String row;
-//            String fileData = "";
-//            br.readLine();
-//            while ((row = br.readLine()) != null) {
-//                String[] data = row.split("\\|\\|");
-//                String ID = data[0];
-//                String date = data[1];
-//                String patientID = data[2];
-//                String doctorName = data[3];
-//                String departmentName = data[4];
-//                Appointment c = new Appointment(ID,date,patientID,doctorName,departmentName);
-//                if (appID.equals(ID)) {
-//                    fileData += c.getID() + "||" + c.getDate() + "||" + c.getPatientID() + "||"
-//                    + c.getDoctorName() + "||" + c.getDepartmentName() + System.lineSeparator();
-//                } else {
-//                    fileData += row + System.lineSeparator();
-//                }
-//            }
-//            try(BufferedWriter bw = new BufferedWriter(new FileWriter(APPFILENAME))){
-//                bw.write(fileData);
-//            }
-//            
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }//GEN-LAST:event_btnEditAppActionPerformed
 
     /**
      * @param args the command line arguments
@@ -592,13 +459,9 @@ public class ManageAppointmentView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddApp;
     private javax.swing.JButton btnDeleteApp;
-    private javax.swing.JButton btnEditApp;
     private javax.swing.JButton btnMainMenu;
-    private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnViewAll;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblAppointment;
-    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

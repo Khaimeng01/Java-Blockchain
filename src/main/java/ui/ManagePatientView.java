@@ -4,29 +4,23 @@ import asymmetricKey.AsymmetricCrypto;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.mycompany.core.Appointment;
-import com.mycompany.core.Block;
-import com.mycompany.core.Blockchain;
 import com.mycompany.core.Header;
 import digitalSignature.MySignature;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import com.mycompany.core.Patient;
-import com.mycompany.core.TranxCollection;
+import com.mycompany.hashing.Hasher;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.security.Key;
-import java.security.KeyFactory;
 import java.security.PrivateKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.LinkedList;
@@ -34,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import symmetricKey.symmetriccrypto;
@@ -42,8 +35,10 @@ import org.json.simple.JSONObject;
 
 public class ManagePatientView extends javax.swing.JFrame {
     String LEDGERFILENAME = "myLedgerFile.txt";
-    String MASTER_DIR = "tempMaster";
-    String MASTER_BINARY = MASTER_DIR+"/mychain";
+    static final String MASTER_DIR = "tempMaster";
+    static final String MASTER_BINARY = MASTER_DIR+"/mychain";
+    private Hasher hasher = new Hasher();
+    
     DefaultTableModel model;
     //Appointment currentApp;
     String[] patientDataArray;
@@ -65,21 +60,50 @@ public class ManagePatientView extends javax.swing.JFrame {
         loadTable();
     }
     
-    public static String removePadding(String s) {
-    // Check for padding characters at the end of the string
-    if (s.charAt(s.length() - 1) == '=') {
-        // Count the number of padding characters
-        int numPadding = 0;
-        for (int i = s.length() - 1; s.charAt(i) == '='; i--) {
-            numPadding++;
+//    public static String removePadding(String s) {
+//    // Check for padding characters at the end of the string
+//        if (s.charAt(s.length() - 1) == '=') {
+//            // Count the number of padding characters
+//            int numPadding = 0;
+//            for (int i = s.length() - 1; s.charAt(i) == '='; i--) {
+//                numPadding++;
+//            }
+//
+//            // Strip the padding characters from the string
+//            s = s.substring(0, s.length() - numPadding);
+//        }
+//
+//        return s;
+//    }
+    
+    public static void addtoFile(byte[] keyBytes){
+        
+        String a = Base64.getEncoder().encodeToString(keyBytes);
+        try (BufferedWriter bwUser = new BufferedWriter(new FileWriter("ledgerkey.txt", true))) {
+            bwUser.write( a );
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        // Strip the padding characters from the string
-        s = s.substring(0, s.length() - numPadding);
     }
-
-    return s;
-}
+    
+    public  void retriveKey(){
+            try {
+                BufferedReader brTest = new BufferedReader(new FileReader("ledgerkey.txt"));
+                String data = brTest .readLine();
+                System.out.println("DATA"+data);
+                byte[] b = Base64.getDecoder().decode(data);
+    //            System.out.println("BYTE"+Arrays.toString(b));
+    //            System.out.println("TEST_1");
+    //            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(b);
+    //            System.out.println("TEST_2");
+    //            privateKey = KeyFactory.getInstance("RSA").generatePrivate(spec);
+                key = new SecretKeySpec(b,0,b.length, "AES");
+            }catch (Exception e) {
+            e.printStackTrace();
+            }
+    }
     
     private void loadTable() throws Exception{
 
@@ -103,10 +127,10 @@ public class ManagePatientView extends javax.swing.JFrame {
 
         
         //Delete Later
-            File file = new File("test1.txt");
+            File file = new File("ledgerkey.txt");
             if (file.exists()) {
                 try {
-                    BufferedReader brTest = new BufferedReader(new FileReader("test1.txt"));
+                    BufferedReader brTest = new BufferedReader(new FileReader("ledgerkey.txt"));
                     String data = brTest .readLine();
                     System.out.println("DATA"+data);
                     byte[] b = Base64.getDecoder().decode(data);
@@ -120,19 +144,15 @@ public class ManagePatientView extends javax.swing.JFrame {
                     e.printStackTrace();
                 }
             }
-            
 
-       
-        
-        
-        
         ArrayList<Patient> appList = new ArrayList<>();
         LinkedList<Header> headerList = new LinkedList<>();
+        List<String> tempLst = new ArrayList<>();
+        ArrayList<String> merkelRootList = new ArrayList<>();
+        String merkelRoot;
 
 
         JSONParser parser = new JSONParser();
-        
-
 
         //Verify Faulty Block
         try {
@@ -201,6 +221,28 @@ public class ManagePatientView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Blocks in ledger have been checked and is currently secure.");
         }
         
+        //Verify Data
+        try {
+           JSONArray array = (JSONArray) parser.parse(new FileReader("myLedgerFile.json"));
+            
+            for (Object o : array)
+            {
+                JSONObject block = (JSONObject) o;
+                JSONObject tranxs = (JSONObject) block.get("tranxs");
+//                String tranxsString = (String) tranxs.toString();
+//                System.out.println("Tranxs raw: "+tranxsString);
+                merkelRoot = (String) tranxs.get("merkelRoot").toString();
+                System.out.println("Merkleroot from file in first loop: "+merkelRoot);
+                merkelRootList.add(merkelRoot); 
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         File file2 = new File("master\\mychain.bin");
             if (file2.exists()) {
             try {
@@ -229,63 +271,91 @@ public class ManagePatientView extends javax.swing.JFrame {
 
                     String FnameToSplit = patientDataArray[1];
                     String Fname =  FnameToSplit.replace("Fname=", "");
-                    Fname =  Fname.replaceAll("\\s", "");
+                    Fname =  Fname.replaceFirst("\\s", "");
                     System.out.println("Fname: "+Fname);
-                    String FnReturn  = symm.decrypt(Fname, key);
-                    Fname = FnReturn;
+//                    String FnReturn  = symm.decrypt(Fname, key);
+//                    Fname = FnReturn;
 
                     String LnameToSplit = patientDataArray[2];
                     String Lname =  LnameToSplit.replace("Lname=", "");
-                    Lname =  Lname.replaceAll("\\s", "");
+                    Lname =  Lname.replaceFirst("\\s", "");
                     System.out.println("Lname: "+Lname);
-                    String LnReturn  = symm.decrypt(Lname, key);
-                    Lname = LnReturn;
+//                    String LnReturn  = symm.decrypt(Lname, key);
+//                    Lname = LnReturn;
 
                     String ICToSplit = patientDataArray[3];
                     String IC =  ICToSplit.replace("IC=", "");
-                    IC =  IC.replaceAll("\\s", "");
+                    IC =  IC.replaceFirst("\\s", "");
                     System.out.println("IC: "+IC);
-                    String ICReturn  = symm.decrypt(IC, key);
-                    IC = ICReturn;
+//                    String ICReturn  = symm.decrypt(IC, key);
+//                    IC = ICReturn;
 
                     String phoneNumberToSplit = patientDataArray[4];
                     String phoneNumber =  phoneNumberToSplit.replace("phoneNumber=", "");
-                    phoneNumber =  phoneNumber.replaceAll("\\s", "");
+                    phoneNumber =  phoneNumber.replaceFirst("\\s", "");
                     System.out.println("phoneNumber: "+phoneNumber);
-                    String phoneNumberReturn  = symm.decrypt(phoneNumber, key);
-                    phoneNumber = phoneNumberReturn;
+//                    String phoneNumberReturn  = symm.decrypt(phoneNumber, key);
+//                    phoneNumber = phoneNumberReturn;
 
                     String genderToSplit = patientDataArray[5];
                     String gender =  genderToSplit.replace("gender=", "");
-                    gender =  gender.replaceAll("\\s", "");
+                    gender =  gender.replaceFirst("\\s", "");
                     System.out.println("gender: "+gender);
 
                     String bloodTypeToSplit = patientDataArray[6];
                     String bloodType =  bloodTypeToSplit.replace("bloodType=", "");
-                    bloodType =  bloodType.replaceAll("\\s", "");
+                    bloodType =  bloodType.replaceFirst("\\s", "");
                     System.out.println("bloodType: "+bloodType);
 
                     String disabilityToSplit = patientDataArray[7];
                     String disability =  disabilityToSplit.replace("disability=", "");
-                    disability =  disability.replaceAll("\\s", "");
+                    disability =  disability.replaceFirst("\\s", "");
                     System.out.println("disability: "+disability);
 
                     String preExistingConditionToSplit = patientDataArray[8];
                     String preExistingCondition =  preExistingConditionToSplit.replace("preExistingCondition=", "");
-                    preExistingCondition =  preExistingCondition.replaceAll("\\s", "");
+                    preExistingCondition =  preExistingCondition.replaceFirst("\\s", "");
                     System.out.println("preExistingCondition: "+preExistingCondition);
 
                     String currentDiseaseToSplit = patientDataArray[9];
                     String currentDisease =  currentDiseaseToSplit.replace("currentDisease=", "");
-                    currentDisease =  currentDisease.replaceAll("\\s", "");
+                    currentDisease =  currentDisease.replaceFirst("\\s", "");
                     System.out.println("currentDisease: "+currentDisease);
 
                     String currentMedPlanToSplit = patientDataArray[10];
                     String currentMedPlan =  currentMedPlanToSplit.replace("currentMedicationPlan=", "");
-                    currentMedPlan =  currentMedPlan.replaceAll("\\s", "");
+                    currentMedPlan =  currentMedPlan.replaceFirst("\\s", "");
                     System.out.println("currentMedPlan: "+currentMedPlan);
                     appList.add(new Patient(ID,Fname,Lname,IC,phoneNumber,gender,bloodType,disability,preExistingCondition, 
                     currentDisease,currentMedPlan));
+                    tempLst.add(appList.get(i).getID() + appList.get(i).getFname() + appList.get(i).getLname() + 
+                            appList.get(i).getIC() + appList.get(i).getPhoneNumber() + appList.get(i).getGender()
+                            + appList.get(i).getBloodType() + appList.get(i).getDisability() + appList.get(i).getPreExistingCondition()
+                            + appList.get(i).getCurrentDisease() + appList.get(i).getCurrentMedicationPlan());
+                    String tohash = tempLst.get(i).toString();
+                    System.out.println("Merkleroot before hash!!!!!!!!!!!!!!!!!!!! "+tohash);
+                    String merkelRootcheck = hasher.sha256(tohash);
+                    System.out.println("Merkleroot from hash: "+merkelRootcheck);
+                    System.out.println("Merkleroot from file: "+merkelRootList.get(i));
+                    if (merkelRootList.get(i).equals(merkelRootcheck)){
+                        System.out.println("Patient data with ID: " +ID+ " in the ledger have been checked and is currently secure.");
+                        JOptionPane.showMessageDialog(this, "Patient data with ID: " +ID+ " in the ledger have been checked and is currently secure.");
+                    }else{
+                        System.out.println("Patient data with ID: " +ID+ " in the ledger is faulty. It may have been tamepered or corrupted.");
+                        JOptionPane.showMessageDialog(this, "Patient data with ID: " +ID+ " in the ledger is faulty. It may have been tamepered or corrupted.");
+                    }
+                    String FnReturn  = symm.decrypt(Fname, key);
+                    Fname = FnReturn;
+                    String LnReturn  = symm.decrypt(Lname, key);
+                    Lname = LnReturn;
+                    String ICReturn  = symm.decrypt(IC, key);
+                    IC = ICReturn;
+                    String phoneNumberReturn  = symm.decrypt(phoneNumber, key);
+                    phoneNumber = phoneNumberReturn;
+                    appList.get(i).setFname(Fname);
+                    appList.get(i).setLname(Lname);
+                    appList.get(i).setIC(IC);
+                    appList.get(i).setPhoneNumber(phoneNumber);
                 }           
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
@@ -295,32 +365,6 @@ public class ManagePatientView extends javax.swing.JFrame {
             }else{
                 
             }
-
-
-
-        //Verify data in blocks
-//        for (int i = 0; i < appList.size(); i++){
-//            Blockchain bc = Blockchain.getInstance(MASTER_BINARY);
-//            if ( !( new File(MASTER_DIR).exists() ) ) {
-//                /* make a dir if not found */            
-//                new File( MASTER_DIR ).mkdir();
-//            }
-//            if ((appList.get(i).getID()) == "001"){    
-//                TranxCollection tranxs = new TranxCollection();
-//                tranxs.add(appList.get(i));
-//                Block genesisBlock = new Block("0");
-//                genesisBlock.setTranxs(tranxs);
-//                bc.genesisChecker(genesisBlock);
-//            }
-//            else {
-//                TranxCollection tranxs = new TranxCollection();
-//                tranxs.add(appList.get(i));
-//                String prevHash = bc.get().getLast().getHeader().getCurrHash();
-//                Block newBlock = new Block( prevHash );
-//                newBlock.setTranxs(tranxs);
-//                bc.nextBlockChecker(newBlock);
-//            }
-//        }
 
         for(int i = 0; i < appList.size(); i++){
             String ID = appList.get(i).getID();
@@ -338,6 +382,7 @@ public class ManagePatientView extends javax.swing.JFrame {
             model.addRow(data);
         }
         tblAppointment.setModel(model);
+        
     }
     
     private void loadTable(String search) throws FileNotFoundException, IOException{
@@ -358,35 +403,9 @@ public class ManagePatientView extends javax.swing.JFrame {
         model.addColumn("Pre-Existing Condition");
         model.addColumn("Current Disease");
         model.addColumn("Current Medication Plan");
-        
-//        ArrayList<Appointment> appList = new Appointment().loadAppointment(search);
+
         ArrayList<Patient> appList = new ArrayList<>();
-
-
-        JSONParser parser = new JSONParser();
         
-//        try (BufferedReader br = new BufferedReader(new FileReader(LEDGERFILENAME))) {
-//            br.readLine();
-//            String row;
-//            while((row = br.readLine())!= null){
-//                String[] data = row.split("\\|\\|");            
-//                String ID = data[0];
-//                String date = data[1];
-//                String patientID = data[2];
-//                String doctorName = data[3];
-//                String departmentName = data[4];
-//                String digitalSignature = data[5];
-//                Appointment headerContent = new Appointment(ID,date,patientID,doctorName,departmentName,digitalSignature);   
-//                if((headerContent.getID().matches(search+".*"))|| (headerContent.getDate().matches(search+".*")) || (headerContent.getPatientID().matches(search+".*"))
-//                        || (headerContent.getDoctorName().matches(search+".*")) || (headerContent.getDepartmentName().matches(search+".*"))){
-//                    appList.add(headerContent);
-//                }             
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         for(int i = 0; i < appList.size(); i++){
             String ID = appList.get(i).getID();
             String Fname = appList.get(i).getFname();
@@ -414,24 +433,13 @@ public class ManagePatientView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnViewAll = new javax.swing.JButton();
         btnMainMenu = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAppointment = new javax.swing.JTable();
         btnAddApp = new javax.swing.JButton();
-        txtSearch = new javax.swing.JTextField();
-        btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btnViewAll.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
-        btnViewAll.setText("View All Patients");
-        btnViewAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewAllActionPerformed(evt);
-            }
-        });
 
         btnMainMenu.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
         btnMainMenu.setText("Return");
@@ -471,32 +479,16 @@ public class ManagePatientView extends javax.swing.JFrame {
             }
         });
 
-        btnSearch.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
-        btnSearch.setText("Search");
-        btnSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAddApp, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnViewAll, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(83, 83, 83)
+                .addComponent(btnAddApp, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnMainMenu)
                 .addGap(112, 112, 112))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 840, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSearch)
-                .addGap(76, 76, 76))
             .addGroup(layout.createSequentialGroup()
                 .addGap(381, 381, 381)
                 .addComponent(jLabel1)
@@ -511,51 +503,23 @@ public class ManagePatientView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(46, 46, 46)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnViewAll)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAddApp)
-                        .addGap(27, 27, 27))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnMainMenu)
-                        .addGap(50, 50, 50))))
+                    .addComponent(btnMainMenu)
+                    .addComponent(btnAddApp))
+                .addGap(50, 50, 50))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnViewAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAllActionPerformed
-
-        try {
-            loadTable();
-        } catch (Exception ex) {
-            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnViewAllActionPerformed
 
     private void btnAddAppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAppActionPerformed
 
         this.dispose();
         new AddPatientView().setVisible(true);
     }//GEN-LAST:event_btnAddAppActionPerformed
-
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-
-        String search = txtSearch.getText();
-        try {
-            loadTable(search);
-        } catch (IOException ex) {
-            Logger.getLogger(ManagePatientView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnMainMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMainMenuActionPerformed
 
@@ -670,11 +634,8 @@ public class ManagePatientView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddApp;
     private javax.swing.JButton btnMainMenu;
-    private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnViewAll;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblAppointment;
-    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

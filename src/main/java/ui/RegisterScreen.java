@@ -78,7 +78,7 @@ public class RegisterScreen extends javax.swing.JFrame {
             }
         });
         jPanel1.add(RegisterButton);
-        RegisterButton.setBounds(280, 350, 280, 40);
+        RegisterButton.setBounds(290, 350, 280, 40);
 
         jLabel7.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
         jLabel7.setText("Password");
@@ -105,7 +105,7 @@ public class RegisterScreen extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
         jLabel9.setText("Login Credentials");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(330, 110, 170, 20);
+        jLabel9.setBounds(340, 110, 170, 20);
         jPanel1.add(txtPassword);
         txtPassword.setBounds(380, 230, 216, 30);
         jPanel1.add(txtConfirmPassword);
@@ -206,28 +206,6 @@ public class RegisterScreen extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-            
-//        try{
-//            Registry myRegistry = LocateRegistry.getRegistry("127.0.0.1", 6969);
-//             
-//            // search for Server service
-//            Server impl = (Server) myRegistry.lookup("Server");
-//             
-//            // call server's methods    
-//            impl.addUser(username, password);
-//            //new UserProfileManager().addUser(customer, password); 
-//        } catch(UsernameDuplicateException e){
-//            JOptionPane.showMessageDialog(this, "Username has been used, please enter another username.");
-//            return;
-//        } catch(UserDuplicateException e){
-//            JOptionPane.showMessageDialog(this, "IC/Passport number has been used, please change.");
-//            return;
-//        }catch (Exception e) {
-//            System.out.println("Unable to connect with server. The program has been terminated.");
-//            System.exit(0);
-//            e.printStackTrace();
-//        }
         
         JOptionPane.showMessageDialog(this, "New Staff successfully added!");
         this.dispose();

@@ -67,21 +67,6 @@ public String decrypt(String cipherText, Key key) throws Exception {
         // decrypt
         byte[] dataBytes = cipher.doFinal(cipherBytes);
         return new String(dataBytes);
-//        System.out.println("B_1");
-//	// init
-//	cipher.init(Cipher.DECRYPT_MODE, key);
-//        System.out.println("B_2");
-//	// convert to byte[]
-////        cipher.update(ciphetText.)
-////	byte[] cipherBytes = Base64.getDecoder().decode(cipherText);
-//        cipher.update(cipherText.getBytes());
-////        System.out.println("B_3");
-////        System.out.println("CipherBytes "+Arrays.toString(cipherBytes));
-//	// decrypt
-//	byte[] dataBytes = cipher.doFinal();
-//        System.out.println("dataBytes "+Arrays.toString(dataBytes));
-//        System.out.println("B_4");
-//	return new String("Tester");
     }
 
 

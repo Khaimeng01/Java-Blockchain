@@ -6,18 +6,11 @@ import static digitalSignature.MyKeyPair.dSCreate;
 import digitalSignature.MySignature;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.PrivateKey;
-import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,55 +59,6 @@ public class AddAppointmentView extends javax.swing.JFrame {
             return start + "001";
         }
     }
-    
-    
-   //public int autoIdCounter(){
-       //int count = 0;
-       //try{  
-           //File rootFolder = new File(FILENAME);
-           //int countNumber = getDataFromAppointmentIDTxt();
-           //count = countNumber-1;
-           //String counterNumber = String.format("%04d",countNumber); //Adding leading zeros
-           //System.out.println("%03d::" + counterNumber);
-           
-           //Scanner scanner = new Scanner(System.in);
-           
-           //for (File file : rootFolder.listFiles()) {
-                //Path path = Paths.get(file.getAbsolutePath());
-                //List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-                //if(file.getAbsolutePath().contains("ID")) {
-                    //lines.add(count, counterNumber);
-            //}        
-            //Files.write(path, lines, StandardCharsets.UTF_8);
-        //} 
-           
-       //} catch(IOException e ){
-           //e.getStackTrace();
-       //}
-       
-       //return count;
-   //}
-   
-   //public static Integer getDataFromAppointmentIDTxt() throws IOException {
-        //String text = ""; 
-        //try { 
-            //text = new String(Files.readAllBytes(Paths.get(FILENAME)));
-            //if(!text.isEmpty()) {
-                //String[] arr = text.split("[\\r\\n]+"); //To get all countnumbers in Array           
-                //Integer lastId = Integer.valueOf(arr[arr.length-1]);
-                //return ++lastId;
-            //}
-            //else{
-                //return 1;
-            //}           
-        //} 
-        //catch (IOException e) { 
-            //e.printStackTrace();
-            //throw e;
-        //}
-    //}
-   
-   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -289,9 +233,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
 
         Appointment a;
         a = new Appointment(ID,date, patientID, doctorName, departmentName);
-        if(status ==false){
-            System.out.println("FALSE");
-            try {
+        try {
                 privateKey = dSCreate(ID);
                 System.out.println(privateKey);
                 data = sig.sign(String.valueOf(a), privateKey);
@@ -300,15 +242,6 @@ public class AddAppointmentView extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
             }
-            status = true;
-        }else{
-            System.out.println("TRUE");
-            try {
-                data = sig.sign(String.valueOf(a), privateKey);
-            } catch (Exception ex) {
-                Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
 
         
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILENAME, true))) {
@@ -318,8 +251,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
+
         JOptionPane.showMessageDialog(this, "New Appointment Added.");
     }//GEN-LAST:event_btnAddAppointmentActionPerformed
 

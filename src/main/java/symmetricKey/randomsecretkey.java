@@ -6,9 +6,7 @@ package symmetricKey;
 
 import java.security.Key;
 import java.security.SecureRandom;
-import java.util.Base64;
 import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 
 /**
  *

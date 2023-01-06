@@ -5,8 +5,6 @@ import asymmetricKey.PredefinedCharsSecretKey;
 import asymmetricKey.keyMaker;
 import com.mycompany.core.Block;
 import com.mycompany.core.Blockchain;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import javax.swing.JOptionPane;
 import com.mycompany.core.Patient;
 import com.mycompany.core.TranxCollection;
@@ -43,7 +41,7 @@ public class AddPatientView extends javax.swing.JFrame {
     public static void addtoFile(byte[] keyBytes){
         
         String a = Base64.getEncoder().encodeToString(keyBytes);
-        try (BufferedWriter bwUser = new BufferedWriter(new FileWriter("test1.txt", true))) {
+        try (BufferedWriter bwUser = new BufferedWriter(new FileWriter("ledgerkey.txt", true))) {
             bwUser.write( a );
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -54,7 +52,7 @@ public class AddPatientView extends javax.swing.JFrame {
     
     public  void retriveKey(){
             try {
-                BufferedReader brTest = new BufferedReader(new FileReader("test1.txt"));
+                BufferedReader brTest = new BufferedReader(new FileReader("ledgerkey.txt"));
                 String data = brTest .readLine();
                 System.out.println("DATA"+data);
                 byte[] b = Base64.getDecoder().decode(data);
@@ -370,40 +368,9 @@ public class AddPatientView extends javax.swing.JFrame {
         String preExistingCondition = txtPreExisting.getText();;
         String currentDisease = txtCurrentDIsease.getText();;
         String currentMedicationPlan = txtMedicationPlan.getText();;
-        
-//        try{
-//            if(Integer.parseInt(phoneNumber) < 0 || Integer.parseInt(IC)< 0){
-//                JOptionPane.showMessageDialog(this, "Please make sure PhoneNumber and IC fields are more than 0!");
-//                return;
-//            }
-//        }catch(NumberFormatException e){
-//            JOptionPane.showMessageDialog(this, "Please make sure price and quantity fields are numbers!");
-//            return; 
-//        }
-        
-        
-//        try{
-//            File file = new File(MASTER_DIR);
-//            if (file.exists() && file.isFile()) {
-//                Fname = as.encrypt(Fname, publicKey);
-//                Lname = as.encrypt(Lname, publicKey);
-//                IC = as.encrypt(IC, publicKey);
-//                phoneNumber = as.encrypt(phoneNumber, publicKey);
-//            } else {
-//                
-//                publicKey = ky.aSCreate();
-//                Fname = as.encrypt(Fname, publicKey);
-//                Lname = as.encrypt(Lname, publicKey);
-//                IC = as.encrypt(IC, publicKey);
-//                phoneNumber = as.encrypt(phoneNumber, publicKey);
-//            }
-//        } catch (Exception e) {
-//            System.out.print(e);
-//        }
-        
 
         try{
-            File file = new File("test1.txt");
+            File file = new File("ledgerkey.txt");
             if (file.exists()) {
                 System.out.println("\nINISDE\n");
                 retriveKey();
@@ -423,9 +390,6 @@ public class AddPatientView extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.print(e);
         }
-        
-        
-        
         
         Patient p;
         p = new Patient(ID,Fname,Lname,IC,phoneNumber,gender, bloodType, disability,preExistingCondition,currentDisease, currentMedicationPlan);

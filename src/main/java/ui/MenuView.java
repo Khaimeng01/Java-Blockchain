@@ -23,7 +23,6 @@ public class MenuView extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        GenerateReports = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         btnManagePatients = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -35,14 +34,6 @@ public class MenuView extends javax.swing.JFrame {
         setTitle("Admin Main Menu");
         setLocation(new java.awt.Point(50, 150));
         setMinimumSize(new java.awt.Dimension(850, 550));
-
-        GenerateReports.setFont(new java.awt.Font("Unispace", 1, 36)); // NOI18N
-        GenerateReports.setText("Generate Reports");
-        GenerateReports.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GenerateReportsActionPerformed(evt);
-            }
-        });
 
         btnLogout.setFont(new java.awt.Font("Unispace", 1, 36)); // NOI18N
         btnLogout.setText("Logout");
@@ -75,21 +66,20 @@ public class MenuView extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(90, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(280, 280, 280))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(286, 286, 286))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnManageAppointments, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(GenerateReports, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnManagePatients, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(80, 80, 80))))
+                        .addGap(80, 80, 80))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(292, 292, 292))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,11 +90,9 @@ public class MenuView extends javax.swing.JFrame {
                 .addComponent(btnManagePatients)
                 .addGap(51, 51, 51)
                 .addComponent(btnManageAppointments)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addComponent(GenerateReports)
-                .addGap(50, 50, 50)
+                .addGap(40, 40, 40)
                 .addComponent(btnLogout)
-                .addGap(43, 43, 43))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
 
         pack();
@@ -125,10 +113,6 @@ public class MenuView extends javax.swing.JFrame {
             Logger.getLogger(MenuView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnManagePatientsActionPerformed
-
-    private void GenerateReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateReportsActionPerformed
-        System.out.println("Does nothing yet. Supposed to go to Generate Report Screen.");
-    }//GEN-LAST:event_GenerateReportsActionPerformed
 
     private void btnManageAppointmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManageAppointmentsActionPerformed
         this.dispose();
@@ -178,7 +162,6 @@ public class MenuView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton GenerateReports;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnManageAppointments;
     private javax.swing.JButton btnManagePatients;

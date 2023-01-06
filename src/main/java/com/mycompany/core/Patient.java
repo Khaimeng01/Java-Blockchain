@@ -12,16 +12,10 @@ import java.io.Serializable;
  */
 public class Patient implements Serializable{
     String ID;
-    
-    //Encrypt
     String Fname;
-    //Encrypt
     String Lname;
-    //Encrypt
     String IC;
-    //Encrypt
     String phoneNumber;
-    
     String gender;
     String bloodType;
     String disability;
@@ -47,17 +41,6 @@ public class Patient implements Serializable{
         this.currentMedicationPlan = currentMedicationPlan;
     }
 
-    
-//
-//    
-//    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender) {
-//        this.ID = ID;
-//        this.Fname = Fname;
-//        this.Lname = Lname;
-//        this.IC = IC;
-//        this.phoneNumber = phoneNumber;
-//        this.gender = gender;
-//    }
 
     public String getID() {
         return ID;

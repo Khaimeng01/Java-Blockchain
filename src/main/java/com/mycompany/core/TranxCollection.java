@@ -2,7 +2,6 @@ package com.mycompany.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -22,7 +21,6 @@ public class TranxCollection implements Serializable {
     public String merkelRoot ;
     
     public List<Patient> tranxlist;
-    //public List<String> tranxlist; //can use other collection API for transaction collection
     
     public TranxCollection(){
         System.out.println("RMA_1");

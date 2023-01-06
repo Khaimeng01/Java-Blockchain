@@ -5,12 +5,9 @@
 package com.mycompany.core;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import com.mycompany.hashing.Hasher;
 
 /**

@@ -4,20 +4,13 @@
  */
 package login;
 
-import com.mycompany.core.Appointment;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.Key;
-import java.security.KeyFactory;
-import java.security.spec.X509EncodedKeySpec;
-import java.util.Arrays;
 import java.util.Base64;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import symmetricKey.randomsecretkey;
 import symmetricKey.symmetriccrypto;
 
 /**

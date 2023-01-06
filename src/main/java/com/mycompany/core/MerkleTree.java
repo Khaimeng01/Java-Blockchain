@@ -48,12 +48,14 @@ public class MerkleTree {
     public void build() {
         List<String> tempLst = new ArrayList<>();
         for (Patient tranx : this.tranxLst) {
-            tempLst.add(tranx.toString());
+            tempLst.add(tranx.ID + tranx.Fname + tranx.Lname + tranx.IC + tranx.phoneNumber + tranx.gender + tranx.bloodType + tranx.disability 
+                    + tranx.preExistingCondition + tranx.currentDisease + tranx.currentMedicationPlan);
         }
         List<String> hashes = genTranxHashLst( tempLst );
-        while(  hashes.size() != 1 ) {
-            hashes = genTranxHashLst( hashes );
-        }
+        System.out.println("DATA BEFORE ADDING TO TEXT FILE!!!!!!!!!!!!!!!! "+hashes.get(0));
+//        while(  hashes.size() != 1 ) {
+//            hashes = genTranxHashLst( hashes );
+//        }
         this.root = hashes.get(0);
     }
     /**     
@@ -67,10 +69,14 @@ public class MerkleTree {
         int i = 0;
         while( i < tranxLst.size() ) {
             String left = tranxLst.get(i);
+            System.out.println("DATA BEFORE ENTERING HASH!!!!!!!!!!!!!!!! "+left);
             i++;
             String right = "";
             if( i != tranxLst.size() ) right = tranxLst.get(i);
-            String hash = hasher.sha256(left.concat(right));
+            String tohash = left.concat(right);
+            System.out.println("DATA BEFORE HASHING IS DONE!!!!!!!!!!!!!!!! "+tohash);
+            String hash = hasher.sha256(tohash);
+            System.out.println("DATA AFTER HASHING IS DONE!!!!!!!!!!!!!!!! "+hash);
             hashLst.add(hash);
             i++;
         }

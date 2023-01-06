@@ -4,23 +4,16 @@
  */
 package digitalSignature;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.Base64;
-import javax.crypto.KeyGenerator;
 
 
 /**
@@ -87,7 +80,5 @@ public class MyKeyPair {
            }
 
 	}
-        
-
 }
 
