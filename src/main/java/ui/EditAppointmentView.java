@@ -65,10 +65,10 @@ public class EditAppointmentView extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(850, 550));
         jPanel2.setLayout(null);
 
-        jLabel4.setFont(new java.awt.Font("Old English Text MT", 1, 48)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel4.setText("Edit Appointment Details");
         jPanel2.add(jLabel4);
-        jLabel4.setBounds(160, 20, 550, 49);
+        jLabel4.setBounds(170, 20, 520, 56);
 
         jLabel3.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
         jLabel3.setText("Patient ID");

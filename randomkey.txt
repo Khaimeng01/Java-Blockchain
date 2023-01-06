@@ -1,3 +1,2 @@
 Username||Key
-james||kin6cRZn3hXTfPMj6R5bthfnOtEpWmbNn+jGU4Q7KaI=
-admin||3OZzM8ezogKQpeojSlHJ0R7qLL5b9zadjbCLXOMYf+Y=
+admin||BkgHDYbBHDFIouNf7+SnRzzqDhos37+lHXUWXG/7Lt0=

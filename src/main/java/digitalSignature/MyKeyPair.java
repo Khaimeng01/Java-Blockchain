@@ -25,26 +25,41 @@ public class MyKeyPair {
 
 	
 	private KeyPairGenerator keygen;
-	private static KeyPair keyPair;
-	private static PublicKey publicKey;
-	private static PrivateKey privateKey;
-	
-	public static PublicKey getPublicKey() {
-		return publicKey;
-	}
-	
-	public static PrivateKey getPrivateKey() {
-		return privateKey;
-	}
+        private KeyPairGenerator keygen2;
+        private static KeyPair keyPair;
+        private static KeyPair keyPair2;
+        private static PublicKey publicKey;
+        private static PublicKey publicKey2;
+        private static PrivateKey privateKey;
+        private static PrivateKey privateKey2;
+
+        public static PublicKey getPublicKey() {
+            return publicKey;
+        }
+
+        public static PrivateKey getPrivateKey() {
+            return privateKey;
+        }
+
+        public static PublicKey getPublicKey2() {
+            return publicKey2;
+        }
+
+        public static PrivateKey getPrivateKey2() {
+            return privateKey2;
+        }
+
 
 	public MyKeyPair() {
-		try {
-			keygen = KeyPairGenerator.getInstance("RSA");
-			keygen.initialize(1024);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        try {
+            keygen = KeyPairGenerator.getInstance("RSA");
+                        keygen2 = KeyPairGenerator.getInstance("RSA");
+            keygen.initialize(1024);
+                        keygen2.initialize(1024);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	/**
 	 * create
@@ -66,6 +81,32 @@ public class MyKeyPair {
 	public static void dSPut( byte[] keyBytes,String ID)
 	{
             try (BufferedWriter bw = new BufferedWriter(new FileWriter("DigitalSignature.txt",true))){
+               String a = Base64.getEncoder().encodeToString(keyBytes);
+               bw.write(ID+ "||"+a+ "\n");
+               bw.close();
+
+           } catch (FileNotFoundException ex) {
+
+           } catch (IOException e) {
+               System.out.println(e);
+           }
+
+	}
+        
+        public static PrivateKey dSCreate2(String ID) throws IOException
+    {
+        MyKeyPair myKeyMaker = new MyKeyPair();
+        keyPair2 = myKeyMaker.keygen2.generateKeyPair();
+                PublicKey publicKey2 = keyPair2.getPublic();
+                PrivateKey privateKey2 = keyPair2.getPrivate();
+                dSPut2(publicKey2.getEncoded(),ID);
+                return privateKey2;
+
+    }
+
+        public static void dSPut2( byte[] keyBytes,String ID)
+    {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter("DigitalSignature2.txt",true))){
                System.out.println("INSIDE DATA"+Arrays.toString(keyBytes));
                String a = Base64.getEncoder().encodeToString(keyBytes);
                System.out.println("String data"+a);
@@ -79,6 +120,6 @@ public class MyKeyPair {
                System.out.println(e);
            }
 
-	}
+    }
 }
 

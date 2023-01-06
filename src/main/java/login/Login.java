@@ -27,12 +27,9 @@ public class Login {
     }
 
     public boolean verify() {
-        System.out.println("INSIDE");
         String row, txtUsername, txtPassword,row1;
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
-            System.out.println("A1");
             br.readLine();
-             System.out.println("A2");
             while ((row = br.readLine()) != null) {
                 String[] field = row.split("\\|\\|");
                 txtUsername = field[0];
@@ -47,18 +44,9 @@ public class Login {
                             String encryptedTxtKey = field1[1];
                             if(encryptedUsername.equals(username)){
                                 byte[] encodedKey = Base64.getDecoder().decode(encryptedTxtKey);
-//                                System.out.println("BYTE "+Arrays.toString(encodedKey));
-                                System.out.println("A8");
-//                                SecretKeySpec key = new SecretKeySpec(encryptedTxtKey.getBytes("UTF-8"), "AES");
-//                                SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES"); 
-                                System.out.println("EncodedKey Length "+encodedKey.length);
                                 Key key = new SecretKeySpec(encodedKey,0,encodedKey.length, "AES");
-                                System.out.println("A9");
-                                System.out.println("Encrypted Key "+ key.toString()+"\t"+key.getAlgorithm()+"\t"+key.getFormat());
                                 String returnPass  = symm.decrypt(txtPassword, key);
-                                System.out.println("Return Pass : "+returnPass);
                                 if(returnPass.equals(password)){
-                                    System.out.println("RETURN HERE");
                                     return true;
                                 }
                             }

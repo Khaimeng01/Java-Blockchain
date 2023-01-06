@@ -44,17 +44,12 @@ public symmetriccrypto() {
 }
 
 public String encrypt(String data, Key key) throws Exception {
-        System.out.println("B_1");
 	String cipherText = null;
-        System.out.println("B_2");
 	// init
-        System.out.println("B_3");
 	cipher.init(Cipher.ENCRYPT_MODE, key);
 	// encrypt
-        System.out.println("B_4");
 	byte[] cipherBytes = cipher.doFinal(data.getBytes());
 	// convert to string
-        System.out.println("B_5");
 	cipherText = Base64.getEncoder().encodeToString(cipherBytes);
 	return cipherText;
 }

@@ -91,7 +91,6 @@ public class Blockchain {
         /* convert the chain to String using gson api */
         try {
             String chain = new GsonBuilder().setPrettyPrinting().create().toJson(db);
-            System.out.println( chain );
             /* write to ledger file in text */
             Files.write( Paths.get(this.ledgerFile) ,  chain.getBytes() , StandardOpenOption.CREATE);
         } catch (Exception e) {

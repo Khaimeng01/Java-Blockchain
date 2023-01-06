@@ -22,12 +22,27 @@ public class Patient implements Serializable{
     String preExistingCondition;
     String currentDisease;
     String currentMedicationPlan;
+    String digitalSignature;
     
 
     public Patient() {
     }
 
-    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender, String bloodType, String disability, String preExistingCondition, String currentDisease, String currentMedicationPlan) {
+//    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender, String bloodType, String disability, String preExistingCondition, String currentDisease, String currentMedicationPlan) {
+//        this.ID = ID;
+//        this.Fname = Fname;
+//        this.Lname = Lname;
+//        this.IC = IC;
+//        this.phoneNumber = phoneNumber;
+//        this.gender = gender;
+//        this.bloodType = bloodType;
+//        this.disability = disability;
+//        this.preExistingCondition = preExistingCondition;
+//        this.currentDisease = currentDisease;
+//        this.currentMedicationPlan = currentMedicationPlan;
+//    }
+
+    public Patient(String ID, String Fname, String Lname, String IC, String phoneNumber, String gender, String bloodType, String disability, String preExistingCondition, String currentDisease, String currentMedicationPlan, String digitalSignature) {
         this.ID = ID;
         this.Fname = Fname;
         this.Lname = Lname;
@@ -39,8 +54,16 @@ public class Patient implements Serializable{
         this.preExistingCondition = preExistingCondition;
         this.currentDisease = currentDisease;
         this.currentMedicationPlan = currentMedicationPlan;
+        this.digitalSignature = digitalSignature;
     }
 
+    public String getDigitalSignature() {
+        return digitalSignature;
+    }
+
+    public void setDigitalSignature(String digitalSignature) {
+        this.digitalSignature = digitalSignature;
+    }
 
     public String getID() {
         return ID;

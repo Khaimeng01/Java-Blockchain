@@ -60,10 +60,10 @@ public class RegisterScreen extends javax.swing.JFrame {
 
         jPanel1.setLayout(null);
 
-        jLabel4.setFont(new java.awt.Font("Old English Text MT", 1, 48)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel4.setText("Register New Staff");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(210, 20, 440, 60);
+        jLabel4.setBounds(220, 20, 400, 60);
 
         jLabel6.setFont(new java.awt.Font("Unispace", 1, 14)); // NOI18N
         jLabel6.setText("Username");
@@ -170,25 +170,18 @@ public class RegisterScreen extends javax.swing.JFrame {
         
         //HERE
         Key key = randomsecretkey.create();
-        System.out.println("Real KEY : "+key.toString()+"\t"+key.getAlgorithm()+"\t"+key.getFormat());
-        System.out.println("key: "+ Base64.getEncoder().encodeToString(key.getEncoded()));
         String passwordstr = String.valueOf(password);
-        System.out.println("Data: " + passwordstr);
         
         String encrypted = "";
         try {
-            encrypted = symm.encrypt(passwordstr, key);
-            System.out.println("Encrypted:  " + encrypted);  
+            encrypted = symm.encrypt(passwordstr, key); 
             String decrypt = symm.decrypt(encrypted, key);
-            System.out.println("The Decrypted Text : "+decrypt);
         }catch (Exception e) {
             e.printStackTrace();
         }
         
         byte[] keyBytes = key.getEncoded();
         String a = Base64.getEncoder().encodeToString(keyBytes);
-        System.out.println("FIRST KEY "+a);
-        System.out.println("BYTE "+Arrays.toString(key.getEncoded()));
         
         try (BufferedWriter bwUser = new BufferedWriter(new FileWriter(USERFILENAME2, true))) {
             bwUser.write(user.getUsername()+ "||"+ a + "\n");

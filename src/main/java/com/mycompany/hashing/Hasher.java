@@ -50,18 +50,11 @@ public class Hasher {
 			md.update(input.getBytes());
                         
                         //adding securtiy using salt, prepend
-//                        byte[] salt = Salt.generate();
-//                        md.update(salt);
-                        
+
 			//digest
 			byte[] hashbytes =  md.digest();
-			//convert to String
-			//1) byte[] to String - simple way
-			//return Base64.getEncoder().encodeToString(hashbytes);
                         
                         //adding securtiy using salt, append
-//                        byte[] salt = Salt.generate();
-//                        md.update(salt);
 			
 			//2) byte[] to HEX -typically seen online, using external API
 			return Hex.encodeHexString(hashbytes);
@@ -86,18 +79,12 @@ public class Hasher {
 			md.update(input);
                         
                         //adding securtiy using salt, prepend
-//                        byte[] salt = Salt.generate();
-//                        md.update(salt);
                         
 			//digest
 			byte[] hashbytes =  md.digest();
-			//convert to String
-			//1) byte[] to String - simple way
-			//return Base64.getEncoder().encodeToString(hashbytes);
+			//convert to String;
                         
                         //adding securtiy using salt, append
-//                        byte[] salt = Salt.generate();
-//                        md.update(salt);
 			
 			//2) byte[] to HEX -typically seen online, using external API
 			return Hex.encodeHexString(hashbytes);

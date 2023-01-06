@@ -63,7 +63,6 @@ public class ManageAppointmentView extends javax.swing.JFrame {
                 }
             }
         } catch (Exception e) {
-            System.out.println("FAILURE");
         }
     }
 
@@ -115,12 +114,10 @@ public class ManageAppointmentView extends javax.swing.JFrame {
             String digitalSignature = appList.get(i).getDigitalSignature();
             
             Appointment newAppointment = new Appointment(ID,appDate,patientID,doctorName,department);
-            System.out.println("POWER "+newAppointment.toString());
            
             try {
                 keyFinder(ID);
                  validity = sig.verify(String.valueOf(newAppointment), digitalSignature, publicKey);
-                 System.out.println("Boolean "+ validity);
             } catch (Exception ex) {
                 Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -218,7 +215,7 @@ public class ManageAppointmentView extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Old English Text MT", 1, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel1.setText("Manage Appointments");
 
         tblAppointment.setModel(new javax.swing.table.DefaultTableModel(
@@ -278,7 +275,7 @@ public class ManageAppointmentView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(btnAddApp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -372,8 +369,6 @@ public class ManageAppointmentView extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        //new UserProfileManager().deleteUser(new UserProfileLoader().createSalesExec(customerId));
         
         loadTable();
     }//GEN-LAST:event_btnDeleteAppActionPerformed

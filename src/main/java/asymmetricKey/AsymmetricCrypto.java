@@ -43,14 +43,9 @@ public class AsymmetricCrypto {
 
    //decryption
     public String decrypt (String ciphertext, PrivateKey key) throws Exception {
-        System.out.println("B_1");
-        String origin = "";
         cipher.init(Cipher.DECRYPT_MODE, key);
-        System.out.println("B_2");
         byte[] cipherBytes = Base64.getDecoder().decode(ciphertext);
-        System.out.println("B_3");
         byte[] dataBytes=(cipher.doFinal(cipherBytes));
-        System.out.println("B_4");
         return new String(dataBytes);
     }
 } 

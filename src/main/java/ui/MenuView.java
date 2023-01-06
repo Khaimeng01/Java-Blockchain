@@ -51,7 +51,7 @@ public class MenuView extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Old English Text MT", 1, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel1.setText("Main Menu");
 
         btnManageAppointments.setFont(new java.awt.Font("Unispace", 1, 36)); // NOI18N
@@ -90,9 +90,9 @@ public class MenuView extends javax.swing.JFrame {
                 .addComponent(btnManagePatients)
                 .addGap(51, 51, 51)
                 .addComponent(btnManageAppointments)
-                .addGap(40, 40, 40)
+                .addGap(46, 46, 46)
                 .addComponent(btnLogout)
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         pack();

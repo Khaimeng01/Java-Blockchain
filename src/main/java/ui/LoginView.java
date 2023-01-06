@@ -1,12 +1,7 @@
 package ui;
 
-import java.security.Key;
-import java.util.Base64;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import login.Login;
-import symmetricKey.randomsecretkey;
-import symmetricKey.symmetriccrypto;
 
 public class LoginView extends javax.swing.JFrame {
 
@@ -76,22 +71,22 @@ public class LoginView extends javax.swing.JFrame {
         Wallpaper.add(ExitButton);
         ExitButton.setBounds(20, 460, 150, 50);
 
-        jLabel1.setFont(new java.awt.Font("Old English Text MT", 1, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel1.setText("Hospital KL Patient Database");
         Wallpaper.add(jLabel1);
-        jLabel1.setBounds(100, 20, 660, 70);
+        jLabel1.setBounds(120, 20, 620, 70);
 
         jLabel2.setFont(new java.awt.Font("Unispace", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(153, 153, 153));
         jLabel2.setText("Username");
         Wallpaper.add(jLabel2);
-        jLabel2.setBounds(150, 210, 90, 23);
+        jLabel2.setBounds(150, 200, 90, 23);
 
         jLabel3.setFont(new java.awt.Font("Unispace", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(153, 153, 153));
         jLabel3.setText("Password");
         Wallpaper.add(jLabel3);
-        jLabel3.setBounds(470, 210, 90, 23);
+        jLabel3.setBounds(470, 200, 90, 23);
 
         txtUsername.setFont(new java.awt.Font("Unispace", 0, 18)); // NOI18N
         Wallpaper.add(txtUsername);
@@ -133,7 +128,6 @@ public class LoginView extends javax.swing.JFrame {
         String password = new String(txtPassword.getPassword());
         Login login = new Login(username, password);
         boolean user = login.verify();
-        System.out.println("BOOLEAN "+user);
         if(user == true){
             JOptionPane.showMessageDialog(this, "Welcome to the system!");
             this.dispose();

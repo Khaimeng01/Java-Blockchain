@@ -20,7 +20,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.security.Key;
+import java.security.KeyFactory;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.LinkedList;
@@ -47,6 +50,7 @@ public class ManagePatientView extends javax.swing.JFrame {
     MySignature sig = new MySignature();
     PrivateKey privateKey;
     boolean validity;
+    PublicKey publicKey;
     AsymmetricCrypto ASC = new AsymmetricCrypto();
     symmetriccrypto symm = new symmetriccrypto();
     
@@ -59,22 +63,6 @@ public class ManagePatientView extends javax.swing.JFrame {
         initComponents();
         loadTable();
     }
-    
-//    public static String removePadding(String s) {
-//    // Check for padding characters at the end of the string
-//        if (s.charAt(s.length() - 1) == '=') {
-//            // Count the number of padding characters
-//            int numPadding = 0;
-//            for (int i = s.length() - 1; s.charAt(i) == '='; i--) {
-//                numPadding++;
-//            }
-//
-//            // Strip the padding characters from the string
-//            s = s.substring(0, s.length() - numPadding);
-//        }
-//
-//        return s;
-//    }
     
     public static void addtoFile(byte[] keyBytes){
         
@@ -92,18 +80,31 @@ public class ManagePatientView extends javax.swing.JFrame {
             try {
                 BufferedReader brTest = new BufferedReader(new FileReader("ledgerkey.txt"));
                 String data = brTest .readLine();
-                System.out.println("DATA"+data);
                 byte[] b = Base64.getDecoder().decode(data);
-    //            System.out.println("BYTE"+Arrays.toString(b));
-    //            System.out.println("TEST_1");
-    //            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(b);
-    //            System.out.println("TEST_2");
-    //            privateKey = KeyFactory.getInstance("RSA").generatePrivate(spec);
                 key = new SecretKeySpec(b,0,b.length, "AES");
             }catch (Exception e) {
             e.printStackTrace();
             }
     }
+    
+    public void keyFinder(String patientId){
+
+        try {
+            BufferedReader brTest = new BufferedReader(new FileReader("DigitalSignature2.txt"));
+            String data;
+            while((data = brTest.readLine())!= null){
+                String[] data1 = data.split("\\|\\|");
+                String ID = data1[0];
+                String encryptedKey = data1[1];
+                if(ID.equals(patientId)){
+                    byte[] b = Base64.getDecoder().decode(encryptedKey);
+                    X509EncodedKeySpec spec = new X509EncodedKeySpec(b);
+                    publicKey= KeyFactory.getInstance("RSA").generatePublic(spec);
+                }
+            }
+            } catch (Exception e) {
+            }
+        }
     
     private void loadTable() throws Exception{
 
@@ -124,6 +125,8 @@ public class ManagePatientView extends javax.swing.JFrame {
         model.addColumn("Pre-Existing Condition");
         model.addColumn("Current Disease");
         model.addColumn("Current Medication Plan");
+        model.addColumn("Digital Signature");
+        model.addColumn("Validity");
 
         
         //Delete Later
@@ -132,13 +135,7 @@ public class ManagePatientView extends javax.swing.JFrame {
                 try {
                     BufferedReader brTest = new BufferedReader(new FileReader("ledgerkey.txt"));
                     String data = brTest .readLine();
-                    System.out.println("DATA"+data);
                     byte[] b = Base64.getDecoder().decode(data);
-        //            System.out.println("BYTE"+Arrays.toString(b));
-        //            System.out.println("TEST_1");
-        //            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(b);
-        //            System.out.println("TEST_2");
-        //            privateKey = KeyFactory.getInstance("RSA").generatePrivate(spec);
                     key = new SecretKeySpec(b,0,b.length, "AES");
                 }catch (Exception e) {
                     e.printStackTrace();
@@ -163,14 +160,10 @@ public class ManagePatientView extends javax.swing.JFrame {
                 JSONObject block = (JSONObject) o;
                 JSONObject innerBlock = (JSONObject) block.get("header");
                 String indexString = (String) innerBlock.get("index").toString();
-                System.out.println("THIS IS HEADER INDEX: "+indexString);
                 int index = Integer.parseInt(indexString);
                 String currHash = (String) innerBlock.get("currHash").toString();
-                System.out.println("THIS IS HEADER CURRENT HASH: "+currHash);
                 String prevHash = (String) innerBlock.get("prevHash").toString();
-                System.out.println("THIS IS HEADER PREV HASH: "+prevHash);
                 String timestampString = (String) innerBlock.get("timestamp").toString();
-                System.out.println("THIS IS HEADER TIMESTAMP: "+timestampString);
                 long timestamp = Long.parseLong(timestampString);
                 headerList.add(new Header(index, currHash, prevHash, timestamp));  
                 
@@ -186,38 +179,28 @@ public class ManagePatientView extends javax.swing.JFrame {
         for (int i=0; i < (headerList.size() -1);i++){
             int j = i+1;
             int beforeIndex = headerList.get(i).getIndex();
-            System.out.println("BEFORE INDEX: "+beforeIndex);
             int nowIndex = headerList.get(j).getIndex();
-            System.out.println("NOW INDEX: "+nowIndex);
             
             //String beforePreviousHash = headerList.get(i).getPreviousHash();
             String nowPreviousHash = headerList.get(j).getPreviousHash();
-            System.out.println("PREVIOUS HASH: "+nowPreviousHash);
             
             String beforeCurrentHash = headerList.get(i).getCurrentHash();
-            System.out.println("CURRENT HASH: "+beforeCurrentHash);
             //String nowCurrentHash = headerList.get(j).getCurrentHash();
             
             long beforeTimestamp = headerList.get(i).getTimestamp();
-            System.out.println("BEFORE TIME: "+beforeTimestamp);
             long nowTimestamp = headerList.get(j).getTimestamp();
-            System.out.println("NOW TIME: "+nowTimestamp);
             
             if (((nowIndex - beforeIndex) != 1)  || (!(nowTimestamp > beforeTimestamp)) ||(!(nowPreviousHash.equals(beforeCurrentHash)))){
-                System.out.println("I have found error!\n\n");
                 ledgerSecure = false;
                 break;
             }else{
-                System.out.println("So far all okay.\n\n");
             }
         }
         
         //Verify Faulty Block 3
         if (ledgerSecure == false){
-            System.out.println("Blocks in ledger are faulty. Ledger may have been tampered or corrupted.");
             JOptionPane.showMessageDialog(this, "Blocks in ledger are faulty. Ledger may have been tampered or corrupted.");
         }else{
-            System.out.println("Blocks in ledger have been checked and is currently secure.");
             JOptionPane.showMessageDialog(this, "Blocks in ledger have been checked and is currently secure.");
         }
         
@@ -229,10 +212,7 @@ public class ManagePatientView extends javax.swing.JFrame {
             {
                 JSONObject block = (JSONObject) o;
                 JSONObject tranxs = (JSONObject) block.get("tranxs");
-//                String tranxsString = (String) tranxs.toString();
-//                System.out.println("Tranxs raw: "+tranxsString);
                 merkelRoot = (String) tranxs.get("merkelRoot").toString();
-                System.out.println("Merkleroot from file in first loop: "+merkelRoot);
                 merkelRootList.add(merkelRoot); 
             }
         } catch (FileNotFoundException ex) {
@@ -258,90 +238,75 @@ public class ManagePatientView extends javax.swing.JFrame {
                     tranxlistString = tranxlistString.replaceAll("[{}]", "");
                     tranxlistString = tranxlistString.replaceAll("\\[", "").replaceAll("\\]", "");
                     tranxlistString = tranxlistString.replace("tranxlist=", "");
-                    System.out.println("Final tranxlistString: "+tranxlistString);
                     patientDataArray = tranxlistString.split(",");
-                    System.out.println("patientdatarray: "+patientDataArray);
 
                     String IDToSplit = patientDataArray[0];
-                    System.out.println("IDToSplit: "+IDToSplit);
                     String[] IDSplit = IDToSplit.split("=");
-                    System.out.println("IDToSplit: "+IDSplit[1]);
                     String ID = IDSplit[1];
-                    System.out.println("ID: "+ID);
 
                     String FnameToSplit = patientDataArray[1];
                     String Fname =  FnameToSplit.replace("Fname=", "");
                     Fname =  Fname.replaceFirst("\\s", "");
-                    System.out.println("Fname: "+Fname);
 //                    String FnReturn  = symm.decrypt(Fname, key);
 //                    Fname = FnReturn;
 
                     String LnameToSplit = patientDataArray[2];
                     String Lname =  LnameToSplit.replace("Lname=", "");
                     Lname =  Lname.replaceFirst("\\s", "");
-                    System.out.println("Lname: "+Lname);
 //                    String LnReturn  = symm.decrypt(Lname, key);
 //                    Lname = LnReturn;
 
                     String ICToSplit = patientDataArray[3];
                     String IC =  ICToSplit.replace("IC=", "");
                     IC =  IC.replaceFirst("\\s", "");
-                    System.out.println("IC: "+IC);
 //                    String ICReturn  = symm.decrypt(IC, key);
 //                    IC = ICReturn;
 
                     String phoneNumberToSplit = patientDataArray[4];
                     String phoneNumber =  phoneNumberToSplit.replace("phoneNumber=", "");
                     phoneNumber =  phoneNumber.replaceFirst("\\s", "");
-                    System.out.println("phoneNumber: "+phoneNumber);
 //                    String phoneNumberReturn  = symm.decrypt(phoneNumber, key);
 //                    phoneNumber = phoneNumberReturn;
 
                     String genderToSplit = patientDataArray[5];
                     String gender =  genderToSplit.replace("gender=", "");
                     gender =  gender.replaceFirst("\\s", "");
-                    System.out.println("gender: "+gender);
 
                     String bloodTypeToSplit = patientDataArray[6];
                     String bloodType =  bloodTypeToSplit.replace("bloodType=", "");
                     bloodType =  bloodType.replaceFirst("\\s", "");
-                    System.out.println("bloodType: "+bloodType);
 
                     String disabilityToSplit = patientDataArray[7];
                     String disability =  disabilityToSplit.replace("disability=", "");
                     disability =  disability.replaceFirst("\\s", "");
-                    System.out.println("disability: "+disability);
 
                     String preExistingConditionToSplit = patientDataArray[8];
                     String preExistingCondition =  preExistingConditionToSplit.replace("preExistingCondition=", "");
                     preExistingCondition =  preExistingCondition.replaceFirst("\\s", "");
-                    System.out.println("preExistingCondition: "+preExistingCondition);
 
                     String currentDiseaseToSplit = patientDataArray[9];
                     String currentDisease =  currentDiseaseToSplit.replace("currentDisease=", "");
                     currentDisease =  currentDisease.replaceFirst("\\s", "");
-                    System.out.println("currentDisease: "+currentDisease);
 
                     String currentMedPlanToSplit = patientDataArray[10];
                     String currentMedPlan =  currentMedPlanToSplit.replace("currentMedicationPlan=", "");
                     currentMedPlan =  currentMedPlan.replaceFirst("\\s", "");
-                    System.out.println("currentMedPlan: "+currentMedPlan);
+                    
+                    String digitalSignatureToSplit = patientDataArray[11];
+                    String digitalSignature =  digitalSignatureToSplit.replace("digitalSignature=", "");
+                    digitalSignature =  digitalSignature.replaceFirst("\\s", "");
+                    
                     appList.add(new Patient(ID,Fname,Lname,IC,phoneNumber,gender,bloodType,disability,preExistingCondition, 
-                    currentDisease,currentMedPlan));
+                    currentDisease,currentMedPlan, digitalSignature));
                     tempLst.add(appList.get(i).getID() + appList.get(i).getFname() + appList.get(i).getLname() + 
                             appList.get(i).getIC() + appList.get(i).getPhoneNumber() + appList.get(i).getGender()
                             + appList.get(i).getBloodType() + appList.get(i).getDisability() + appList.get(i).getPreExistingCondition()
                             + appList.get(i).getCurrentDisease() + appList.get(i).getCurrentMedicationPlan());
                     String tohash = tempLst.get(i).toString();
-                    System.out.println("Merkleroot before hash!!!!!!!!!!!!!!!!!!!! "+tohash);
                     String merkelRootcheck = hasher.sha256(tohash);
-                    System.out.println("Merkleroot from hash: "+merkelRootcheck);
-                    System.out.println("Merkleroot from file: "+merkelRootList.get(i));
                     if (merkelRootList.get(i).equals(merkelRootcheck)){
-                        System.out.println("Patient data with ID: " +ID+ " in the ledger have been checked and is currently secure.");
                         JOptionPane.showMessageDialog(this, "Patient data with ID: " +ID+ " in the ledger have been checked and is currently secure.");
                     }else{
-                        System.out.println("Patient data with ID: " +ID+ " in the ledger is faulty. It may have been tamepered or corrupted.");
                         JOptionPane.showMessageDialog(this, "Patient data with ID: " +ID+ " in the ledger is faulty. It may have been tamepered or corrupted.");
                     }
                     String FnReturn  = symm.decrypt(Fname, key);
@@ -378,7 +343,17 @@ public class ManagePatientView extends javax.swing.JFrame {
             String preExistingCondition = appList.get(i).getPreExistingCondition();
             String currentDisease = appList.get(i).getCurrentDisease();
             String currentMedicationPlan = appList.get(i).getCurrentMedicationPlan();
-            Object[] data = {ID, Fname,Lname, IC, phoneNumber, gender, bloodType, disability, preExistingCondition, currentDisease, currentMedicationPlan};
+            String digitalSignature = appList.get(i).getDigitalSignature();
+            
+            String pa = ID+Fname+Lname+IC+phoneNumber+gender+bloodType+disability+preExistingCondition+currentDisease+currentMedicationPlan;
+            
+            try {
+                 keyFinder(ID);
+                 validity = sig.verify(pa, digitalSignature, publicKey);
+            } catch (Exception ex) {
+                Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Object[] data = {ID, Fname,Lname, IC, phoneNumber, gender, bloodType, disability, preExistingCondition, currentDisease, currentMedicationPlan, digitalSignature, validity};
             model.addRow(data);
         }
         tblAppointment.setModel(model);
@@ -449,7 +424,7 @@ public class ManagePatientView extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Old English Text MT", 1, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel1.setText("Patients Data List");
 
         tblAppointment.setModel(new javax.swing.table.DefaultTableModel(
@@ -489,22 +464,23 @@ public class ManagePatientView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnMainMenu)
                 .addGap(112, 112, 112))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(381, 381, 381)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(379, 379, 379))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addGap(16, 16, 16)
                 .addComponent(jLabel1)
-                .addGap(46, 46, 46)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+                .addGap(42, 42, 42)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnMainMenu)

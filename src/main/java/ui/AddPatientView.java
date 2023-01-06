@@ -8,6 +8,8 @@ import com.mycompany.core.Blockchain;
 import javax.swing.JOptionPane;
 import com.mycompany.core.Patient;
 import com.mycompany.core.TranxCollection;
+import static digitalSignature.MyKeyPair.dSCreate2;
+import digitalSignature.MySignature;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,6 +18,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.Key;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Base64;
 import java.util.logging.Level;
@@ -29,6 +32,8 @@ public class AddPatientView extends javax.swing.JFrame {
         static final String MASTER_DIR = "master";
         static final String MASTER_BINARY = MASTER_DIR+"/mychain";
         Key key = null;
+        PrivateKey privateKey;
+        MySignature sig = new MySignature();
         
         
     /**
@@ -54,13 +59,7 @@ public class AddPatientView extends javax.swing.JFrame {
             try {
                 BufferedReader brTest = new BufferedReader(new FileReader("ledgerkey.txt"));
                 String data = brTest .readLine();
-                System.out.println("DATA"+data);
                 byte[] b = Base64.getDecoder().decode(data);
-    //            System.out.println("BYTE"+Arrays.toString(b));
-    //            System.out.println("TEST_1");
-    //            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(b);
-    //            System.out.println("TEST_2");
-    //            privateKey = KeyFactory.getInstance("RSA").generatePrivate(spec);
                 key = new SecretKeySpec(b,0,b.length, "AES");
             }catch (Exception e) {
             e.printStackTrace();
@@ -148,7 +147,7 @@ public class AddPatientView extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Old English Text MT", 1, 48)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel4.setText("Add New Patient");
 
         txtPhoneNumber.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
@@ -293,7 +292,7 @@ public class AddPatientView extends javax.swing.JFrame {
                     .addComponent(txtLName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPreExisting, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtCurrentDIsease, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -367,19 +366,19 @@ public class AddPatientView extends javax.swing.JFrame {
         String disability = txtDisability.getText();;
         String preExistingCondition = txtPreExisting.getText();;
         String currentDisease = txtCurrentDIsease.getText();;
-        String currentMedicationPlan = txtMedicationPlan.getText();;
+        String currentMedicationPlan = txtMedicationPlan.getText();
+        String digitalSignature = "";
 
+        String da = (ID+Fname+Lname+IC+phoneNumber+gender+bloodType+disability+preExistingCondition+currentDisease+currentMedicationPlan);
         try{
             File file = new File("ledgerkey.txt");
             if (file.exists()) {
-                System.out.println("\nINISDE\n");
                 retriveKey();
                 Fname = symm.encrypt(Fname, key);
                 Lname = symm.encrypt(Lname, key);
                 IC = symm.encrypt(IC, key);
                 phoneNumber = symm.encrypt(phoneNumber, key);
             } else {
-                System.out.println("\nOUTSIDE\n");
                 key = randomsecretkey.create();
                 Fname = symm.encrypt(Fname, key);
                 Lname = symm.encrypt(Lname, key);
@@ -390,10 +389,17 @@ public class AddPatientView extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.print(e);
         }
-        
-        Patient p;
-        p = new Patient(ID,Fname,Lname,IC,phoneNumber,gender, bloodType, disability,preExistingCondition,currentDisease, currentMedicationPlan);
-        System.out.println(p.toString());
+
+        try {
+            privateKey = dSCreate2(ID);
+            digitalSignature = sig.sign(da, privateKey);
+        } catch (IOException ex) {
+            Logger.getLogger(AddPatientView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AddPatientView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Patient p =new Patient(ID,Fname,Lname,IC,phoneNumber,gender, bloodType, disability,preExistingCondition,currentDisease, currentMedicationPlan,digitalSignature);
         
         Blockchain bc = Blockchain.getInstance(MASTER_BINARY);
         if ( !( new File(MASTER_DIR).exists() ) ) {

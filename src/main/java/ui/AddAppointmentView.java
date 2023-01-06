@@ -118,7 +118,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Old English Text MT", 1, 48)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel4.setText("Add New Appointment");
 
         txtDeptName.setFont(new java.awt.Font("Unispace", 0, 14)); // NOI18N
@@ -172,7 +172,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(132, 132, 132)
                         .addComponent(jLabel4)))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +191,7 @@ public class AddAppointmentView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(txtLPatientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtDoctorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -235,7 +235,6 @@ public class AddAppointmentView extends javax.swing.JFrame {
         a = new Appointment(ID,date, patientID, doctorName, departmentName);
         try {
                 privateKey = dSCreate(ID);
-                System.out.println(privateKey);
                 data = sig.sign(String.valueOf(a), privateKey);
             } catch (IOException ex) {
                 Logger.getLogger(AddAppointmentView.class.getName()).log(Level.SEVERE, null, ex);

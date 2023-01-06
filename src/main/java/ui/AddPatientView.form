@@ -129,7 +129,7 @@
                   <Component id="txtPreExisting" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="31" max="32767" attributes="0"/>
+              <EmptySpace pref="24" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="txtCurrentDIsease" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -252,7 +252,7 @@
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Old English Text MT" size="48" style="1"/>
+          <Font name="Times New Roman" size="48" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Add New Patient"/>
       </Properties>

@@ -6,13 +6,9 @@ package asymmetricKey;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -50,15 +46,10 @@ public class keyMaker {
 	public  PublicKey aSCreate() throws IOException
 	{
 		keyMaker myKeyMaker = new keyMaker();
-                System.out.println("A_2");
 		keyPair = myKeyMaker.keygen.generateKeyPair();
-                System.out.println("A_3");
 		PublicKey publicKey = keyPair.getPublic();
-                System.out.println("A_4");
                 PrivateKey privateKey = keyPair.getPrivate();
-                System.out.println("A_5");
                 FileWriter write = new FileWriter("AS.txt");
-                System.out.println("A_6");
                 aSPut(privateKey.getEncoded());
                 return publicKey;
 	}
@@ -78,24 +69,6 @@ public class keyMaker {
            } catch (IOException e) {
                System.out.println(e);
            }
-           System.out.println("A_8");
 
-	}
-        
-
-	/**
-	 * put the key in a specified file path
-	 */
-//	public static void put(String path, byte[] key)
-//	{
-//		File file = new File(path );
-//		file.getParentFile().mkdirs();
-//		try {
-//			Files.write(Paths.get(path), key, StandardOpenOption.CREATE);
-//			System.out.println( "Complete" );
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
+	}	
 }
